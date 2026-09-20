@@ -160,19 +160,48 @@ function initMobileMenu() {
   const navLinks = document.querySelectorAll('.nav-link');
 
   if (toggle && navMenu) {
-    toggle.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
+    function closeMenu() {
+      navMenu.classList.remove('active');
       const icon = toggle.querySelector('i');
       if (icon) {
-        icon.classList.toggle('bi-list');
-        icon.classList.toggle('bi-x');
+        icon.classList.remove('bi-x');
+        icon.classList.add('bi-list');
+      }
+    }
+
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = navMenu.classList.toggle('active');
+      const icon = toggle.querySelector('i');
+      if (icon) {
+        if (isOpen) {
+          icon.classList.remove('bi-list');
+          icon.classList.add('bi-x');
+        } else {
+          icon.classList.remove('bi-x');
+          icon.classList.add('bi-list');
+        }
       }
     });
 
     navLinks.forEach(link => {
       link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
+        closeMenu();
       });
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !toggle.contains(e.target)) {
+        closeMenu();
+      }
+    });
+
+    // Close on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+        closeMenu();
+      }
     });
   }
 }
@@ -369,13 +398,15 @@ function initBeforeAfterSlider() {
 
   // Responsive width adjustment for inner before image
   function syncBeforeImgWidth() {
-    if (beforeImg) {
+    if (beforeImg && container) {
       beforeImg.style.width = `${container.offsetWidth}px`;
     }
   }
 
   window.addEventListener('resize', syncBeforeImgWidth);
-  syncBeforeImgWidth();
+  window.addEventListener('load', syncBeforeImgWidth);
+  setTimeout(syncBeforeImgWidth, 100);
+  setTimeout(syncBeforeImgWidth, 500);
 
   function updateSliderPosition(clientX) {
     const rect = container.getBoundingClientRect();
@@ -407,7 +438,7 @@ function initBeforeAfterSlider() {
   container.addEventListener('touchstart', (e) => {
     isDragging = true;
     updateSliderPosition(e.touches[0].clientX);
-  });
+  }, { passive: true });
 
   window.addEventListener('touchend', () => {
     isDragging = false;
@@ -416,7 +447,7 @@ function initBeforeAfterSlider() {
   window.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
     updateSliderPosition(e.touches[0].clientX);
-  });
+  }, { passive: true });
 }
 
 /* --------------------------------------------------------------------------
