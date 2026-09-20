@@ -160,8 +160,17 @@ function initMobileMenu() {
   const navLinks = document.querySelectorAll('.nav-link');
 
   if (toggle && navMenu) {
+    // Inject mobile backdrop overlay if not present
+    let backdrop = document.querySelector('.nav-backdrop');
+    if (!backdrop) {
+      backdrop = document.createElement('div');
+      backdrop.className = 'nav-backdrop';
+      document.body.appendChild(backdrop);
+    }
+
     function closeMenu() {
       navMenu.classList.remove('active');
+      document.body.classList.remove('menu-open');
       const icon = toggle.querySelector('i');
       if (icon) {
         icon.classList.remove('bi-x');
@@ -169,24 +178,45 @@ function initMobileMenu() {
       }
     }
 
-    toggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isOpen = navMenu.classList.toggle('active');
+    function openMenu() {
+      navMenu.classList.add('active');
+      document.body.classList.add('menu-open');
       const icon = toggle.querySelector('i');
       if (icon) {
-        if (isOpen) {
-          icon.classList.remove('bi-list');
-          icon.classList.add('bi-x');
-        } else {
-          icon.classList.remove('bi-x');
-          icon.classList.add('bi-list');
-        }
+        icon.classList.remove('bi-list');
+        icon.classList.add('bi-x');
+      }
+    }
+
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (navMenu.classList.contains('active')) {
+        closeMenu();
+      } else {
+        openMenu();
       }
     });
 
+    backdrop.addEventListener('click', () => {
+      closeMenu();
+    });
+
     navLinks.forEach(link => {
-      link.addEventListener('click', () => {
+      link.addEventListener('click', (e) => {
         closeMenu();
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          const target = document.querySelector(href);
+          if (target) {
+            e.preventDefault();
+            const headerHeight = document.querySelector('.header')?.offsetHeight || 70;
+            const topPos = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+            window.scrollTo({
+              top: topPos,
+              behavior: 'smooth'
+            });
+          }
+        }
       });
     });
 
@@ -535,10 +565,10 @@ function initInteractiveConfigurator() {
   const summaryBtn = document.getElementById('configBuildBtn');
 
   const selectedState = {
-    eventType: 'Cumpleaños / Fiesta Infantil',
-    palette: 'Rosa Metálico, Turquesa & Blanco (Oficial)',
-    style: 'Renta de Caballetes',
-    budget: '$1,500 - $3,000 MXN'
+    eventType: 'Boda o Gala Exclusiva',
+    palette: 'Champagne, Marfil, Sage & Oro Cromado (Sampetrino Luxury)',
+    style: 'Instalación Monumental Residencial (SPGG)',
+    budget: '$9,500 - $22,000 MXN (Montaje Completo & Backdrop)'
   };
 
   configOpts.forEach(opt => {
@@ -559,14 +589,14 @@ function initInteractiveConfigurator() {
     summaryBtn.addEventListener('click', () => {
       // Direct WhatsApp redirect with configurator details
       const waText = 
-`🎈 *COTIZACIÓN DESDE CONFIGURADOR — NANCY GARCÍA DECORACIÓN* 🎈
+`👑 *COTIZACIÓN DE ALTA ESCENOGRAFÍA — NANCY GARCÍA ATELIER* 👑
 -----------------------------------------
 🎯 *Tipo de Evento:* ${selectedState.eventType}
-🎨 *Paleta de Colores:* ${selectedState.palette}
-✨ *Servicio Solicitado:* ${selectedState.style}
-💰 *Presupuesto Estimado:* ${selectedState.budget}
+🎨 *Paleta Seleccionada:* ${selectedState.palette}
+✨ *Montaje Requerido:* ${selectedState.style}
+💰 *Rango de Inversión:* ${selectedState.budget}
 
-Hola Nancy! Quisiera consultar disponibilidad y cotizar esta combinación.`;
+Hola Nancy! Me interesa agendar y cotizar este montaje de globos de autor para nuestro evento en San Pedro Garza García.`;
 
       const encodedMsg = encodeURIComponent(waText);
       const waNumber = '528129003343';

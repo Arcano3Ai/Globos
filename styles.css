@@ -1779,6 +1779,35 @@ h1, h2, h3, h4, h5, h6 {
 /* ==========================================================================
    RESPONSIVE MEDIA QUERIES (SISTEMA COMPLETO Y ROBUSTO)
    ========================================================================== */
+
+/* Backdrop overlay para menú móvil */
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 3, 9, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.menu-open .nav-backdrop {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+body.menu-open .floating-wa-btn {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(0.6) !important;
+}
+
 @media (max-width: 1200px) {
   .nav-menu { gap: 16px; }
   .nav-link { font-size: 0.8rem; }
@@ -1802,25 +1831,26 @@ h1, h2, h3, h4, h5, h6 {
   .header { padding: 10px 0; }
   .brand-logo-img { height: 42px; }
 
-  /* Mobile Navigation Menu Slide-in */
+  /* Mobile Navigation Menu Slide-in Drawer */
   .nav-menu {
     position: fixed;
     top: 0;
     right: -100%;
     width: min(85vw, 320px);
     height: 100vh;
+    height: 100dvh;
     background: rgba(10, 8, 20, 0.98);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border-left: 1px solid rgba(212, 175, 55, 0.25);
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 22px;
-    padding: 40px 24px;
+    padding: 50px 24px;
     transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 1050;
-    box-shadow: -15px 0 50px rgba(0, 0, 0, 0.85);
+    z-index: 2100;
+    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.95);
   }
 
   .nav-menu.active {
@@ -1828,29 +1858,38 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .nav-link {
-    font-size: 1.1rem;
-    padding: 8px 16px;
+    font-size: 1.15rem;
+    padding: 10px 20px;
+    width: 100%;
+    text-align: center;
+    border-radius: 8px;
+    transition: var(--transition);
+  }
+
+  .nav-link:hover, .nav-link:active {
+    background: rgba(212, 175, 55, 0.12);
+    color: var(--gold-champagne);
   }
 
   .mobile-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: var(--radius-full);
     background: rgba(255, 255, 255, 0.08);
-    border: var(--border-glass);
+    border: 1px solid rgba(212, 175, 55, 0.3);
     color: var(--text-white);
     font-size: 1.4rem;
     cursor: pointer;
     transition: var(--transition);
-    z-index: 1060;
+    z-index: 2200;
   }
 
   .mobile-toggle:hover {
-    background: var(--magenta-neon);
-    color: #fff;
+    background: var(--gold-metallic);
+    color: #000;
   }
 
   /* Compact Header WhatsApp button */
@@ -1882,20 +1921,22 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .hero-photo-strip {
-    height: 75px;
-    opacity: 0.45;
+    height: 80px;
+    opacity: 0.5;
   }
 
   .hero-ctas {
     flex-direction: column;
     width: 100%;
+    gap: 12px;
   }
 
   .hero-ctas .btn {
     width: 100%;
-    max-width: 320px;
-    padding: 14px 24px;
-    font-size: 0.88rem;
+    max-width: 340px;
+    padding: 15px 24px;
+    font-size: 0.92rem;
+    min-height: 48px;
   }
 
   .ba-slider-container { height: 360px; }
@@ -1909,26 +1950,69 @@ h1, h2, h3, h4, h5, h6 {
   .insta-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
 
   .floating-wa-btn {
-    bottom: 20px;
-    right: 20px;
-    width: 54px;
-    height: 54px;
-    font-size: 1.8rem;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    right: 18px;
+    width: 58px;
+    height: 58px;
+    font-size: 1.9rem;
+    z-index: 1500;
   }
 }
 
 @media (max-width: 520px) {
   .brand-logo-img { height: 38px; }
-  .section-title { font-size: 1.95rem; }
-  .hero-title { font-size: 2.1rem; }
-  .hero-subtitle { font-size: 0.95rem; margin-bottom: 26px; }
-  .exp-grid { grid-template-columns: 1fr; }
-  .exp-card { height: 400px; }
-  .services-grid { grid-template-columns: 1fr; }
+  .section-title { font-size: 1.95rem; line-height: 1.2; }
+  .hero-title { font-size: 2.15rem; line-height: 1.15; }
+  .hero-subtitle { font-size: 0.95rem; margin-bottom: 24px; line-height: 1.5; padding: 0 4px; }
+  
+  .hero-trust-badges {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 16px;
+  }
+
+  .trust-pill {
+    font-size: 0.78rem;
+    padding: 8px 16px;
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .portfolio-filters {
+    gap: 8px;
+    padding: 0 4px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .filter-btn {
+    font-size: 0.72rem;
+    padding: 9px 12px;
+    flex: 1 1 calc(50% - 10px);
+    text-align: center;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .exp-grid { grid-template-columns: 1fr; gap: 20px; }
+  .exp-card { height: 390px; border-radius: 18px; }
+  .exp-card-overlay { padding: 24px 18px; }
+
+  .services-grid { grid-template-columns: 1fr; gap: 16px; }
+  .service-card { padding: 24px 18px; border-radius: 16px; }
+  
   .process-grid { grid-template-columns: 1fr; }
-  .portfolio-grid { grid-template-columns: 1fr; }
+  .portfolio-grid { grid-template-columns: 1fr; gap: 16px; }
   .insta-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .ba-slider-container { height: 300px; }
+  .ba-slider-container { height: 310px; }
   
   .ba-badge {
     font-size: 0.65rem;
@@ -1938,18 +2022,34 @@ h1, h2, h3, h4, h5, h6 {
   .ba-badge-before { left: 12px; }
   .ba-badge-after { right: 12px; }
 
-  .config-box { padding: 24px 16px; }
+  .config-box { padding: 24px 16px; border-radius: 18px; }
+  .config-step-group { margin-bottom: 24px; }
+  .config-label { font-size: 0.8rem; }
+  .config-options { gap: 8px; }
+  
   .config-opt {
     font-size: 0.82rem;
-    padding: 10px 16px;
+    padding: 12px 14px;
     width: 100%;
+    min-height: 46px;
     justify-content: center;
     text-align: center;
+    border-radius: 10px;
   }
+
   .config-summary {
     flex-direction: column;
     text-align: center;
     gap: 16px;
+    padding: 20px 16px;
   }
-  .config-summary .btn { width: 100%; }
+
+  .config-summary .btn { width: 100%; min-height: 48px; }
+
+  .form-box { padding: 24px 16px; border-radius: 18px; }
+  .form-input, .form-select, .form-textarea { font-size: 0.95rem; }
+  .form-select { min-height: 48px; }
+
+  .footer { padding: 60px 0 30px 0; }
+  .footer-bottom { flex-direction: column; text-align: center; gap: 14px; }
 }
