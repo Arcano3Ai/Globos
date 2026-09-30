@@ -1715,34 +1715,106 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-white);
 }
 
+/* FLOATING WHATSAPP BALLOON BUTTON (GLOBO DE HELIO WHATSAPP) */
+.floating-wa-balloon,
 .floating-wa-btn {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  bottom: 26px;
+  right: 26px;
   z-index: 1500;
-  width: 65px;
-  height: 65px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 16px rgba(37, 211, 102, 0.45));
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.35s ease;
+  animation: floatingBalloon 3.5s ease-in-out infinite;
+}
+
+@keyframes floatingBalloon {
+  0% { transform: translateY(0px) rotate(0deg); }
+  35% { transform: translateY(-9px) rotate(3deg); }
+  70% { transform: translateY(-3px) rotate(-2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.floating-wa-balloon:hover,
+.floating-wa-btn:hover {
+  transform: scale(1.12) translateY(-6px) rotate(1deg);
+  filter: drop-shadow(0 18px 32px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 25px rgba(212, 175, 55, 0.75));
+}
+
+.wa-balloon-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.wa-balloon-sphere {
+  width: 68px;
+  height: 76px;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  background: radial-gradient(circle at 35% 30%, #5CFA97 0%, #25D366 40%, #128C7E 85%, #075E54 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.2rem;
-  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
-  text-decoration: none;
-  transition: var(--transition);
-  animation: pulseWa 2s infinite ease-in-out;
+  position: relative;
+  box-shadow: inset -4px -6px 12px rgba(0, 0, 0, 0.4), inset 3px 4px 8px rgba(255, 255, 255, 0.55), 0 0 0 2px rgba(212, 175, 55, 0.6);
+  color: white;
+  font-size: 2.1rem;
 }
 
-@keyframes pulseWa {
-  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-  70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+/* 3D Glossy Light Reflection on Balloon */
+.wa-balloon-sphere::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  width: 14px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 75%);
+  transform: rotate(-28deg);
+  pointer-events: none;
 }
 
-.floating-wa-btn:hover {
-  transform: scale(1.12);
+/* Subtle pulse ring around balloon */
+.wa-balloon-sphere::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  border: 2px solid rgba(37, 211, 102, 0.6);
+  opacity: 0;
+  animation: balloonPulse 2.4s infinite ease-out;
+  pointer-events: none;
+}
+
+@keyframes balloonPulse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  60% { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+/* Balloon knot at bottom */
+.wa-balloon-knot {
+  width: 13px;
+  height: 9px;
+  background: #0E6B56;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  margin-top: -2px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Golden string hanging from balloon */
+.wa-balloon-string {
+  width: 2px;
+  height: 16px;
+  background: linear-gradient(180deg, #D4AF37 0%, rgba(212, 175, 55, 0.25) 100%);
+  margin-top: -1px;
+  border-radius: 1px;
 }
 
 /* ==========================================================================
@@ -1819,7 +1891,8 @@ body.menu-open {
   overflow: hidden;
 }
 
-body.menu-open .floating-wa-btn {
+body.menu-open .floating-wa-btn,
+body.menu-open .floating-wa-balloon {
   opacity: 0 !important;
   pointer-events: none !important;
   transform: scale(0.6) !important;
@@ -1966,13 +2039,17 @@ body.menu-open .floating-wa-btn {
   .video-modal-close { padding: 8px 18px; font-size: 0.8rem; }
   .insta-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
 
+  .floating-wa-balloon,
   .floating-wa-btn {
-    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-    right: 18px;
-    width: 58px;
-    height: 58px;
-    font-size: 1.9rem;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    right: 16px;
     z-index: 1500;
+  }
+
+  .wa-balloon-sphere {
+    width: 60px;
+    height: 68px;
+    font-size: 1.85rem;
   }
 }
 
