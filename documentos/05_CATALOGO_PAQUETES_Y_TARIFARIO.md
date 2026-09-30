@@ -8,7 +8,7 @@
 * **Mercado Objetivo:** Eventos infantiles, bautizos, primeras comuniones, cumpleaños temáticos, baby showers, revelaciones de género y eventos corporativos en Monterrey y su Área Metropolitana (San Pedro, Cumbres, San Nicolás, Guadalupe, Apodaca, Santa Catarina).
 * **Modalidad de Apartado:** 50% de anticipo para garantizar fecha y adquisición de materiales temáticos.
 * **Liquidación:** 50% restante al terminar el montaje en salón o domicilio.
-* **Atención y Cotización Inmediata:** WhatsApp Oficial **81-2900-3343**.
+* **Atención y Cotización Inmediata:** WhatsApp Oficial **81-1062-6302**.
 
 ---
 

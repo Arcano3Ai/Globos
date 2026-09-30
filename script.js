@@ -5,7 +5,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize all interactive modules
-  initBalloonCursor();
   initThemeSwitcher();
   initHeaderScroll();
   initMobileMenu();
@@ -41,100 +40,6 @@ function initThemeSwitcher() {
       }
     });
   });
-}
-
-/* --------------------------------------------------------------------------
-   0. Custom Balloon Cursor with Particle Sparkle Trail
-   -------------------------------------------------------------------------- */
-function initBalloonCursor() {
-  const cursor = document.getElementById('balloonCursor');
-  if (!cursor) return;
-
-  // Only enable on desktop pointers
-  if (window.matchMedia('(pointer: coarse)').matches) {
-    cursor.style.display = 'none';
-    return;
-  }
-
-  let mouseX = 0, mouseY = 0;
-  let cursorX = 0, cursorY = 0;
-  let isVisible = false;
-  let lastParticleTime = 0;
-
-  window.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-
-    if (!isVisible) {
-      isVisible = true;
-      cursor.classList.add('visible');
-    }
-
-    // Spawn subtle glitter trail particle every 60ms during mouse movement
-    const now = Date.now();
-    if (now - lastParticleTime > 60) {
-      createCursorParticle(mouseX, mouseY);
-      lastParticleTime = now;
-    }
-  });
-
-  // Smooth lerp movement loop for 60fps fluidity
-  function renderCursor() {
-    cursorX += (mouseX - cursorX) * 0.25;
-    cursorY += (mouseY - cursorY) * 0.25;
-
-    cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
-    requestAnimationFrame(renderCursor);
-  }
-  renderCursor();
-
-  // Hover detection on interactive elements
-  const hoverables = 'a, button, input, select, textarea, .exp-card, .portfolio-item, .service-card, .config-opt, .ba-handle, .floating-wa-btn';
-
-  document.addEventListener('mouseover', (e) => {
-    if (e.target.closest(hoverables)) {
-      cursor.classList.add('hovering');
-    }
-  });
-
-  document.addEventListener('mouseout', (e) => {
-    if (e.target.closest(hoverables)) {
-      cursor.classList.remove('hovering');
-    }
-  });
-
-  document.addEventListener('mousedown', () => {
-    cursor.classList.add('clicking');
-  });
-
-  document.addEventListener('mouseup', () => {
-    cursor.classList.remove('clicking');
-  });
-
-  // Particle particle generator
-  function createCursorParticle(x, y) {
-    const particle = document.createElement('div');
-    particle.className = 'cursor-trail-particle';
-    
-    const size = Math.random() * 8 + 4;
-    particle.style.width = `${size}px`;
-    particle.style.height = `${size}px`;
-
-    // Colors: Rosa #C85BA3, Turquesa Neón, Violeta Claro, Blanco
-    const colors = ['#C85BA3', '#00F5D4', '#D8B4F8', '#9B5DE5', '#FFFFFF'];
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    
-    particle.style.background = color;
-    particle.style.boxShadow = `0 0 10px ${color}`;
-    particle.style.left = `${x + (Math.random() * 16 - 8)}px`;
-    particle.style.top = `${y + (Math.random() * 16 - 8)}px`;
-
-    document.body.appendChild(particle);
-
-    setTimeout(() => {
-      particle.remove();
-    }, 800);
-  }
 }
 
 /* --------------------------------------------------------------------------
@@ -565,10 +470,10 @@ function initInteractiveConfigurator() {
   const summaryBtn = document.getElementById('configBuildBtn');
 
   const selectedState = {
-    eventType: 'Boda o Gala Exclusiva',
+    eventType: 'Cumpleaños / Infantil',
     palette: 'Champagne, Marfil, Sage & Oro Cromado (Sampetrino Luxury)',
-    style: 'Instalación Monumental Residencial (SPGG)',
-    budget: '$9,500 - $22,000 MXN (Montaje Completo & Backdrop)'
+    style: '🎈 División 01: Decoración · Globos · Detalles',
+    budget: '$12,500 - $28,000 MXN (Montaje Completo & Ambientación)'
   };
 
   configOpts.forEach(opt => {
@@ -589,17 +494,17 @@ function initInteractiveConfigurator() {
     summaryBtn.addEventListener('click', () => {
       // Direct WhatsApp redirect with configurator details
       const waText = 
-`👑 *COTIZACIÓN DE ALTA ESCENOGRAFÍA — NANCY GARCÍA ATELIER* 👑
+`👑 *COTIZACIÓN INTEGRAL — NANCY GARCÍA EVENTOS* 👑
 -----------------------------------------
 🎯 *Tipo de Evento:* ${selectedState.eventType}
 🎨 *Paleta Seleccionada:* ${selectedState.palette}
-✨ *Montaje Requerido:* ${selectedState.style}
+✨ *División / Servicio:* ${selectedState.style}
 💰 *Rango de Inversión:* ${selectedState.budget}
 
-Hola Nancy! Me interesa agendar y cotizar este montaje de globos de autor para nuestro evento en San Pedro Garza García.`;
+Hola Nancy! Me interesa cotizar y agendar estos servicios con Nancy García Eventos para nuestro festejo en San Pedro Garza García / Monterrey.`;
 
       const encodedMsg = encodeURIComponent(waText);
-      const waNumber = '528129003343';
+      const waNumber = '528110626302';
       const waUrl = `https://wa.me/${waNumber}?text=${encodedMsg}`;
       window.open(waUrl, '_blank');
     });
@@ -629,13 +534,13 @@ function initQuoteFormWhatsApp() {
       return;
     }
 
-    // Structured message template for Nancy García Decoración
+    // Structured message template for Nancy García Eventos
     const waText = 
-`💖 *SOLICITUD DE COTIZACIÓN — NANCY GARCÍA DECORACIÓN* 💖
+`💖 *SOLICITUD DE COTIZACIÓN — NANCY GARCÍA EVENTOS* 💖
 -----------------------------------------
 👤 *Nombre:* ${name}
 📱 *WhatsApp del Cliente:* ${phone}
-🎨 *Servicio:* ${eventType}
+🎨 *División o Servicio:* ${eventType}
 📅 *Fecha del Evento:* ${date || 'Por definir'}
 📍 *Ubicación / Municipio:* ${location || 'No especificada'}
 
@@ -643,10 +548,10 @@ function initQuoteFormWhatsApp() {
 ${message || 'Sin mensaje adicional.'}
 
 -----------------------------------------
-Enviado desde nancygarciadecoracion.com`;
+Enviado desde Nancy García Eventos Oficial`;
 
     const encodedMsg = encodeURIComponent(waText);
-    const waNumber = '528129003343';
+    const waNumber = '528110626302';
     const waUrl = `https://wa.me/${waNumber}?text=${encodedMsg}`;
 
     // Open WhatsApp in new tab
@@ -672,7 +577,7 @@ function initScrollAnimations() {
     });
   }, observerOptions);
 
-  document.querySelectorAll('.glass-card, .exp-card, .service-card, .process-step, .testi-card, .config-box, .form-box, .video-container').forEach(el => {
+  document.querySelectorAll('.glass-card, .exp-card, .division-card, .all-divisions-banner, .service-card, .process-step, .testi-card, .config-box, .form-box, .video-container').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
     el.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';

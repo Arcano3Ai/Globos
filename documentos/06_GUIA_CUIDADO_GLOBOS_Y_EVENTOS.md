@@ -47,4 +47,4 @@ Para que los pequeños artistas disfruten al máximo sin preocupaciones:
 
 * **Puntualidad en Desmontaje:** Nuestro equipo llegará a la hora pactada en el contrato para recoger los caballetes, banquitos y estructuras sin interrumpir tu convivencia.
 * **Los Globos son Tuyos:** Toda la estructura de globos, figuras y detalles consumibles pertenecen al anfitrión del evento. Si deseas desmontar los racimos para regalar a los niños o llevarlos a casa, nuestro equipo con gusto te apoyará.
-* **Atención Urgente durante el Evento:** Si requieres asistencia el día de tu evento, comunícate directamente a nuestra línea prioritaria: **81-2900-3343**.
+* **Atención Urgente durante el Evento:** Si requieres asistencia el día de tu evento, comunícate directamente a nuestra línea prioritaria: **81-1062-6302**.

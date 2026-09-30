@@ -25,7 +25,7 @@ Esta carpeta contiene todos los formatos, manuales y herramientas imprimibles pa
 
 ```mermaid
 graph TD
-    A[Contacto por WhatsApp: 81-2900-3343] --> B[Consultar Catálogo de Paquetes 05]
+    A[Contacto por WhatsApp: 81-1062-6302] --> B[Consultar Catálogo de Paquetes 05]
     B --> C[Emitir Cotización Formal 02_COTIZACION_PRESUPUESTO.html]
     C --> D{¿Cliente Acepta?}
     D -- Sí --> E[Pago de Anticipo 50% para congelar fecha]

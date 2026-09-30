@@ -1,21 +1,25 @@
 # Manual de Identidad Visual, Guía de Estilo y Sistema de Membrete Oficial
-## Nancy García Decoración · Globos · Detalles
+## Nancy García Eventos · Soluciones Integrales para Eventos
 
 ---
 
 ### 1. Información General y Esencia de Marca
 
-* **Nombre Comercial Oficial:** Nancy García Decoración · Globos · Detalles
-* **Unidades de Servicio Integradas:**
-  * **Decoraciones García** (Especialidad en montajes de globos, arcos orgánicos, bouquets, backdrops y decoración integral de fiestas).
-  * **Nancy García Caballetes** (Renta de caballetes infantiles, mesas de arte, venta de yesitos personalizados para pintar y dinámicas recreativas).
-* **Fundadora & Dirección Creativa:** Nancy García
-* **Lema / Slogan Principal:** *"Decoración personalizada con globos y detalles únicos."*
+* **Nombre Comercial Oficial:** Nancy García Eventos
+* **Estructura Corporativa Multidivisión (Las 4 Divisiones de Excelencia):**
+  1. **División 01: Decoración · Globos · Detalles** (Isotipo: Perrito de globos metálicos fucsia). Especialidad en arte monumental en globos, arcos orgánicos, cascadas suspendidas, backdrops y detalles escenográficos.
+  2. **División 02: Banquetes · Catering · Eventos** (Isotipo: Cubiertos con moño de globo fucsia). Especialidad en banquetes formales en tiempos, catering gourmet, mesas de charcutería y barras de mixología de autor.
+  3. **División 03: Mobiliario · Diseño · Decoración** (Isotipo: Silla Chiavari en globo con cojín satinado). Renta de sillas de gala (Tiffany, Chiavari, Velvet), mesas imperiales, salas lounge VIP y pistas iluminadas.
+  4. **División 04: Animación · Shows · Recreación** (Isotipo: Micrófono retro con notas musicales y lazo). Shows temáticos, animación profesional, DJs, audio de concierto, iluminación robótica y pirotecnia fría.
+* **Modalidad de Contratación:**
+  * **Por División Individual:** Los clientes pueden contratar una o más divisiones de manera independiente.
+  * **Producción Integral Llave en Mano:** Paquete completo donde Nancy García Eventos coordina las 4 áreas bajo una sola dirección ejecutiva.
+* **Fundadora & Dirección General:** Nancy García
+* **Lema Principal:** *"Soluciones Integrales para Eventos & Experiencias de Alta Gama."*
 * **Mantra de Experiencia:** *"Creamos momentos que se quedan contigo."*
-* **Canal Principal de Atención y Ventas:** WhatsApp Oficial: **+52 81-2900-3343** (Monterrey y Área Metropolitana, N.L.)
+* **Canal Principal de Atención y Ventas:** WhatsApp Oficial Concierge: **+52 81-1062-6302** (San Pedro Garza García, Monterrey y Área Metropolitana, N.L.)
 * **Presencia Digital:**
-  * Facebook Decoraciones: `https://facebook.com/DecoracionesGarcia`
-  * Facebook Caballetes: `https://facebook.com/NancyGarciaCaballetes`
+  * Facebook Oficial: `https://facebook.com/DecoracionesGarcia`
   * Plataforma Web: `https://arcano3ai.github.io/Globos/`
 
 ---
@@ -136,7 +140,7 @@ El membrete de **Nancy García Decoración · Globos · Detalles** está diseña
   * Saldo al Montaje (50% restante antes de iniciar el montaje)
 
 #### 6.3 Anatomía del Pie de Página (Footer)
-* **Contacto Inmediato:** 📞 WhatsApp: **81-2900-3343**
+* **Contacto Inmediato:** 📞 WhatsApp: **81-1062-6302**
 * **Redes Sociales:** 
   * Facebook: **Decoraciones García**
   * Facebook: **Nancy García Caballetes**

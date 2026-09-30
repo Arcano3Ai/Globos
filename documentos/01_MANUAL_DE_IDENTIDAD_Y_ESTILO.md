@@ -12,7 +12,7 @@
 * **Fundadora & Dirección Creativa:** Nancy García
 * **Lema / Slogan Principal:** *"Decoración personalizada con globos y detalles únicos."*
 * **Mantra de Experiencia:** *"Creamos momentos que se quedan contigo."*
-* **Canal Principal de Atención y Ventas:** WhatsApp Oficial: **+52 81-2900-3343** (Monterrey y Área Metropolitana, N.L.)
+* **Canal Principal de Atención y Ventas:** WhatsApp Oficial: **+52 81-1062-6302** (Monterrey y Área Metropolitana, N.L.)
 * **Presencia Digital:**
   * Facebook Decoraciones: `https://facebook.com/DecoracionesGarcia`
   * Facebook Caballetes: `https://facebook.com/NancyGarciaCaballetes`
@@ -84,4 +84,4 @@ Todo documento oficial emitido por Nancy García Decoración debe incluir:
 * Folio alfanumérico identificador (`COT-AAAA-###` para cotizaciones, `CTR-AAAA-###` para contratos, `ENT-AAAA-###` para notas de entrega).
 * Fecha de emisión y ubicación de servicio (Municipio dentro de N.L.).
 * Barra de anclaje con degradado tricolor (`#C85BA3` -> `#9B5DE5` -> `#00F5D4`).
-* Datos de contacto en pie de página con enlace a WhatsApp `81-2900-3343` y redes sociales oficiales.
+* Datos de contacto en pie de página con enlace a WhatsApp `81-1062-6302` y redes sociales oficiales.
