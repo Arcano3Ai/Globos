@@ -442,9 +442,11 @@ function initLightboxModal() {
 
   document.querySelectorAll('.portfolio-item').forEach(item => {
     item.addEventListener('click', () => {
-      const img = item.querySelector('.portfolio-img').src;
-      const title = item.querySelector('.portfolio-name').textContent;
-      const cat = item.querySelector('.portfolio-cat').textContent;
+      const imgEl = item.querySelector('.portfolio-img');
+      if (!imgEl) return;
+      const img = imgEl.src;
+      const title = item.getAttribute('data-title') || imgEl.alt || 'Montaje Nancy García';
+      const cat = item.getAttribute('data-category-name') || 'GALERÍA DE FOTOS';
 
       modalImg.src = img;
       modalTitle.textContent = title;
