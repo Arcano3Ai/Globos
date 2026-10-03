@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initInteractiveConfigurator();
   initQuoteFormWhatsApp();
   initScrollAnimations();
+  initCollapsibleSections();
+  initFaqAccordion();
 });
 
 /* --------------------------------------------------------------------------
@@ -593,4 +595,78 @@ function initScrollAnimations() {
     }
   `;
   document.head.appendChild(style);
+}
+
+/* --------------------------------------------------------------------------
+   11. Collapsible & Expandable Text System (Audio Requerimiento)
+   -------------------------------------------------------------------------- */
+function initCollapsibleSections() {
+  const toggleBtns = document.querySelectorAll('.btn-toggle-expand');
+
+  toggleBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = btn.getAttribute('data-target');
+      if (!targetId) return;
+
+      const targetContent = document.getElementById(targetId);
+      if (!targetContent) return;
+
+      const isExpanded = targetContent.classList.contains('expanded');
+      const labelSpan = btn.querySelector('.toggle-text');
+
+      if (isExpanded) {
+        targetContent.classList.remove('expanded');
+        btn.classList.remove('active');
+        btn.setAttribute('aria-expanded', 'false');
+        if (labelSpan) {
+          const defaultText = btn.getAttribute('data-default-text');
+          labelSpan.textContent = defaultText || 'Ver detalles';
+        }
+      } else {
+        if (!btn.getAttribute('data-default-text') && labelSpan) {
+          btn.setAttribute('data-default-text', labelSpan.textContent);
+        }
+        targetContent.classList.add('expanded');
+        btn.classList.add('active');
+        btn.setAttribute('aria-expanded', 'true');
+        if (labelSpan) {
+          labelSpan.textContent = 'Ocultar detalles';
+        }
+      }
+    });
+  });
+}
+
+/* --------------------------------------------------------------------------
+   12. Interactive FAQ Accordion
+   -------------------------------------------------------------------------- */
+function initFaqAccordion() {
+  const faqItems = document.querySelectorAll('.faq-item');
+
+  faqItems.forEach(item => {
+    const questionBtn = item.querySelector('.faq-question');
+    if (!questionBtn) return;
+
+    questionBtn.addEventListener('click', () => {
+      const isActive = item.classList.contains('active');
+
+      // Close other open FAQ items to keep page clean
+      faqItems.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('active');
+          const btn = otherItem.querySelector('.faq-question');
+          if (btn) btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      if (!isActive) {
+        item.classList.add('active');
+        questionBtn.setAttribute('aria-expanded', 'true');
+      } else {
+        item.classList.remove('active');
+        questionBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
 }
