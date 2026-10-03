@@ -1386,7 +1386,6 @@ h1, h2, h3, h4, h5, h6 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  grid-auto-flow: dense;
 }
 
 .portfolio-item {
@@ -1394,15 +1393,17 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--bg-card);
-  border: var(--border-glass);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   aspect-ratio: 4/5;
   cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
   transition: var(--transition);
 }
 
-.portfolio-item.tall {
-  grid-row: span 2;
-  aspect-ratio: auto;
+.portfolio-item:hover {
+  transform: translateY(-6px);
+  border-color: rgba(230, 0, 103, 0.35);
+  box-shadow: 0 14px 32px rgba(230, 0, 103, 0.12);
 }
 
 .portfolio-img {
