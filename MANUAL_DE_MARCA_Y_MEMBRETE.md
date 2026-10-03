@@ -19,7 +19,7 @@
 * **Mantra de Experiencia:** *"Creamos momentos que se quedan contigo."*
 * **Canal Principal de Atención y Ventas:** WhatsApp Oficial Concierge: **+52 81-1062-6302** (San Pedro Garza García, Monterrey y Área Metropolitana, N.L.)
 * **Presencia Digital:**
-  * Facebook Oficial: `https://facebook.com/DecoracionesGarcia`
+  * Facebook Oficial: `https://www.facebook.com/decoraciones.garcia/`
   * Plataforma Web: `https://arcano3ai.github.io/Globos/`
 
 ---

@@ -144,7 +144,7 @@ function initMobileMenu() {
 }
 
 /* --------------------------------------------------------------------------
-   3. Ambient Music Player Toggle
+   3. Ambient Music Player Toggle (Frente a Frente)
    -------------------------------------------------------------------------- */
 function initAudioPlayer() {
   const audioBtn = document.getElementById('audioToggleBtn');
@@ -153,13 +153,20 @@ function initAudioPlayer() {
   if (!audioBtn || !audio) return;
 
   let isPlaying = false;
+  try {
+    audio.volume = 0.55;
+  } catch (e) {
+    // Ignore if not supported yet
+  }
 
   audioBtn.addEventListener('click', () => {
     if (!isPlaying) {
       audio.play().then(() => {
         isPlaying = true;
         audioBtn.classList.add('playing');
-        audioBtn.querySelector('.audio-label').textContent = 'DESACTIVAR MÚSICA';
+        const label = audioBtn.querySelector('.audio-label');
+        if (label) label.textContent = 'PAUSAR MÚSICA';
+        audioBtn.setAttribute('title', 'Pausar música ambiental (Frente a Frente)');
       }).catch(err => {
         console.log('Audio playback prevented by browser policy:', err);
       });
@@ -167,7 +174,9 @@ function initAudioPlayer() {
       audio.pause();
       isPlaying = false;
       audioBtn.classList.remove('playing');
-      audioBtn.querySelector('.audio-label').textContent = 'MÚSICA AMBIENTE';
+      const label = audioBtn.querySelector('.audio-label');
+      if (label) label.textContent = 'MÚSICA';
+      audioBtn.setAttribute('title', 'Reproducir música ambiental (Frente a Frente)');
     }
   });
 }

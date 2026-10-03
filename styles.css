@@ -576,24 +576,29 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 20px;
+  padding: 8px 18px;
   border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.05);
-  border: var(--border-gold);
-  color: var(--gold-light);
+  background: #FFF0F5;
+  border: 1px solid rgba(230, 0, 103, 0.28);
+  color: var(--magenta-neon);
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   letter-spacing: 0.1em;
   cursor: pointer;
   transition: var(--transition);
-  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(230, 0, 103, 0.08);
 }
 
 .btn-audio-toggle:hover, .btn-audio-toggle.playing {
-  background: var(--gold-gradient);
-  color: var(--text-dark);
-  box-shadow: var(--shadow-gold);
+  background: var(--pink-gradient);
+  color: #FFFFFF;
+  border-color: transparent;
+  box-shadow: 0 6px 20px rgba(230, 0, 103, 0.35);
+}
+
+.nav-menu-wa-item {
+  display: none;
 }
 
 .eq-bars {
@@ -611,8 +616,9 @@ h1, h2, h3, h4, h5, h6 {
   transition: var(--transition);
 }
 
+.btn-audio-toggle:hover .eq-bars .bar,
 .btn-audio-toggle.playing .eq-bars .bar {
-  background: var(--text-dark);
+  background: #FFFFFF;
 }
 
 .btn-audio-toggle.playing .bar1 { animation: eqAnim 0.6s infinite alternate ease-in-out; }
@@ -1019,20 +1025,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .trust-pill:hover {
   border-color: var(--pink-neon);
-  background: rgba(35, 26, 56, 0.95);
+  background: rgba(230, 0, 103, 0.15);
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(255, 0, 127, 0.35);
-}
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-  letter-spacing: 0.03em;
-  transition: var(--transition);
-}
-
-.trust-pill:hover {
-  border-color: var(--gold-metallic);
-  background: rgba(26, 20, 42, 0.95);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 10px 25px rgba(230, 0, 103, 0.35);
 }
 
 .spgg-section .section-title {
@@ -2220,10 +2215,123 @@ body.menu-open .floating-wa-balloon {
 }
 
 @media (max-width: 820px) {
-  .header { padding: 10px 0; }
+  .header { padding: 9px 0; }
+  .header-container {
+    padding: 0 14px;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    justify-content: space-between;
+  }
+
+  .brand-logo {
+    gap: 10px;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .brand-badge-wrap {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+  }
+
   .brand-logo-img { height: 42px; }
 
-  /* Mobile Navigation Menu Slide-in Drawer */
+  .brand-title-wrap {
+    min-width: 0;
+  }
+
+  .brand-title-main {
+    font-size: 1.12rem;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  .brand-title-sub {
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  /* Ocultar botón WhatsApp del header en mobile para evitar desbordamiento y botón mocho */
+  .header-wa-btn {
+    display: none !important;
+  }
+
+  .header-wa-text {
+    display: none;
+  }
+
+  /* Botón de Música compacto y circular en móvil */
+  .btn-audio-toggle {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFF0F5;
+    border: 1px solid rgba(230, 0, 103, 0.28);
+    color: var(--magenta-neon);
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(230, 0, 103, 0.08);
+  }
+
+  .btn-audio-toggle .audio-label {
+    display: none;
+  }
+
+  .btn-audio-toggle:hover, .btn-audio-toggle.playing {
+    background: var(--pink-gradient);
+    color: #FFFFFF;
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(230, 0, 103, 0.35);
+  }
+
+  /* Botón de Menú Hamburguesa refinado y accesible */
+  .mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 10px;
+    background: #FFF0F5;
+    border: 1px solid rgba(230, 0, 103, 0.28);
+    color: var(--magenta-neon);
+    font-size: 1.45rem;
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 2200;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(230, 0, 103, 0.08);
+  }
+
+  .mobile-toggle:hover, .mobile-toggle:active {
+    background: var(--magenta-neon);
+    color: #FFFFFF;
+    border-color: var(--magenta-neon);
+  }
+
+  body.menu-open .mobile-toggle {
+    background: var(--magenta-neon);
+    color: #FFFFFF;
+    border-color: var(--magenta-neon);
+  }
+
+  /* Mobile Navigation Menu Slide-in Drawer (Fondo claro luminoso y elegante) */
   .nav-menu {
     position: fixed;
     top: 0;
@@ -2231,18 +2339,18 @@ body.menu-open .floating-wa-balloon {
     width: min(85vw, 320px);
     height: 100vh;
     height: 100dvh;
-    background: rgba(10, 8, 20, 0.98);
+    background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(28px);
     -webkit-backdrop-filter: blur(28px);
-    border-left: 1px solid rgba(212, 175, 55, 0.25);
+    border-left: 1px solid rgba(230, 0, 103, 0.18);
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 22px;
-    padding: 50px 24px;
+    gap: 16px;
+    padding: 50px 24px 40px 24px;
     transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 2100;
-    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.95);
+    box-shadow: -10px 0 45px rgba(0, 0, 0, 0.12);
   }
 
   .nav-menu.active {
@@ -2250,60 +2358,40 @@ body.menu-open .floating-wa-balloon {
   }
 
   .nav-link {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
+    color: #1D182A;
+    font-weight: 700;
     padding: 10px 20px;
     width: 100%;
     text-align: center;
-    border-radius: 8px;
+    border-radius: 10px;
     transition: var(--transition);
   }
 
   .nav-link:hover, .nav-link:active {
-    background: rgba(212, 175, 55, 0.12);
-    color: var(--gold-champagne);
+    background: #FFF0F5;
+    color: var(--magenta-neon);
   }
 
-  .mobile-toggle {
-    display: flex;
-    align-items: center;
+  .nav-menu-wa-item {
+    display: block !important;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .nav-wa-btn {
+    display: inline-flex;
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 0.92rem;
     justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-full);
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    color: var(--text-white);
-    font-size: 1.4rem;
-    cursor: pointer;
-    transition: var(--transition);
-    z-index: 2200;
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.35);
   }
 
-  .mobile-toggle:hover {
-    background: var(--gold-metallic);
-    color: #000;
-  }
-
-  /* Compact Header WhatsApp button */
-  .header-wa-text {
-    display: none;
-  }
-
-  .header-wa-btn {
-    padding: 9px 13px;
-    font-size: 1.1rem;
-    min-width: 40px;
-  }
-
-  /* Compact Audio Toggle button */
-  .btn-audio-toggle {
-    padding: 8px 12px;
-    font-size: 0.7rem;
-    gap: 6px;
-  }
-
-  .btn-audio-toggle .audio-label {
-    display: none;
+  .nav-backdrop {
+    background: rgba(18, 14, 28, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
   /* Hero adjustments */
@@ -2356,6 +2444,12 @@ body.menu-open .floating-wa-balloon {
 }
 
 @media (max-width: 520px) {
+  .brand-badge-wrap { width: 38px; height: 38px; min-width: 38px; }
+  .brand-title-main { font-size: 1.02rem; }
+  .brand-title-sub { font-size: 0.52rem; }
+  .btn-audio-toggle { width: 36px; height: 36px; min-width: 36px; }
+  .mobile-toggle { width: 36px; height: 36px; min-width: 36px; font-size: 1.35rem; }
+
   .brand-logo-img { height: 38px; }
   .section-title { font-size: 1.95rem; line-height: 1.2; }
   .hero-title { font-size: 2.15rem; line-height: 1.15; }
@@ -2449,6 +2543,17 @@ body.menu-open .floating-wa-balloon {
 
   .footer { padding: 60px 0 30px 0; }
   .footer-bottom { flex-direction: column; text-align: center; gap: 14px; }
+}
+
+@media (max-width: 380px) {
+  .header-container { padding: 0 10px; gap: 6px; }
+  .brand-logo { gap: 8px; }
+  .brand-badge-wrap { width: 34px; height: 34px; min-width: 34px; }
+  .brand-title-main { font-size: 0.94rem; letter-spacing: 0.02em; }
+  .brand-title-sub { font-size: 0.48rem; letter-spacing: 0.08em; }
+  .btn-audio-toggle { width: 34px; height: 34px; min-width: 34px; }
+  .mobile-toggle { width: 34px; height: 34px; min-width: 34px; font-size: 1.25rem; }
+  .header-actions { gap: 6px; }
 }
 
 /* ==========================================================================

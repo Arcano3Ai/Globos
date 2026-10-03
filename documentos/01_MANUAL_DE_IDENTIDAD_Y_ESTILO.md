@@ -14,7 +14,7 @@
 * **Mantra de Experiencia:** *"Creamos momentos que se quedan contigo."*
 * **Canal Principal de Atención y Ventas:** WhatsApp Oficial: **+52 81-1062-6302** (Monterrey y Área Metropolitana, N.L.)
 * **Presencia Digital:**
-  * Facebook Decoraciones: `https://facebook.com/DecoracionesGarcia`
+  * Facebook Decoraciones: `https://www.facebook.com/decoraciones.garcia/`
   * Facebook Caballetes: `https://facebook.com/NancyGarciaCaballetes`
   * Plataforma Web: `https://arcano3ai.github.io/Globos/`
 
