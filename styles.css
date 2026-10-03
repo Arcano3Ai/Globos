@@ -2788,6 +2788,10 @@ body.menu-open .floating-wa-balloon {
   line-height: 1.35 !important;
   letter-spacing: 0.01em !important;
   margin-bottom: 6px !important;
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: none !important;
   -webkit-text-fill-color: initial !important;
   filter: none !important;
@@ -2799,6 +2803,10 @@ body.menu-open .floating-wa-balloon {
   font-weight: 600;
   font-style: italic;
   margin-bottom: 14px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .div-globos .division-subtitle { color: #D81B60 !important; text-shadow: none !important; }
@@ -2811,8 +2819,11 @@ body.menu-open .floating-wa-balloon {
   font-size: 0.96rem;
   color: #5E566E !important;
   line-height: 1.6;
-  margin-bottom: 20px;
-  flex-grow: 1;
+  margin-bottom: 16px;
+  min-height: 92px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 /* Division Bullet Points */
@@ -2846,6 +2857,7 @@ body.menu-open .floating-wa-balloon {
 
 /* Division Button */
 .division-btn {
+  margin-top: auto !important;
   width: 100%;
   padding: 12px 20px;
   font-family: var(--font-display);
