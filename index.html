@@ -40,7 +40,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
   <!-- Custom Design System Stylesheet -->
-  <link rel="stylesheet" href="styles.css?v=16.0">
+  <link rel="stylesheet" href="styles.css?v=17.0">
 
   <!-- Schema.org JSON-LD for Business -->
   <script type="application/ld+json">
@@ -169,24 +169,30 @@
           Decoración con globos, banquetes, renta de mobiliario y espectáculos en vivo en San Pedro Garza García y toda el Área Metropolitana de Monterrey.
         </p>
 
-        <div class="hero-ctas">
-          <a href="https://wa.me/528110626302?text=Hola%20Nancy%20Garc%C3%ADa%20Eventos,%20me%20gustar%C3%ADa%20cotizar%20servicios%20integrales%20para%20mi%20evento." target="_blank" rel="noopener" class="btn btn-primary">
-            <i class="bi bi-whatsapp"></i> COTIZAR POR WHATSAPP: 81-1062-6302
-          </a>
-          <a href="#divisiones" class="btn btn-secondary">
-            <i class="bi bi-stars"></i> VER NUESTROS SERVICIOS
-          </a>
-          <button id="openHeroVideoBtn" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 8px;">
-            <i class="bi bi-play-circle-fill" style="color: var(--magenta-neon);"></i> VER VIDEO
-          </button>
+        <div class="hero-actions-group">
+          <div class="hero-ctas">
+            <a href="https://wa.me/528110626302?text=Hola%20Nancy%20Garc%C3%ADa%20Eventos,%20me%20gustar%C3%ADa%20cotizar%20servicios%20integrales%20para%20mi%20evento." target="_blank" rel="noopener" class="btn btn-primary hero-btn-main">
+              <i class="bi bi-whatsapp"></i> COTIZAR POR WHATSAPP: 81-1062-6302
+            </a>
+            <a href="#divisiones" class="btn btn-secondary hero-btn-sub">
+              <i class="bi bi-stars"></i> EXPLORAR SERVICIOS
+            </a>
+          </div>
+
+          <div class="hero-video-row">
+            <button id="openHeroVideoBtn" class="hero-video-pill" aria-label="Ver video de montajes en vivo" title="Ver video de eventos y montajes en vivo">
+              <span class="video-pill-icon"><i class="bi bi-play-fill"></i></span>
+              <span class="video-pill-label">Ver Video de Montajes en Vivo</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Trust Badges -->
-        <div class="hero-trust-badges" style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 24px;">
-          <span class="trust-pill"><i class="bi bi-balloon-heart-fill" style="color: var(--magenta-neon);"></i> 01. Decoración & Globos</span>
-          <span class="trust-pill"><i class="bi bi-cup-hot-fill" style="color: var(--gold-metallic);"></i> 02. Banquetes & Catering</span>
-          <span class="trust-pill"><i class="bi bi-chair-fill" style="color: var(--turquoise-deep);"></i> 03. Mobiliario & Renta</span>
-          <span class="trust-pill"><i class="bi bi-mic-fill" style="color: var(--violet-deep);"></i> 04. Animación & Shows</span>
+        <!-- Division Quick Badges Grid -->
+        <div class="hero-trust-badges">
+          <a href="#divisiones" class="trust-pill"><i class="bi bi-balloon-heart-fill" style="color: var(--magenta-neon);"></i> <span>01. Decoración & Globos</span></a>
+          <a href="#divisiones" class="trust-pill"><i class="bi bi-cup-hot-fill" style="color: var(--gold-metallic);"></i> <span>02. Banquetes & Catering</span></a>
+          <a href="#divisiones" class="trust-pill"><i class="bi bi-chair-fill" style="color: var(--turquoise-deep);"></i> <span>03. Mobiliario & Renta</span></a>
+          <a href="#divisiones" class="trust-pill"><i class="bi bi-mic-fill" style="color: var(--violet-deep);"></i> <span>04. Animación & Shows</span></a>
         </div>
       </div>
     </section>

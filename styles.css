@@ -929,26 +929,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.65;
 }
 
-.trust-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 20px;
-  border-radius: var(--radius-full);
-  background: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  color: #2D243B;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  transition: var(--transition);
-}
-
-.trust-pill:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-}
+/* (Trust pills styled in Hero section) */
 
 /* Luxury & Fiesta Gradient Text System */
 .gradient-text-gold {
@@ -1005,34 +986,21 @@ h1, h2, h3, h4, h5, h6 {
   filter: drop-shadow(0 1px 2px rgba(183, 110, 121, 0.15));
 }
 
-.trust-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 20px;
-  border-radius: var(--radius-full);
-  background: rgba(22, 17, 34, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: #FFFFFF;
-  font-size: 0.82rem;
-  font-weight: 700;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-  letter-spacing: 0.03em;
-  transition: var(--transition);
-}
-
-.trust-pill:hover {
-  border-color: var(--pink-neon);
-  background: rgba(230, 0, 103, 0.15);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(230, 0, 103, 0.35);
-}
-
 .spgg-section .section-title {
   font-family: var(--font-editorial);
   letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
+   HERO CTAS & DIVISION QUICK BADGES (SIMÉTRICOS Y ULTRA ELEGANTES)
+   ========================================================================== */
+.hero-actions-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+  width: 100%;
 }
 
 .hero-ctas {
@@ -1041,7 +1009,121 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
   gap: 16px;
   flex-wrap: wrap;
-  margin-bottom: 12px;
+  width: 100%;
+}
+
+.hero-btn-main {
+  min-width: 300px;
+  padding: 16px 32px;
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+}
+
+.hero-btn-sub {
+  min-width: 250px;
+  padding: 16px 32px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1D182A;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.hero-btn-sub:hover {
+  background: #FFFFFF;
+  border-color: var(--magenta-neon);
+  color: var(--magenta-neon);
+  box-shadow: 0 10px 30px rgba(230, 0, 103, 0.2);
+}
+
+.hero-video-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.hero-video-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 22px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(230, 0, 103, 0.25);
+  color: #1D182A;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.hero-video-pill:hover {
+  background: #FFFFFF;
+  border-color: var(--magenta-neon);
+  color: var(--magenta-neon);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(230, 0, 103, 0.2);
+}
+
+.video-pill-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--magenta-neon);
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  transition: var(--transition);
+}
+
+.hero-video-pill:hover .video-pill-icon {
+  transform: scale(1.12);
+  background: #FF1493;
+}
+
+/* Division Quick Badges Grid (4 Columnas simétricas en Desktop) */
+.hero-trust-badges {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 980px;
+  margin: 22px auto 0 auto;
+  width: 100%;
+}
+
+.trust-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: var(--radius-full);
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+  color: #2D243B;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.trust-pill:hover {
+  transform: translateY(-2px);
+  border-color: rgba(230, 0, 103, 0.35);
+  color: var(--magenta-neon);
+  box-shadow: 0 8px 24px rgba(230, 0, 103, 0.12);
+  background: #FFFDFC;
 }
 
 .hero-float-icon {
@@ -2405,18 +2487,44 @@ body.menu-open .floating-wa-balloon {
     opacity: 0.5;
   }
 
+  .hero-actions-group {
+    gap: 14px;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
   .hero-ctas {
     flex-direction: column;
+    align-items: center;
     width: 100%;
     gap: 12px;
   }
 
-  .hero-ctas .btn {
+  .hero-btn-main, .hero-btn-sub {
     width: 100%;
     max-width: 340px;
+    min-width: 0;
     padding: 15px 24px;
     font-size: 0.92rem;
     min-height: 48px;
+  }
+
+  .hero-video-pill {
+    padding: 8px 18px;
+    font-size: 0.82rem;
+  }
+
+  .hero-trust-badges {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 520px;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .trust-pill {
+    padding: 9px 10px;
+    font-size: 0.78rem;
+    white-space: nowrap;
   }
 
   .ba-slider-container { height: 360px; }
@@ -2457,19 +2565,20 @@ body.menu-open .floating-wa-balloon {
   .hero-subtitle { font-size: 0.95rem; margin-bottom: 24px; line-height: 1.5; padding: 0 4px; }
   
   .hero-trust-badges {
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     width: 100%;
-    margin-top: 20px;
-    margin-bottom: 16px;
+    max-width: 360px;
+    margin: 18px auto 0 auto;
+    gap: 8px;
   }
 
   .trust-pill {
-    font-size: 0.78rem;
-    padding: 8px 16px;
+    font-size: 0.74rem;
+    padding: 9px 8px;
     width: 100%;
-    max-width: 320px;
+    max-width: none;
+    letter-spacing: 0;
     justify-content: center;
     text-align: center;
   }
