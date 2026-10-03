@@ -2359,6 +2359,7 @@ body.menu-open .floating-wa-balloon {
   .brand-logo-img { height: 38px; }
   .section-title { font-size: 1.95rem; line-height: 1.2; }
   .hero-title { font-size: 2.15rem; line-height: 1.15; }
+  .hero-highlight { font-size: 1.85rem; line-height: 1.2; display: block; margin-top: 6px; }
   .hero-subtitle { font-size: 0.95rem; margin-bottom: 24px; line-height: 1.5; padding: 0 4px; }
   
   .hero-trust-badges {
