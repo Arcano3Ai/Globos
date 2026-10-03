@@ -2679,11 +2679,25 @@ body.menu-open .floating-wa-balloon {
 
 .divisions-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 28px;
   margin-top: 45px;
   position: relative;
   z-index: 2;
+}
+
+@media (max-width: 1080px) {
+  .divisions-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (max-width: 700px) {
+  .divisions-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
 
 .division-card {
@@ -2736,10 +2750,10 @@ body.menu-open .floating-wa-balloon {
 
 .division-badge-glow {
   position: absolute;
-  inset: 12px;
+  inset: 8px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(230, 0, 103, 0.12) 0%, rgba(212, 175, 55, 0.08) 50%, transparent 70%);
-  filter: blur(10px);
+  background: radial-gradient(circle, rgba(255, 0, 127, 0.22) 0%, rgba(255, 215, 0, 0.15) 45%, transparent 70%);
+  filter: blur(12px);
   transition: transform 0.35s ease, opacity 0.35s ease;
   z-index: 1;
 }
@@ -2750,17 +2764,17 @@ body.menu-open .floating-wa-balloon {
   width: 140px;
   height: 140px;
   object-fit: contain;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.12));
+  filter: drop-shadow(0 8px 18px rgba(230, 0, 103, 0.18)) brightness(1.02);
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.35s ease;
 }
 
 .division-card:hover .division-badge-img {
   transform: scale(1.06);
-  filter: drop-shadow(0 12px 22px rgba(230, 0, 103, 0.2));
+  filter: drop-shadow(0 14px 28px rgba(230, 0, 103, 0.35)) brightness(1.06);
 }
 
 .division-card:hover .division-badge-glow {
-  transform: scale(1.15);
+  transform: scale(1.2);
   opacity: 1;
 }
 
@@ -2813,6 +2827,8 @@ body.menu-open .floating-wa-balloon {
 .div-banquetes .division-subtitle { color: #B8860B !important; text-shadow: none !important; }
 .div-mobiliario .division-subtitle { color: #00897B !important; text-shadow: none !important; }
 .div-shows .division-subtitle { color: #6A1B9A !important; text-shadow: none !important; }
+.div-invitaciones .division-subtitle { color: #E91E63 !important; text-shadow: none !important; }
+.div-fotografia .division-subtitle { color: #D4AF37 !important; text-shadow: none !important; }
 
 .division-desc {
   font-family: var(--font-body);
