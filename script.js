@@ -144,7 +144,7 @@ function initMobileMenu() {
 }
 
 /* --------------------------------------------------------------------------
-   3. Ambient Music Player Toggle (Frente a Frente)
+   3. Ambient Music Player Toggle (Electric Pulse)
    -------------------------------------------------------------------------- */
 function initAudioPlayer() {
   const audioBtn = document.getElementById('audioToggleBtn');
@@ -166,7 +166,7 @@ function initAudioPlayer() {
         audioBtn.classList.add('playing');
         const label = audioBtn.querySelector('.audio-label');
         if (label) label.textContent = 'PAUSAR MÚSICA';
-        audioBtn.setAttribute('title', 'Pausar música ambiental (Frente a Frente)');
+        audioBtn.setAttribute('title', 'Pausar música ambiental (Electric Pulse)');
       }).catch(err => {
         console.log('Audio playback prevented by browser policy:', err);
       });
@@ -176,7 +176,7 @@ function initAudioPlayer() {
       audioBtn.classList.remove('playing');
       const label = audioBtn.querySelector('.audio-label');
       if (label) label.textContent = 'MÚSICA';
-      audioBtn.setAttribute('title', 'Reproducir música ambiental (Frente a Frente)');
+      audioBtn.setAttribute('title', 'Reproducir música ambiental (Electric Pulse)');
     }
   });
 }
