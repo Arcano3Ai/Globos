@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeaderScroll();
   initMobileMenu();
   initHeroCanvas();
+  initHeroParallax();
   initAudioPlayer();
   initVideoModal();
   initBeforeAfterSlider();
@@ -225,7 +226,7 @@ function initVideoModal() {
 }
 
 /* --------------------------------------------------------------------------
-   5. Floating 3D Ambient Balloons Hero Canvas
+   5. Floating Festive 3D Luxury Balloons Hero Canvas ("Queremos Fiesta")
    -------------------------------------------------------------------------- */
 function initHeroCanvas() {
   const canvas = document.getElementById('heroCanvas');
@@ -233,7 +234,7 @@ function initHeroCanvas() {
 
   const ctx = canvas.getContext('2d');
   let width, height;
-  let particles = [];
+  let balloons = [];
 
   function resize() {
     width = canvas.width = canvas.parentElement.offsetWidth;
@@ -243,90 +244,158 @@ function initHeroCanvas() {
   window.addEventListener('resize', resize);
   resize();
 
-  // Particle / Floating Balloon constructor
-  class BalloonParticle {
-    constructor() {
-      this.reset();
+  // Vibrant Party Balloon Palette with realistic 3D highlight & knot colors
+  const BALLOON_PALETTES = [
+    { base: '230, 0, 103', light: '255, 110, 180', shadow: '150, 0, 65', knot: '#990042' },     // Fiesta Fuchsia
+    { base: '225, 175, 45', light: '255, 240, 150', shadow: '140, 100, 15', knot: '#8C640A' },    // Luxury Gold
+    { base: '138, 43, 226', light: '210, 155, 255', shadow: '80, 15, 140', knot: '#550E96' },    // Electric Violet
+    { base: '0, 215, 190', light: '170, 255, 245', shadow: '0, 125, 110', knot: '#007A6B' },     // Neon Turquoise
+    { base: '240, 120, 145', light: '255, 210, 220', shadow: '160, 50, 75', knot: '#A6324D' },   // Rose Gold
+    { base: '242, 244, 250', light: '255, 255, 255', shadow: '185, 190, 205', knot: '#B5BAC9' }  // Glossy Pearl White
+  ];
+
+  class FestiveBalloon {
+    constructor(randomY = false) {
+      this.reset(randomY);
     }
 
-    reset() {
+    reset(randomY = false) {
       this.x = Math.random() * width;
-      this.y = height + Math.random() * 200;
-      this.radius = Math.random() * 25 + 10;
-      this.speedY = Math.random() * 0.8 + 0.3;
-      this.speedX = Math.sin(Math.random() * Math.PI) * 0.4;
-      this.opacity = Math.random() * 0.5 + 0.2;
-
-      // Color choices: Magenta, Purple, Gold metallic, Clear sparkle
-      const colorType = Math.random();
-      if (colorType < 0.35) {
-        this.color = '255, 0, 127'; // Neon Magenta
-      } else if (colorType < 0.65) {
-        this.color = '138, 43, 226'; // Electric Purple
-      } else if (colorType < 0.85) {
-        this.color = '212, 175, 55'; // Metallic Gold
-      } else {
-        this.color = '255, 255, 255'; // Glossy White/Confetti
-      }
+      this.y = randomY ? Math.random() * height : height + Math.random() * 150 + 40;
+      this.radius = Math.random() * 20 + 15; // 15px to 35px
+      this.speedY = Math.random() * 0.75 + 0.55; // 0.55 to 1.3
+      this.wobbleSpeed = Math.random() * 0.025 + 0.015;
+      this.wobblePhase = Math.random() * Math.PI * 2;
+      this.wobbleAmp = Math.random() * 0.6 + 0.3;
+      this.opacity = Math.random() * 0.18 + 0.82; // 0.82 to 1.0 (Crisp & vivid party balloons!)
+      this.palette = BALLOON_PALETTES[Math.floor(Math.random() * BALLOON_PALETTES.length)];
+      this.stringLength = this.radius * (Math.random() * 0.5 + 1.3);
     }
 
     update() {
       this.y -= this.speedY;
-      this.x += Math.sin(this.y * 0.01) * 0.5;
+      this.wobblePhase += this.wobbleSpeed;
+      this.x += Math.sin(this.wobblePhase) * this.wobbleAmp;
 
-      if (this.y < -50) {
-        this.reset();
+      if (this.y < -this.radius * 2 - this.stringLength) {
+        this.reset(false);
       }
     }
 
     draw() {
+      const rx = this.radius;
+      const ry = this.radius * 1.24; // Classic egg / oval balloon geometry
+      const angle = Math.sin(this.wobblePhase) * 0.08;
+
       ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(angle);
+
+      // 1. Hanging undulating ribbon / string
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      
-      // Radial glow gradient for glossy balloon look
-      const grad = ctx.createRadialGradient(
-        this.x - this.radius * 0.3,
-        this.y - this.radius * 0.3,
-        this.radius * 0.1,
-        this.x,
-        this.y,
-        this.radius
+      ctx.moveTo(0, ry + 4);
+      const sLen = this.stringLength;
+      ctx.bezierCurveTo(
+        Math.sin(this.wobblePhase * 1.4) * 8, ry + sLen * 0.35,
+        -Math.sin(this.wobblePhase * 1.4) * 8, ry + sLen * 0.7,
+        Math.sin(this.wobblePhase) * 5, ry + sLen
       );
-      grad.addColorStop(0, `rgba(255, 255, 255, ${this.opacity + 0.3})`);
-      grad.addColorStop(0.4, `rgba(${this.color}, ${this.opacity})`);
-      grad.addColorStop(1, `rgba(${this.color}, 0.05)`);
+      ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity * 0.6})`;
+      ctx.lineWidth = 1.3;
+      ctx.stroke();
+
+      // 2. Balloon knot (nudo en la base)
+      ctx.beginPath();
+      ctx.moveTo(-rx * 0.14, ry);
+      ctx.lineTo(rx * 0.14, ry);
+      ctx.lineTo(rx * 0.24, ry + 5);
+      ctx.lineTo(-rx * 0.24, ry + 5);
+      ctx.closePath();
+      ctx.fillStyle = this.palette.knot;
+      ctx.fill();
+
+      // 3. Balloon Body (Egg/Teardrop shape)
+      ctx.beginPath();
+      ctx.moveTo(0, -ry);
+      ctx.bezierCurveTo(rx * 1.15, -ry, rx * 1.25, ry * 0.5, 0, ry);
+      ctx.bezierCurveTo(-rx * 1.25, ry * 0.5, -rx * 1.15, -ry, 0, -ry);
+      ctx.closePath();
+
+      // 3D Spherical Volume Gradient
+      const grad = ctx.createRadialGradient(
+        -rx * 0.32, -ry * 0.35, rx * 0.1,
+        0, 0, ry
+      );
+      grad.addColorStop(0, `rgba(${this.palette.light}, ${this.opacity})`);
+      grad.addColorStop(0.55, `rgba(${this.palette.base}, ${this.opacity})`);
+      grad.addColorStop(1, `rgba(${this.palette.shadow}, ${this.opacity})`);
 
       ctx.fillStyle = grad;
       ctx.fill();
 
-      // Shiny glare spot
+      // 4. Metallic Specular Gloss Reflection (Curved reflection arc)
       ctx.beginPath();
-      ctx.arc(this.x - this.radius * 0.35, this.y - this.radius * 0.35, this.radius * 0.2, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity + 0.4})`;
+      ctx.ellipse(-rx * 0.32, -ry * 0.38, rx * 0.32, ry * 0.18, -Math.PI / 4, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 0.68})`;
+      ctx.fill();
+
+      // Secondary micro-glint
+      ctx.beginPath();
+      ctx.arc(-rx * 0.15, -ry * 0.62, rx * 0.08, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 0.85})`;
       ctx.fill();
 
       ctx.restore();
     }
   }
 
-  // Create 35 floating balloons
-  for (let i = 0; i < 35; i++) {
-    const p = new BalloonParticle();
-    p.y = Math.random() * height;
-    particles.push(p);
+  // Create 45 festive party balloons distributed across the hero
+  for (let i = 0; i < 45; i++) {
+    balloons.push(new FestiveBalloon(true));
   }
 
   function animate() {
     ctx.clearRect(0, 0, width, height);
-    particles.forEach(p => {
-      p.update();
-      p.draw();
+    balloons.forEach(b => {
+      b.update();
+      b.draw();
     });
     requestAnimationFrame(animate);
   }
 
   animate();
+}
+
+/* --------------------------------------------------------------------------
+   5.1. Hero Background Parallax Scroll Effect
+   -------------------------------------------------------------------------- */
+function initHeroParallax() {
+  const hero = document.getElementById('hero');
+  const heroBg = document.querySelector('.hero-bg-img');
+  if (!hero || !heroBg) return;
+
+  let ticking = false;
+
+  function updateParallax() {
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    const heroHeight = hero.offsetHeight;
+
+    if (scrollY <= heroHeight + 80) {
+      // Smooth luxury depth parallax translation
+      const translateY = scrollY * 0.36;
+      heroBg.style.transform = `translate3d(0, ${translateY}px, 0)`;
+    }
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  updateParallax();
 }
 
 /* --------------------------------------------------------------------------
