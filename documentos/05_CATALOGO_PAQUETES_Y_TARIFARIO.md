@@ -35,7 +35,7 @@
   * Paleta de color personalizada de hasta 4 tonos (incluyendo acabados cromo, metálico y tratamiento *High-Shine* para brillo y durabilidad).
   * Renta de Mampara circular / arqueada con vinil personalizado con el nombre del festejado(a).
   * Renta de Set de 3 Cilindros blancos o temáticos para pastel y postres.
-  * Letrero luminoso neón LED a elección (*"Happy Birthday"*, *"Oh Baby"*, *"Let's Party"*).
+  * Acabados especiales y tratamiento High-Shine para máxima duración y brillo.
 * **Precio Sugerido:** **$3,800.00 MXN**.
 
 ---
@@ -43,7 +43,7 @@
 #### 👑 PAQUETE 3: "Celebración Total VIP Nancy García" (Experiencia Completa)
 *El paquete definitivo que une decoración monumental de globos y zona de entretenimiento infantil.*
 * **Incluye:**
-  * **Decoración Principal:** Arco orgánico de globos de 6 metros + Mampara doble con temática completa + 3 Cilindros temáticos + Luces o Neón LED + Arreglo de base para mesa de dulces.
+  * **Decoración Principal:** Arco orgánico de globos de 6 metros + Mampara doble con temática completa + 3 Cilindros temáticos + Arreglo de base para mesa de dulces.
   * **Zona de Arte & Caballetes:** 6 Caballetes dobles (12 plazas) + 12 Banquitos + Mandiles, pinceles, godetes y pinturas.
   * **Recuerdos Infantiles:** 40 Yesitos temáticos empacados para pintar y llevar.
   * **Bouquet de Globos:** Arreglo bouquet con número gigante de foil metálico de helio para el/la cumpleañero(a).
@@ -64,7 +64,6 @@
 | **YES-02** | Lote 50 Yesitos Temáticos | Mayoreo con variedad de figuras temáticas del evento. | **$1,100.00 MXN** |
 | **MOB-01** | Renta Set de 3 Cilindros | Cilindros blancos de MDF de alta resistencia. | **$650.00 MXN** |
 | **MOB-02** | Renta Mampara Redonda / Arco | Estructura con funda o vinil liso a color. | **$700.00 MXN** |
-| **MOB-03** | Letrero Neón LED en Renta | Leyendas disponibles (*Happy Birthday, Celebrate, etc.*). | **$350.00 MXN** |
 
 ---
 

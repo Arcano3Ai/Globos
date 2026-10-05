@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initPortfolioFilter();
   initLightboxModal();
   initInteractiveConfigurator();
-  initNancyAIStudio();
+  initInteractiveQuoteCalculator();
   initQuoteFormWhatsApp();
   initScrollAnimations();
   initCollapsibleSections();
@@ -791,13 +791,13 @@ function initFaqAccordion() {
 }
 
 /* --------------------------------------------------------------------------
-   13. NANCY AI EVENT STYLIST & ESTIMATOR ENGINE
-   Motor de Inteligencia Artificial & Planificador Multiplataforma
-   Optimizado para iOS, Android y Desktop con Haptic Feedback y Catálogo Real
+   13. COTIZADOR EN VIVO & CALCULADOR DE PRESUPUESTO INTERACTIVO
+   Sistema interactivo multiplataforma (iOS, Android y Desktop)
+   Tarifario y servicios reales de Nancy García Eventos (Monterrey & SPGG)
    -------------------------------------------------------------------------- */
-function initNancyAIStudio() {
-  const aiSection = document.getElementById('nancy-ai');
-  if (!aiSection) return;
+function initInteractiveQuoteCalculator() {
+  const quoteSection = document.getElementById('cotizador-en-vivo');
+  if (!quoteSection) return;
 
   // Touch Haptic Feedback Helper (Android & iOS WebKit Vibration API)
   function triggerHaptic(pattern = [12, 24]) {
@@ -810,8 +810,18 @@ function initNancyAIStudio() {
     }
   }
 
-  // State Management
-  const aiState = {
+  // TARIFARIO OFICIAL (Estructura centralizada para actualización inmediata)
+  const EVENT_RATES = {
+    totalVip: 6400,          // Paquete Celebración Total VIP (Globos + Yesitos/Caballetes + Cilindros)
+    escenografiaMagica: 3800,// Paquete Escenografía Mágica (Arco Orgánico 5m + Mampara + Cilindros)
+    fiestaCreativa: 2450,    // Paquete Fiesta Creativa (4 Caballetes dobles + Yesitos para 25 niños)
+    aLaCartaBase: 1800,      // Base de servicio individual
+    barraNieves: 1600,       // Barra de nieve artesanal estilo Jalisco + Tostitos con elote
+    mobiliarioCilindros: 650 // Renta set cilindros MDF
+  };
+
+  // Estado del Cotizador
+  const quoteState = {
     eventType: 'infantil',
     eventLabel: 'Cumpleaños Infantil',
     zone: 'spgg',
@@ -823,31 +833,29 @@ function initNancyAIStudio() {
       globos: true,
       yesitos: true,
       nieves: false,
-      mobiliario: false,
-      neon: false
+      mobiliario: false
     },
     themePrompt: ''
   };
 
-  // DOM Elements
-  const typeChips = aiSection.querySelectorAll('#aiEventTypeGroup .ai-chip');
+  // Elementos DOM
+  const typeChips = quoteSection.querySelectorAll('#aiEventTypeGroup .ai-chip');
   const zoneSelect = document.getElementById('aiZoneSelect');
-  const guestsChips = aiSection.querySelectorAll('#aiGuestsGroup .ai-chip');
-  const quickThemeBtns = aiSection.querySelectorAll('.ai-quick-btn');
+  const guestsChips = quoteSection.querySelectorAll('#aiGuestsGroup .ai-chip');
+  const quickThemeBtns = quoteSection.querySelectorAll('.ai-quick-btn');
   const themeInput = document.getElementById('aiThemePrompt');
   const generateBtn = document.getElementById('aiGenerateBtn');
   const btnText = document.getElementById('aiBtnText');
   const spinner = document.getElementById('aiSpinner');
   const sendWhatsAppBtn = document.getElementById('aiSendWhatsAppBtn');
 
-  // Service Checkboxes
+  // Checkboxes de Servicios
   const srvGlobos = document.getElementById('aiSrvGlobos');
   const srvYesitos = document.getElementById('aiSrvYesitos');
   const srvNieves = document.getElementById('aiSrvNieves');
   const srvMobiliario = document.getElementById('aiSrvMobiliario');
-  const srvNeon = document.getElementById('aiSrvNeon');
 
-  // Result Blueprint Elements
+  // Elementos del Resumen de Cotización
   const resTitle = document.getElementById('aiResultTitle');
   const resSubtitle = document.getElementById('aiResultSubtitle');
   const resPaletteName = document.getElementById('aiPaletteName');
@@ -860,43 +868,44 @@ function initNancyAIStudio() {
   const resFleteCost = document.getElementById('aiFleteCost');
   const resDepositCost = document.getElementById('aiDepositCost');
 
-  // 1. Event Type Chip Selection
+  // 1. Selector de Tipo de Festejo
   typeChips.forEach(chip => {
     chip.addEventListener('click', () => {
       triggerHaptic(15);
       typeChips.forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
-      aiState.eventType = chip.getAttribute('data-type');
-      aiState.eventLabel = chip.getAttribute('data-label');
+      quoteState.eventType = chip.getAttribute('data-type');
+      quoteState.eventLabel = chip.getAttribute('data-label');
       updatePalettePreviewLive();
+      computeQuote(false);
     });
   });
 
-  // 2. Zone Selection
+  // 2. Selector de Municipio / Zona
   if (zoneSelect) {
     zoneSelect.addEventListener('change', () => {
       triggerHaptic(10);
       const selectedOption = zoneSelect.options[zoneSelect.selectedIndex];
-      aiState.zone = zoneSelect.value;
-      aiState.zoneLabel = selectedOption.text.split('(')[0].trim();
-      aiState.flete = parseInt(selectedOption.getAttribute('data-flete') || '250', 10);
+      quoteState.zone = zoneSelect.value;
+      quoteState.zoneLabel = selectedOption.text.split('(')[0].trim();
+      quoteState.flete = parseInt(selectedOption.getAttribute('data-flete') || '250', 10);
       computeQuote(false);
     });
   }
 
-  // 3. Guests Chip Selection
+  // 3. Selector de Invitados / Aforo
   guestsChips.forEach(chip => {
     chip.addEventListener('click', () => {
       triggerHaptic(15);
       guestsChips.forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
-      aiState.guests = chip.getAttribute('data-guests');
-      aiState.guestsLabel = chip.getAttribute('data-label');
+      quoteState.guests = chip.getAttribute('data-guests');
+      quoteState.guestsLabel = chip.getAttribute('data-label');
       computeQuote(false);
     });
   });
 
-  // 4. Checklist Checkboxes
+  // 4. Checkboxes de Servicios
   const syncCheckPill = (checkbox) => {
     if (!checkbox) return;
     const parentPill = checkbox.closest('.ai-check-pill');
@@ -909,28 +918,27 @@ function initNancyAIStudio() {
     }
   };
 
-  [srvGlobos, srvYesitos, srvNieves, srvMobiliario, srvNeon].forEach(cb => {
+  [srvGlobos, srvYesitos, srvNieves, srvMobiliario].forEach(cb => {
     if (!cb) return;
     cb.addEventListener('change', () => {
       triggerHaptic(12);
       syncCheckPill(cb);
-      aiState.services.globos = srvGlobos?.checked || false;
-      aiState.services.yesitos = srvYesitos?.checked || false;
-      aiState.services.nieves = srvNieves?.checked || false;
-      aiState.services.mobiliario = srvMobiliario?.checked || false;
-      aiState.services.neon = srvNeon?.checked || false;
+      quoteState.services.globos = srvGlobos?.checked || false;
+      quoteState.services.yesitos = srvYesitos?.checked || false;
+      quoteState.services.nieves = srvNieves?.checked || false;
+      quoteState.services.mobiliario = srvMobiliario?.checked || false;
       computeQuote(false);
     });
   });
 
-  // 5. Quick Theme Presets
+  // 5. Presets Rápidos de Colores y Temáticas
   quickThemeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       triggerHaptic(15);
       const preset = btn.getAttribute('data-preset');
       if (themeInput) {
         themeInput.value = preset;
-        aiState.themePrompt = preset;
+        quoteState.themePrompt = preset;
       }
       updatePalettePreviewLive();
       computeQuote(true);
@@ -939,11 +947,11 @@ function initNancyAIStudio() {
 
   if (themeInput) {
     themeInput.addEventListener('input', () => {
-      aiState.themePrompt = themeInput.value.trim();
+      quoteState.themePrompt = themeInput.value.trim();
     });
   }
 
-  // Color Palettes Catalog
+  // Catálogo de Paletas Cromáticas para Montajes
   const PALETTES_CATALOG = {
     safari: {
       name: 'Safari Chic (Salvia, Oro Cromo & Marfil)',
@@ -954,13 +962,13 @@ function initNancyAIStudio() {
         { name: 'Blanco Nieve', hex: '#FFFFFF' }
       ]
     },
-    neon: {
-      name: 'Neón Glow Party (Fucsia, Morado & Cromo)',
+    rosaGlam: {
+      name: 'Rosa Glam & Oro (Fucsia, Rose Gold & Oro Cromo)',
       swatches: [
-        { name: 'Neón Fucsia', hex: '#FF007F' },
-        { name: 'Violeta Neón', hex: '#9B5DE5' },
-        { name: 'Turquesa Glow', hex: '#00F5D4' },
-        { name: 'Oro Metálico', hex: '#E1AF2D' }
+        { name: 'Fiesta Fucsia', hex: '#FF007F' },
+        { name: 'Rose Gold', hex: '#B76E79' },
+        { name: 'Oro Cromo', hex: '#D4AF37' },
+        { name: 'Marfil Suave', hex: '#FFFDD0' }
       ]
     },
     pastel: {
@@ -1010,22 +1018,21 @@ function initNancyAIStudio() {
     }
   };
 
-  // Determine Palette by Type and Prompt Semantics
+  // Detección de Paleta según Festejo y Temática
   function detectBestPalette() {
-    const text = (aiState.themePrompt + ' ' + aiState.eventType).toLowerCase();
+    const text = (quoteState.themePrompt + ' ' + quoteState.eventType).toLowerCase();
     if (text.includes('safari') || text.includes('salvia') || text.includes('selva')) return PALETTES_CATALOG.safari;
-    if (text.includes('neón') || text.includes('neon') || text.includes('glow') || text.includes('xv')) return PALETTES_CATALOG.neon;
+    if (text.includes('rosa') || text.includes('fucsia') || text.includes('glam') || text.includes('xv')) return PALETTES_CATALOG.rosaGlam;
     if (text.includes('dino') || text.includes('dinosaurio')) return PALETTES_CATALOG.dino;
     if (text.includes('pastel') || text.includes('princesa') || text.includes('arcoíris') || text.includes('rainbow')) return PALETTES_CATALOG.pastel;
     if (text.includes('boda') || text.includes('civil') || text.includes('gala')) return PALETTES_CATALOG.gala;
     if (text.includes('bautizo') || text.includes('comunión') || text.includes('baby')) return PALETTES_CATALOG.bautizo;
     if (text.includes('corporativo') || text.includes('empresa') || text.includes('inauguración')) return PALETTES_CATALOG.corporativo;
-    
-    // Fallback based on event type
-    if (aiState.eventType === 'xv') return PALETTES_CATALOG.neon;
-    if (aiState.eventType === 'boda') return PALETTES_CATALOG.gala;
-    if (aiState.eventType === 'bautizo' || aiState.eventType === 'babyshower') return PALETTES_CATALOG.bautizo;
-    if (aiState.eventType === 'corporativo') return PALETTES_CATALOG.corporativo;
+
+    if (quoteState.eventType === 'xv') return PALETTES_CATALOG.rosaGlam;
+    if (quoteState.eventType === 'boda') return PALETTES_CATALOG.gala;
+    if (quoteState.eventType === 'bautizo' || quoteState.eventType === 'babyshower') return PALETTES_CATALOG.bautizo;
+    if (quoteState.eventType === 'corporativo') return PALETTES_CATALOG.corporativo;
     return PALETTES_CATALOG.safari;
   }
 
@@ -1050,7 +1057,7 @@ function initNancyAIStudio() {
     renderSwatches(palette);
   }
 
-  // 6. Compute Comprehensive AI Package & Quote
+  // 6. Cálculo del Presupuesto y Desglose de Servicios
   function computeQuote(animateVisual = true) {
     const palette = detectBestPalette();
     renderSwatches(palette);
@@ -1061,33 +1068,31 @@ function initNancyAIStudio() {
     let basePrice = 0;
     let savings = 0;
 
-    const hasGlobos = aiState.services.globos;
-    const hasYesitos = aiState.services.yesitos;
-    const hasNieves = aiState.services.nieves;
-    const hasMobiliario = aiState.services.mobiliario;
-    const hasNeon = aiState.services.neon;
+    const hasGlobos = quoteState.services.globos;
+    const hasYesitos = quoteState.services.yesitos;
+    const hasNieves = quoteState.services.nieves;
+    const hasMobiliario = quoteState.services.mobiliario;
 
-    // A. Ambos Globos y Yesitos (Combo Estrella)
+    // A. Combo Completo: Globos + Yesitos
     if (hasGlobos && hasYesitos) {
       title = 'Celebración Total VIP Nancy García';
-      summary = `Propuesta integral curada por IA en tonalidades ${palette.name}. Fusiona escenografía monumental de globos de hasta 6 metros con zona de arte de caballetes y yesitos temáticos empacados para recuerdo.`;
-      basePrice = 6400;
+      summary = `Propuesta integral con paleta ${palette.name}. Combina escenografía de globos de hasta 6 metros con zona infantil de caballetes y yesitos temáticos empacados para recuerdo.`;
+      basePrice = EVENT_RATES.totalVip;
       savings = 950;
       specs = [
         'Arco orgánico desestructurado de 5.0 a 6.0 metros con tratamiento High-Shine para brillo y durabilidad.',
-        'Mampara arqueada o circular de gala con vinil personalizado con el nombre del festejado(a).',
-        'Set de 3 Cilindros blancos MDF de soporte para pastel y repostería.',
-        'Zona de arte: 6 Caballetes dobles de madera (12 plazas simultáneas) + 12 banquitos barnizados + mandiles, pinceles, godetes y pinturas vinílicas lavables.',
-        '40 Yesitos temáticos cerámicos empacados individualmente en celofán para regalo de los niños.',
-        'Bouquet de globos con número gigante de foil metálico de helio para el/la cumpleañero(a).',
-        'Letrero luminoso Neón LED ("Happy Birthday", "Let\'s Party" u "Oh Baby") incluido.'
+        'Mampara arqueada o circular para fotos con vinil personalizado con el nombre del festejado(a).',
+        'Set de 3 Cilindros blancos MDF para pastel y repostería.',
+        'Zona de arte: 6 Caballetes dobles de madera (12 plazas) + 12 banquitos barnizados + mandiles, pinceles, godetes y pinturas vinílicas lavables.',
+        '40 Yesitos temáticos cerámicos empacados individualmente en celofán para obsequio de los niños.',
+        'Bouquet de globos con número gigante de foil metálico de helio para el/la cumpleañero(a).'
       ];
-    } 
-    // B. Solo Yesitos & Caballetes
+    }
+    // B. Solo Zona de Arte (Yesitos & Caballetes)
     else if (hasYesitos && !hasGlobos) {
       title = 'Fiesta Creativa Nancy García (Caballetes & Arte)';
-      summary = `Experiencia infantil interactiva en colores ${palette.name}. Los pequeños pintan sus propias figuras cerámicas y lienzos guiados por estaciones de arte profesionales de madera.`;
-      basePrice = 2450;
+      summary = `Estaciones infantiles de pintura y arte en madera en armonía con ${palette.name}. Los pequeños pintan sus propias figuras cerámicas para llevar a casa.`;
+      basePrice = EVENT_RATES.fiestaCreativa;
       savings = 450;
       specs = [
         '4 Estaciones de Caballete Infantil Doble Cara de madera (8 plazas simultáneas).',
@@ -1097,64 +1102,57 @@ function initNancyAIStudio() {
         'Montaje, supervisión inicial, desmontaje y limpieza completa de estaciones de arte.'
       ];
     }
-    // C. Solo Globos
+    // C. Solo Decoración con Globos
     else if (hasGlobos && !hasYesitos) {
       title = 'Escenografía Mágica (Backdrop & Globos)';
-      summary = `Montaje escenográfico de alto impacto visual con paleta ${palette.name}. Ideal para mesa principal de pastel, área de fotos o entrada de salón.`;
-      basePrice = 3800;
+      summary = `Montaje escenográfico de alto impacto con paleta ${palette.name}. Ideal para mesa principal de pastel, área de fotos o entrada de salón.`;
+      basePrice = EVENT_RATES.escenografiaMagica;
       savings = 600;
       specs = [
         'Arco orgánico desestructurado de 4.5 a 5.0 metros con globos de látex biodegradables calidad premium.',
-        'Tratamiento High-Shine para brillo deslumbrante y máxima resistencia al calor de Monterrey.',
-        'Mampara arqueada con vinil personalizado en tipografía caligráfica con nombre de gala.',
-        'Set de 3 Cilindros de MDF para pastel y postres.',
-        'Letrero luminoso Neón LED a elección con dimmer de intensidad.'
+        'Tratamiento High-Shine para brillo deslumbrante y máxima resistencia en climas de Monterrey.',
+        'Mampara arqueada con vinil personalizado en tipografía caligráfica con nombre del festejado(a).',
+        'Set de 3 Cilindros de MDF para pastel y postres.'
       ];
     }
     // D. Servicios a la Carta
     else {
-      title = 'Experiencia a la Medida Nancy García';
+      title = 'Servicios Seleccionados Nancy García';
       summary = `Configuración personalizada con servicios especializados en paleta ${palette.name}.`;
-      basePrice = 1800;
-      savings = 300;
+      basePrice = EVENT_RATES.aLaCartaBase;
+      savings = 0;
       specs = [
         'Coordinación directa de logística y montaje con Nancy García.',
-        'Materiales de alta durabilidad adaptados a locaciones en interior o exteriores en SPGG/Monterrey.'
+        'Materiales de alta durabilidad adaptados a interior o exteriores en SPGG y Monterrey.'
       ];
     }
 
-    // Add-on Barra de Nieves si está marcado
+    // Add-on Barra de Nieves
     if (hasNieves) {
-      basePrice += 1600;
+      basePrice += EVENT_RATES.barraNieves;
       specs.push('Barra de Nieve de Garrafa Estilo Jalisco: 50 porciones servidas en vaso con chamoy líquido y en polvo, más Tostitos preparados con elote desgranado.');
     }
 
-    // Add-on Mobiliario si está marcado y no estaba incluido
+    // Add-on Mobiliario si está marcado y no estaba en el paquete
     if (hasMobiliario && !hasGlobos) {
-      basePrice += 650;
-      specs.push('Renta de Set de 3 Cilindros MDF de repostería y mampara circular.');
+      basePrice += EVENT_RATES.mobiliarioCilindros;
+      specs.push('Renta de Set de 3 Cilindros MDF de repostería y mampara circular para fotos.');
     }
 
-    // Add-on Neón si está marcado y no estaba incluido
-    if (hasNeon && !hasGlobos) {
-      basePrice += 350;
-      specs.push('Renta de Letrero Neón LED con transformador de bajo consumo.');
-    }
-
-    // Adjust for guests dimension
-    if (aiState.guests === 'grande') {
+    // Ajuste por aforo extendido
+    if (quoteState.guests === 'grande') {
       basePrice += 800;
       specs.push('Ampliación de material y plazas infantiles para aforo de 50 a 90 personas.');
-    } else if (aiState.guests === 'monumental') {
+    } else if (quoteState.guests === 'monumental') {
       basePrice += 1600;
-      specs.push('Escala monumental para 100+ personas con soporte y personal de montaje extendido.');
+      specs.push('Escala monumental para 100+ personas con soporte y equipo de montaje extendido.');
     }
 
-    const flete = aiState.flete;
+    const flete = quoteState.flete;
     const total = basePrice + flete;
     const deposit = Math.round(total * 0.5);
 
-    // Update DOM
+    // Actualizar Interfaz
     if (resTitle) resTitle.textContent = title;
     if (resSubtitle) resSubtitle.textContent = summary;
 
@@ -1171,7 +1169,7 @@ function initNancyAIStudio() {
       resPriceEstimate.innerHTML = `$${total.toLocaleString('es-MX')} <span class="ai-price-currency">MXN</span>`;
     }
     if (resPriceNote) {
-      resPriceNote.textContent = `*Incluye flete y logística de montaje en ${aiState.zoneLabel}`;
+      resPriceNote.textContent = `*Incluye flete y montaje en ${quoteState.zoneLabel}`;
     }
     if (resDiscountTag) {
       resDiscountTag.textContent = savings > 0 ? `~$${savings.toLocaleString('es-MX')} MXN` : 'PRECIO PREFERENCIAL';
@@ -1180,33 +1178,33 @@ function initNancyAIStudio() {
       resBaseCost.textContent = `$${basePrice.toLocaleString('es-MX')} MXN`;
     }
     if (resFleteCost) {
-      resFleteCost.textContent = `$${flete.toLocaleString('es-MX')} MXN (${aiState.zoneLabel})`;
+      resFleteCost.textContent = `$${flete.toLocaleString('es-MX')} MXN (${quoteState.zoneLabel})`;
     }
     if (resDepositCost) {
       resDepositCost.textContent = `$${deposit.toLocaleString('es-MX')} MXN (50%)`;
     }
 
-    // WhatsApp Message Formatter
+    // Formateador del Mensaje de WhatsApp
     if (sendWhatsAppBtn) {
       sendWhatsAppBtn.onclick = () => {
         triggerHaptic([20, 40, 20]);
-        const themeText = aiState.themePrompt ? aiState.themePrompt : palette.name;
-        const msg = 
-`👑 *PROPUESTA NANCY AI · COTIZACIÓN PERSONALIZADA* 👑
+        const themeText = quoteState.themePrompt ? quoteState.themePrompt : palette.name;
+        const msg =
+`👑 *COTIZACIÓN DE SERVICIOS — NANCY GARCÍA EVENTOS* 👑
 ------------------------------------------------
-🎯 *Tipo de Festejo:* ${aiState.eventLabel}
-📍 *Municipio / Zona:* ${aiState.zoneLabel} (Flete: $${flete} MXN)
-👥 *Dimensión Invitados:* ${aiState.guestsLabel}
-🎨 *Temática / Mood:* ${themeText}
-💎 *Paleta Cromática Sugerida:* ${palette.name}
+🎯 *Tipo de Festejo:* ${quoteState.eventLabel}
+📍 *Municipio / Zona:* ${quoteState.zoneLabel} (Flete: $${flete} MXN)
+👥 *Aforo Estimado:* ${quoteState.guestsLabel}
+🎨 *Colores / Temática:* ${themeText}
+💎 *Paleta Sugerida:* ${palette.name}
 📦 *Paquete / Configuración:* ${title}
 💰 *Inversión Total Estimada:* $${total.toLocaleString('es-MX')} MXN
-💵 *Anticipo Sugerido (50%):* $${deposit.toLocaleString('es-MX')} MXN
+💵 *Anticipo para Apartar (50%):* $${deposit.toLocaleString('es-MX')} MXN
 
 ✨ *Servicios Incluidos:*
-${specs.slice(0, 4).map(s => '• ' + s).join('\n')}
+${specs.slice(0, 5).map(s => '• ' + s).join('\n')}
 
-Hola Nancy García! Generé esta cotización personalizada con su Asistente de Inteligencia Artificial en su web oficial y deseo apartar la fecha para mi evento.`;
+Hola Nancy García! Armé esta cotización en su cotizador web y me gustaría consultar disponibilidad de fecha para mi evento.`;
 
         const waUrl = `https://wa.me/528110626302?text=${encodeURIComponent(msg)}`;
         window.open(waUrl, '_blank');
@@ -1214,13 +1212,13 @@ Hola Nancy García! Generé esta cotización personalizada con su Asistente de I
     }
   }
 
-  // 7. Generate Button Click with AI Simulation Animation
+  // 7. Botón de Calcular Presupuesto
   if (generateBtn) {
     generateBtn.addEventListener('click', () => {
       triggerHaptic([20, 30, 20]);
       if (spinner && btnText) {
         spinner.style.display = 'inline-block';
-        btnText.textContent = 'PROCESANDO CON NANCY AI...';
+        btnText.textContent = 'CALCULANDO PRESUPUESTO...';
         generateBtn.disabled = true;
       }
 
@@ -1228,22 +1226,23 @@ Hola Nancy García! Generé esta cotización personalizada con su Asistente de I
         computeQuote(true);
         if (spinner && btnText) {
           spinner.style.display = 'none';
-          btnText.textContent = 'GENERAR NUEVA PROPUESTA CON IA';
+          btnText.textContent = 'ACTUALIZAR PRESUPUESTO';
           generateBtn.disabled = false;
         }
 
-        // Smooth scroll into result on mobile screens
+        // Scroll suave al resultado en móvil
         if (window.innerWidth < 992) {
           const resultCard = document.getElementById('aiResultCard');
           if (resultCard) {
             resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }
         }
-      }, 420);
+      }, 300);
     });
   }
 
-  // Initial Calculation
+  // Cálculo inicial al cargar
   computeQuote(false);
 }
+
 

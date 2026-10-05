@@ -160,6 +160,6 @@ Al redactar documentos oficiales con membrete, se debe utilizar la nomenclatura 
 3. **Servicio: Venta de Yesitos Personalizados para Pintar**
    * *Descripción técnica:* Figuras de yeso cerámico de alta definición por pieza o por lote de la temática del evento (superhéroes, princesas, animalitos, videojuegos), empaquetados individualmente con kit de pincel y pinturas.
 4. **Servicio: Renta de Mobiliario y Mamparas para Fiestas**
-   * *Descripción técnica:* Cilindros temáticos, mamparas circulares o arqueadas con vinil personalizado, letrero LED neón, bases para pasteles y mesas de dulces.
+   * *Descripción técnica:* Cilindros temáticos, mamparas circulares o arqueadas con vinil personalizado, bases para pasteles y mesas de dulces.
 5. **Servicio: Arreglos y Bouquets de Mesa**
    * *Descripción técnica:* Centros de mesa con base personalizada, globos microfoil metálicos con helio certificado o base de aire estructurado.
