@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://arcano3ai.github.io/Globos/</loc>
+    <lastmod>2026-10-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://arcano3ai.github.io/Globos/assets/images/og_whatsapp_preview.jpg</image:loc>
+      <image:title>Nancy García Eventos · Todo para tu Fiesta en Monterrey y San Pedro Garza García</image:title>
+      <image:caption>Decoración profesional con globos, nieves de garrafa estilo Jalisco, taller de arte de yesitos y mobiliario.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://arcano3ai.github.io/Globos/assets/images/spgg_balloon_entrance.jpg</image:loc>
+      <image:title>Decoración con Globos San Pedro Garza García</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://arcano3ai.github.io/Globos/assets/images/servicios/nieve_estilo_jalisco.jpg</image:loc>
+      <image:title>Barra de Nieve Estilo Jalisco con Chamoy y Tostitos con Elote</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://arcano3ai.github.io/Globos/assets/images/servicios/taller_arte_caballetes.jpg</image:loc>
+      <image:title>Taller de Arte Infantil Yesitos y Caballetes Nancy García</image:title>
+    </image:image>
+  </url>
+</urlset>

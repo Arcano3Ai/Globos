@@ -1,0 +1,26 @@
+# Robots.txt para Nancy García Eventos · Monterrey & San Pedro Garza García
+# https://arcano3ai.github.io/Globos/
+
+User-agent: *
+Allow: /
+Disallow: /documentos/arcano*
+Disallow: /.git/
+
+# AI Crawlers & LLM Search Agents
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Sitemap Location
+Sitemap: https://arcano3ai.github.io/Globos/sitemap.xml
