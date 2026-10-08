@@ -2243,8 +2243,17 @@ h1, h2, h3, h4, h5, h6 {
    ========================================================================== */
 .footer {
   padding: 80px 0 40px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: #040309;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  background: #07050d;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.footer .brand-title-main {
+  color: #FFFFFF !important;
+}
+
+.footer .brand-title-sub {
+  color: var(--gold-metallic) !important;
 }
 
 .footer-grid {
@@ -2263,27 +2272,35 @@ h1, h2, h3, h4, h5, h6 {
 .social-link {
   width: 44px; height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  border: var(--border-glass);
-  color: var(--text-white);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #FFFFFF;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   text-decoration: none;
   transition: var(--transition);
 }
 
 .social-link:hover {
-  background: var(--magenta-neon);
-  border-color: var(--magenta-neon);
+  background: #1877F2;
+  border-color: #1877F2;
+  color: #FFFFFF;
   transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(24, 119, 242, 0.4);
+}
+
+.social-link.social-link-wa:hover {
+  background: #25D366;
+  border-color: #25D366;
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
 }
 
 .footer-bottom {
   text-align: center;
-  color: var(--text-muted);
-  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.88rem;
   padding-top: 30px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* ==========================================================================
