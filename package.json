@@ -1,0 +1,23 @@
+{
+  "name": "nancy-garcia-eventos",
+  "version": "1.0.0",
+  "description": "Sitio web oficial y catálogo comercial de Nancy García Decoración y Eventos",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "echo \"Build successfully completed\"",
+    "test": "node -c script.js && node -c server.js"
+  },
+  "keywords": [
+    "nancy-garcia",
+    "decoracion-globos",
+    "eventos-monterrey",
+    "caballetes-infantiles"
+  ],
+  "author": "Nancy García",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
