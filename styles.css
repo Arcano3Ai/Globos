@@ -3882,6 +3882,445 @@ body.menu-open .floating-wa-balloon {
   box-shadow: 0 8px 25px rgba(0, 245, 212, 0.4);
 }
 
+/* ==========================================================================
+   PAQUETES OFICIALES NANCY GARCÍA — ESTILOS DE TARJETAS & SELECTOR DE ZONA
+   ========================================================================== */
+
+.pkg-zone-switcher-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 0 auto 46px auto;
+  max-width: 640px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50px;
+  padding: 12px 20px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.pkg-zone-label {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--gold-metallic);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+.pkg-zone-toggle {
+  display: flex;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 40px;
+  padding: 4px;
+  width: 100%;
+}
+
+.pkg-zone-btn {
+  flex: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #BDB7CC;
+  padding: 12px 18px;
+  border-radius: 35px;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pkg-zone-btn:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pkg-zone-btn.active {
+  background: linear-gradient(135deg, var(--magenta-neon) 0%, #D4006A 100%);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 20px rgba(255, 0, 127, 0.45);
+}
+
+.pkg-zone-btn .pkg-zone-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.pkg-zone-btn.active .pkg-zone-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+/* Grid de las 3 Tarjetas de Paquetes */
+.pkg-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  align-items: stretch;
+  margin-bottom: 60px;
+}
+
+.pkg-card {
+  background: rgba(23, 20, 38, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 32px 26px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+}
+
+.pkg-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 0, 127, 0.4);
+  box-shadow: 0 24px 60px rgba(255, 0, 127, 0.2);
+}
+
+.pkg-card.featured {
+  border: 2px solid var(--magenta-neon);
+  background: linear-gradient(180deg, rgba(38, 24, 52, 0.95) 0%, rgba(20, 16, 32, 0.95) 100%);
+  box-shadow: 0 20px 60px rgba(255, 0, 127, 0.3);
+  transform: scale(1.02);
+}
+
+.pkg-card.featured:hover {
+  transform: scale(1.02) translateY(-8px);
+  box-shadow: 0 30px 75px rgba(255, 0, 127, 0.45);
+}
+
+.pkg-card-ribbon {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--gold-metallic) 0%, #B8860B 100%);
+  color: #1A1302;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 6px 18px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+}
+
+.pkg-card-ribbon.neon {
+  background: linear-gradient(135deg, var(--magenta-neon) 0%, var(--turquoise-neon) 100%);
+  color: #FFFFFF;
+  box-shadow: 0 6px 20px rgba(255, 0, 127, 0.5);
+}
+
+.pkg-card-ribbon.violet {
+  background: linear-gradient(135deg, #9B5DE5 0%, #00F5D4 100%);
+  color: #FFFFFF;
+  box-shadow: 0 6px 20px rgba(155, 93, 229, 0.45);
+}
+
+.pkg-card-badge-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--turquoise-neon);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.pkg-card-title {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.25;
+  margin-bottom: 10px;
+}
+
+.pkg-card-desc {
+  font-size: 0.88rem;
+  color: #BDB7CC;
+  line-height: 1.5;
+  margin-bottom: 22px;
+  min-height: 42px;
+}
+
+/* Caja de Precios Dinámicos */
+.pkg-price-box {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.pkg-price-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.pkg-price-number {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #FFFFFF;
+  line-height: 1;
+  transition: all 0.3s ease;
+}
+
+.pkg-price-currency {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gold-metallic);
+}
+
+.pkg-price-zone-tag {
+  font-size: 0.78rem;
+  color: var(--turquoise-neon);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.pkg-price-deposit {
+  font-size: 0.76rem;
+  color: #D6D2E0;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+  padding-top: 6px;
+  margin-top: 6px;
+  display: block;
+}
+
+.pkg-price-deposit strong {
+  color: var(--gold-metallic);
+}
+
+/* Lista de Inclusiones del Paquete */
+.pkg-features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 26px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  flex: 1;
+}
+
+.pkg-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.86rem;
+  color: #E2DFEB;
+  line-height: 1.45;
+}
+
+.pkg-feature-item i {
+  color: var(--magenta-neon);
+  flex-shrink: 0;
+  margin-top: 3px;
+  font-size: 0.95rem;
+}
+
+.pkg-feature-item.accent-gold i {
+  color: var(--gold-metallic);
+}
+
+.pkg-feature-item.accent-cyan i {
+  color: var(--turquoise-neon);
+}
+
+.pkg-feature-item strong {
+  color: #FFFFFF;
+}
+
+/* Acciones en la Tarjeta */
+.pkg-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.btn-pkg-select {
+  width: 100%;
+  padding: 13px 18px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-pkg-select:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: var(--turquoise-neon);
+  color: var(--turquoise-neon);
+}
+
+.btn-pkg-wa {
+  width: 100%;
+  padding: 13px 18px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #25D366;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.btn-pkg-wa:hover {
+  background: #20BD5A;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
+  color: #FFFFFF;
+}
+
+.pkg-both-zones {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.78rem;
+  color: #BDB7CC;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pkg-both-zones strong {
+  color: #FFFFFF;
+}
+
+/* Banner de Atención e Informes Personalizados */
+.pkg-help-banner {
+  background: linear-gradient(135deg, rgba(255, 0, 127, 0.12) 0%, rgba(0, 245, 212, 0.1) 100%);
+  border: 1px solid rgba(255, 0, 127, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 32px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  margin-top: 15px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.pkg-help-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.pkg-help-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--magenta-neon), #9B5DE5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #FFFFFF;
+  flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(255, 0, 127, 0.4);
+}
+
+.pkg-help-title {
+  font-family: var(--font-display);
+  font-size: 1.22rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 6px;
+}
+
+.pkg-help-text {
+  font-size: 0.92rem;
+  color: #E2DFEB;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.pkg-help-actions {
+  flex-shrink: 0;
+}
+
+.pkg-help-wa-btn {
+  padding: 15px 28px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+@media (max-width: 850px) {
+  .pkg-help-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 26px 20px;
+  }
+  .pkg-help-content {
+    flex-direction: column;
+  }
+  .pkg-help-actions {
+    width: 100%;
+  }
+  .pkg-help-wa-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* Safe Area Insets Support for iOS (iPhone Notch / Dynamic Island / Gesture Bar) */
 .floating-wa-balloon {
   bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important;
@@ -3889,6 +4328,24 @@ body.menu-open .floating-wa-balloon {
 }
 
 /* Responsive Media Queries for Mobile (Android & iOS) */
+@media (max-width: 1100px) {
+  .pkg-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    max-width: 580px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .pkg-card.featured {
+    transform: none;
+  }
+  
+  .pkg-card.featured:hover {
+    transform: translateY(-8px);
+  }
+}
+
 @media (max-width: 992px) {
   .ai-studio-grid {
     grid-template-columns: 1fr;
@@ -3902,6 +4359,17 @@ body.menu-open .floating-wa-balloon {
 }
 
 @media (max-width: 600px) {
+  .pkg-zone-toggle {
+    flex-direction: column;
+    border-radius: var(--radius-sm);
+  }
+  
+  .pkg-zone-btn {
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+  
   .ai-chips-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -3925,5 +4393,6 @@ body.menu-open .floating-wa-balloon {
     padding: 16px 14px;
   }
 }
+
 
 

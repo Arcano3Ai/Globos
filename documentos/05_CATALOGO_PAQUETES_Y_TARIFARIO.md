@@ -12,42 +12,62 @@
 
 ---
 
-### 2. Paquetes Comerciales Estrella
+### 2. Paquetes Comerciales Oficiales
 
-#### 🎈 PAQUETE 1: "Fiesta Creativa Nancy García" (Especial Caballetes & Arte)
-*Recomendado para eventos infantiles de 15 a 30 niños.*
-* **Incluye:**
-  * 4 Estaciones de Caballete Infantil Doble Cara de madera (8 plazas de pintura simultáneas).
-  * 8 Banquitos infantiles de madera barnizada.
-  * Dotación de pinturas vinílicas no tóxicas en colores primarios y secundarios.
-  * Mandiles plásticos protectores, pinceles de diversos calibres y godetes lavables.
-  * 25 Yesitos temáticos para pintar según la temática del festejo (con bolsa de celofán individual para obsequio).
-  * Montaje, desmontaje y limpieza de estaciones de arte.
-* **Tiempo de renta:** Hasta 4 horas de festejo.
-* **Precio Sugerido:** **$2,450.00 MXN** *(Ahorro vs precio individual: ~$450 MXN)*.
-
----
-
-#### 🌟 PAQUETE 2: "Escenografía Mágica" (Decoración con Globos & Backdrops)
-*Recomendado para mesa principal de pastel, área de fotos o entrada de salón.*
-* **Incluye:**
-  * Arco de Globos Orgánico Desestructurado de **4.5 a 5.0 metros**.
-  * Paleta de color personalizada de hasta 4 tonos (incluyendo acabados cromo, metálico y tratamiento *High-Shine* para brillo y durabilidad).
-  * Renta de Mampara circular / arqueada con vinil personalizado con el nombre del festejado(a).
-  * Renta de Set de 3 Cilindros blancos o temáticos para pastel y postres.
-  * Acabados especiales y tratamiento High-Shine para máxima duración y brillo.
-* **Precio Sugerido:** **$3,800.00 MXN**.
+#### 🎈 PAQUETE 1: "Aro Decorado + Caballetes de Arte (1 Hora)"
+*Recomendado para celebraciones infantiles que buscan ambientación con globos y actividad de arte para los niños.*
+* **Decoración Principal:**
+  * Aro decorado profesional con 2 a 3 tonos de globos de látex de alta durabilidad.
+  * Letrero a elegir: Luz LED Neón o MDF calado temático.
+  * Mesita para pastel o repostería.
+* **Servicio de Caballetes Infantil (1 Hora):**
+  * 5 Caballetes dobles de madera (10 espacios infantiles simultáneos).
+  * Pinturas vinílicas lavables no tóxicas ilimitadas.
+  * Dibujos temáticos ilimitados para colorear.
+  * Pinceles, estaciones con agua y toallitas húmedas para limpieza.
+  * 1 Persona de Staff para atención, guía y apoyo continuo a los niños.
+* **Precios Oficiales:**
+  * **Juárez y Guadalupe:** **$2,000.00 MXN**
+  * **Monterrey:** **$2,500.00 MXN**
+* **Apartado:** 50% de anticipo ($1,000.00 / $1,250.00 MXN) y saldo restante al montaje.
 
 ---
 
-#### 👑 PAQUETE 3: "Celebración Total VIP Nancy García" (Experiencia Completa)
-*El paquete definitivo que une decoración monumental de globos y zona de entretenimiento infantil.*
-* **Incluye:**
-  * **Decoración Principal:** Arco orgánico de globos de 6 metros + Mampara doble con temática completa + 3 Cilindros temáticos + Arreglo de base para mesa de dulces.
-  * **Zona de Arte & Caballetes:** 6 Caballetes dobles (12 plazas) + 12 Banquitos + Mandiles, pinceles, godetes y pinturas.
-  * **Recuerdos Infantiles:** 40 Yesitos temáticos empacados para pintar y llevar.
-  * **Bouquet de Globos:** Arreglo bouquet con número gigante de foil metálico de helio para el/la cumpleañero(a).
-* **Precio Sugerido:** **$6,400.00 MXN** *(Descuento por combo integral aplicado)*.
+#### 🌽 PAQUETE 2: "Elotes, Tostitos Preparados & Decoración Completa"
+*El paquete estrella todo en uno: snack favorito de la fiesta junto con montaje escenográfico.*
+* **Barra de Snacks y Antojitos:**
+  * 25 Elotes tiernos desgranados al vapor en vaso.
+  * 25 Bolsas de Tostitos preparados en barquito.
+  * **7 Aderezos:** Crema, mayonesa, aderezo chipotle, chile elote, queso amarillo caliente, salsa botanera y salsa casera especial.
+  * **5 Toppings:** Cacahuates, Cheetos, Ruffles, Doritos crujientes y queso rallado fresco.
+* **Decoración Principal:**
+  * Estructura a elegir: **Aro Decorado** o **Mampara Escenográfica**.
+  * Arco orgánico con 2 o 3 tonos de globos con tratamiento de brillo.
+  * Letrero a elegir: Luz LED Neón o Letrero MDF temático.
+  * Mesita para pastel o repostería.
+* **Precios Oficiales:**
+  * **Juárez y Guadalupe:** **$4,000.00 MXN**
+  * **Monterrey:** **$4,200.00 MXN**
+* **Apartado:** 50% de anticipo ($2,000.00 / $2,100.00 MXN) y saldo restante al montaje.
+
+---
+
+#### 🎨 PAQUETE 3: "Taller Creativo (2 Horas), Caballete de Bienvenida & 30 Yesitos"
+*La máxima experiencia artística infantil con recuerdos personalizados para todos los invitados.*
+* **Servicio de Caballetes Infantil (2 Horas de Servicio):**
+  * 10 Mandiles protectores para cuidar la ropa de los pequeños artistas.
+  * Pinturas vinílicas no tóxicas ilimitadas durante las 2 horas.
+  * Dibujos temáticos ilimitados para colorear.
+  * Pinceles de varios calibres, recipientes para agua y toallitas húmedas desinfectantes.
+* **Caballete de Bienvenida Especial:**
+  * Caballete de entrada con foto impresa de la festejada o festejado.
+  * Marco decorativo orgánico con 2 o 3 tonos de globos.
+* **Recuerdos Infantiles Personalizados:**
+  * **30 Yesitos temáticos personalizados**: cada uno incluye figura de yeso cerámico, 1 pincel y 1 botecito de pintura en bolsita individual para llevar.
+* **Precios Oficiales:**
+  * **Juárez y Guadalupe:** **$1,900.00 MXN**
+  * **Monterrey:** **$2,200.00 MXN**
+* **Apartado:** 50% de anticipo ($950.00 / $1,100.00 MXN) y saldo restante al montaje.
 
 ---
 

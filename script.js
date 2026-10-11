@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initPortfolioFilter();
   initLightboxModal();
   initInteractiveConfigurator();
-  initInteractiveQuoteCalculator();
+  initOfficialPackages();
   initQuoteFormWhatsApp();
   initScrollAnimations();
   initCollapsibleSections();
@@ -791,458 +791,93 @@ function initFaqAccordion() {
 }
 
 /* --------------------------------------------------------------------------
-   13. COTIZADOR EN VIVO & CALCULADOR DE PRESUPUESTO INTERACTIVO
-   Sistema interactivo multiplataforma (iOS, Android y Desktop)
-   Tarifario y servicios reales de Nancy García Eventos (Monterrey & SPGG)
+   13. PAQUETES OFICIALES NANCY GARCÍA (SELECTOR DE ZONA & INFORMES WHATSAPP)
+   Juárez, Guadalupe y Monterrey
    -------------------------------------------------------------------------- */
-function initInteractiveQuoteCalculator() {
-  const quoteSection = document.getElementById('cotizador-en-vivo');
-  if (!quoteSection) return;
+function initOfficialPackages() {
+  const zoneBtnJG = document.getElementById('pkgZoneBtnJG');
+  const zoneBtnMty = document.getElementById('pkgZoneBtnMty');
 
-  // Touch Haptic Feedback Helper (Android & iOS WebKit Vibration API)
-  function triggerHaptic(pattern = [12, 24]) {
+  const pkg1Price = document.getElementById('pkg1PriceDisplay');
+  const pkg1ZoneTag = document.getElementById('pkg1ZoneTag');
+  const pkg1Deposit = document.getElementById('pkg1DepositDisplay');
+  const pkg1WaBtn = document.getElementById('pkg1WaBtn');
+
+  const pkg2Price = document.getElementById('pkg2PriceDisplay');
+  const pkg2ZoneTag = document.getElementById('pkg2ZoneTag');
+  const pkg2Deposit = document.getElementById('pkg2DepositDisplay');
+  const pkg2WaBtn = document.getElementById('pkg2WaBtn');
+
+  const pkg3Price = document.getElementById('pkg3PriceDisplay');
+  const pkg3ZoneTag = document.getElementById('pkg3ZoneTag');
+  const pkg3Deposit = document.getElementById('pkg3DepositDisplay');
+  const pkg3WaBtn = document.getElementById('pkg3WaBtn');
+
+  function triggerHaptic(ms = 15) {
     if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
-      try {
-        navigator.vibrate(pattern);
-      } catch (e) {
-        // Safe fallback if unsupported
-      }
+      try { navigator.vibrate(ms); } catch (e) {}
     }
   }
 
-  // TARIFARIO OFICIAL (Estructura centralizada para actualización inmediata)
-  const EVENT_RATES = {
-    totalVip: 6400,          // Paquete Celebración Total VIP (Globos + Yesitos/Caballetes + Cilindros)
-    escenografiaMagica: 3800,// Paquete Escenografía Mágica (Arco Orgánico 5m + Mampara + Cilindros)
-    fiestaCreativa: 2450,    // Paquete Fiesta Creativa (4 Caballetes dobles + Yesitos para 25 niños)
-    aLaCartaBase: 1800,      // Base de servicio individual
-    barraNieves: 1600,       // Barra de nieve artesanal estilo Jalisco + Tostitos con elote
-    mobiliarioCilindros: 650 // Renta set cilindros MDF
-  };
+  function updateZone(zone) {
+    const isJG = zone === 'jg';
+    const zoneName = isJG ? 'Juárez y Guadalupe' : 'Monterrey';
 
-  // Estado del Cotizador
-  const quoteState = {
-    eventType: 'infantil',
-    eventLabel: 'Cumpleaños Infantil',
-    zone: 'spgg',
-    zoneLabel: 'San Pedro Garza García',
-    flete: 250,
-    guests: 'medio',
-    guestsLabel: '25 - 50 personas',
-    services: {
-      globos: true,
-      yesitos: true,
-      nieves: false,
-      mobiliario: false
-    },
-    themePrompt: ''
-  };
+    if (isJG) {
+      zoneBtnJG?.classList.add('active');
+      zoneBtnMty?.classList.remove('active');
+    } else {
+      zoneBtnJG?.classList.remove('active');
+      zoneBtnMty?.classList.add('active');
+    }
 
-  // Elementos DOM
-  const typeChips = quoteSection.querySelectorAll('#aiEventTypeGroup .ai-chip');
-  const zoneSelect = document.getElementById('aiZoneSelect');
-  const guestsChips = quoteSection.querySelectorAll('#aiGuestsGroup .ai-chip');
-  const quickThemeBtns = quoteSection.querySelectorAll('.ai-quick-btn');
-  const themeInput = document.getElementById('aiThemePrompt');
-  const generateBtn = document.getElementById('aiGenerateBtn');
-  const btnText = document.getElementById('aiBtnText');
-  const spinner = document.getElementById('aiSpinner');
-  const sendWhatsAppBtn = document.getElementById('aiSendWhatsAppBtn');
+    // Paquete 1: $2,000 JG / $2,500 Mty
+    const p1Cost = isJG ? 2000 : 2500;
+    const p1Dep = Math.round(p1Cost * 0.5);
+    if (pkg1Price) pkg1Price.textContent = `$${p1Cost.toLocaleString('es-MX')}`;
+    if (pkg1ZoneTag) pkg1ZoneTag.textContent = zoneName;
+    if (pkg1Deposit) pkg1Deposit.innerHTML = `Aparta con el 50%: <strong>$${p1Dep.toLocaleString('es-MX')} MXN</strong>`;
+    if (pkg1WaBtn) {
+      const msg = `Hola Nancy García! Deseo pedir informes y consultar disponibilidad para el *Paquete #1 (Aro Decorado + Caballetes 1h)* con tarifa de *$${p1Cost.toLocaleString('es-MX')} MXN* para la zona de *${zoneName}*.`;
+      pkg1WaBtn.href = `https://wa.me/528110626302?text=${encodeURIComponent(msg)}`;
+    }
 
-  // Checkboxes de Servicios
-  const srvGlobos = document.getElementById('aiSrvGlobos');
-  const srvYesitos = document.getElementById('aiSrvYesitos');
-  const srvNieves = document.getElementById('aiSrvNieves');
-  const srvMobiliario = document.getElementById('aiSrvMobiliario');
+    // Paquete 2: $4,000 JG / $4,200 Mty
+    const p2Cost = isJG ? 4000 : 4200;
+    const p2Dep = Math.round(p2Cost * 0.5);
+    if (pkg2Price) pkg2Price.textContent = `$${p2Cost.toLocaleString('es-MX')}`;
+    if (pkg2ZoneTag) pkg2ZoneTag.textContent = zoneName;
+    if (pkg2Deposit) pkg2Deposit.innerHTML = `Aparta con el 50%: <strong>$${p2Dep.toLocaleString('es-MX')} MXN</strong>`;
+    if (pkg2WaBtn) {
+      const msg = `Hola Nancy García! Deseo pedir informes y consultar disponibilidad para el *Paquete #2 (25 Elotes + 25 Tostitos + Decoración)* con tarifa de *$${p2Cost.toLocaleString('es-MX')} MXN* para la zona de *${zoneName}*.`;
+      pkg2WaBtn.href = `https://wa.me/528110626302?text=${encodeURIComponent(msg)}`;
+    }
 
-  // Elementos del Resumen de Cotización
-  const resTitle = document.getElementById('aiResultTitle');
-  const resSubtitle = document.getElementById('aiResultSubtitle');
-  const resPaletteName = document.getElementById('aiPaletteName');
-  const resSwatchesRow = document.getElementById('aiSwatchesRow');
-  const resSpecsList = document.getElementById('aiSpecsList');
-  const resPriceEstimate = document.getElementById('aiPriceEstimate');
-  const resPriceNote = document.getElementById('aiPriceNote');
-  const resDiscountTag = document.getElementById('aiDiscountTag');
-  const resBaseCost = document.getElementById('aiBaseCost');
-  const resFleteCost = document.getElementById('aiFleteCost');
-  const resDepositCost = document.getElementById('aiDepositCost');
+    // Paquete 3: $1,900 JG / $2,200 Mty
+    const p3Cost = isJG ? 1900 : 2200;
+    const p3Dep = Math.round(p3Cost * 0.5);
+    if (pkg3Price) pkg3Price.textContent = `$${p3Cost.toLocaleString('es-MX')}`;
+    if (pkg3ZoneTag) pkg3ZoneTag.textContent = zoneName;
+    if (pkg3Deposit) pkg3Deposit.innerHTML = `Aparta con el 50%: <strong>$${p3Dep.toLocaleString('es-MX')} MXN</strong>`;
+    if (pkg3WaBtn) {
+      const msg = `Hola Nancy García! Deseo pedir informes y consultar disponibilidad para el *Paquete #3 (Taller 2h + Caballete Bienvenida + 30 Yesitos)* con tarifa de *$${p3Cost.toLocaleString('es-MX')} MXN* para la zona de *${zoneName}*.`;
+      pkg3WaBtn.href = `https://wa.me/528110626302?text=${encodeURIComponent(msg)}`;
+    }
+  }
 
-  // 1. Selector de Tipo de Festejo
-  typeChips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      triggerHaptic(15);
-      typeChips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      quoteState.eventType = chip.getAttribute('data-type');
-      quoteState.eventLabel = chip.getAttribute('data-label');
-      updatePalettePreviewLive();
-      computeQuote(false);
-    });
+  zoneBtnJG?.addEventListener('click', () => {
+    triggerHaptic(15);
+    updateZone('jg');
   });
 
-  // 2. Selector de Municipio / Zona
-  if (zoneSelect) {
-    zoneSelect.addEventListener('change', () => {
-      triggerHaptic(10);
-      const selectedOption = zoneSelect.options[zoneSelect.selectedIndex];
-      quoteState.zone = zoneSelect.value;
-      quoteState.zoneLabel = selectedOption.text.split('(')[0].trim();
-      quoteState.flete = parseInt(selectedOption.getAttribute('data-flete') || '250', 10);
-      computeQuote(false);
-    });
-  }
-
-  // 3. Selector de Invitados / Aforo
-  guestsChips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      triggerHaptic(15);
-      guestsChips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      quoteState.guests = chip.getAttribute('data-guests');
-      quoteState.guestsLabel = chip.getAttribute('data-label');
-      computeQuote(false);
-    });
+  zoneBtnMty?.addEventListener('click', () => {
+    triggerHaptic(15);
+    updateZone('mty');
   });
 
-  // 4. Checkboxes de Servicios
-  const syncCheckPill = (checkbox) => {
-    if (!checkbox) return;
-    const parentPill = checkbox.closest('.ai-check-pill');
-    if (parentPill) {
-      if (checkbox.checked) {
-        parentPill.classList.add('active');
-      } else {
-        parentPill.classList.remove('active');
-      }
-    }
-  };
-
-  [srvGlobos, srvYesitos, srvNieves, srvMobiliario].forEach(cb => {
-    if (!cb) return;
-    cb.addEventListener('change', () => {
-      triggerHaptic(12);
-      syncCheckPill(cb);
-      quoteState.services.globos = srvGlobos?.checked || false;
-      quoteState.services.yesitos = srvYesitos?.checked || false;
-      quoteState.services.nieves = srvNieves?.checked || false;
-      quoteState.services.mobiliario = srvMobiliario?.checked || false;
-      computeQuote(false);
-    });
-  });
-
-  // 5. Presets Rápidos de Colores y Temáticas
-  quickThemeBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      triggerHaptic(15);
-      const preset = btn.getAttribute('data-preset');
-      if (themeInput) {
-        themeInput.value = preset;
-        quoteState.themePrompt = preset;
-      }
-      updatePalettePreviewLive();
-      computeQuote(true);
-    });
-  });
-
-  if (themeInput) {
-    themeInput.addEventListener('input', () => {
-      quoteState.themePrompt = themeInput.value.trim();
-    });
-  }
-
-  // Catálogo de Paletas Cromáticas para Montajes
-  const PALETTES_CATALOG = {
-    safari: {
-      name: 'Safari Chic (Salvia, Oro Cromo & Marfil)',
-      swatches: [
-        { name: 'Salvia', hex: '#3A5A40' },
-        { name: 'Oro Cromo', hex: '#D4AF37' },
-        { name: 'Marfil Seda', hex: '#FFFDD0' },
-        { name: 'Blanco Nieve', hex: '#FFFFFF' }
-      ]
-    },
-    rosaGlam: {
-      name: 'Rosa Glam & Oro (Fucsia, Rose Gold & Oro Cromo)',
-      swatches: [
-        { name: 'Fiesta Fucsia', hex: '#FF007F' },
-        { name: 'Rose Gold', hex: '#B76E79' },
-        { name: 'Oro Cromo', hex: '#D4AF37' },
-        { name: 'Marfil Suave', hex: '#FFFDD0' }
-      ]
-    },
-    pastel: {
-      name: 'Pastel Dreamland (Rosa, Menta & Crema)',
-      swatches: [
-        { name: 'Rosa Pastel', hex: '#FFB7B2' },
-        { name: 'Menta Suave', hex: '#B5EAD7' },
-        { name: 'Crema Champán', hex: '#FFFFD1' },
-        { name: 'Lila Claro', hex: '#E2D4F0' }
-      ]
-    },
-    gala: {
-      name: 'Sampetrino Luxury (Oro, Champagne & Marfil)',
-      swatches: [
-        { name: 'Oro Cromo', hex: '#D4AF37' },
-        { name: 'Champagne', hex: '#F7E7CE' },
-        { name: 'Marfil Seda', hex: '#FFFDD0' },
-        { name: 'Blanco Perla', hex: '#FFFFFF' }
-      ]
-    },
-    bautizo: {
-      name: 'Pureza Celestial (Blanco, Oro Rosa & Salvia)',
-      swatches: [
-        { name: 'Blanco Seda', hex: '#FFFFFF' },
-        { name: 'Oro Rosa', hex: '#B76E79' },
-        { name: 'Crema Marfil', hex: '#FFFFF0' },
-        { name: 'Salvia Suave', hex: '#A3B18A' }
-      ]
-    },
-    dino: {
-      name: 'Dino Chic Aventura (Verde Olivo, Marrón & Cromo)',
-      swatches: [
-        { name: 'Verde Olivo', hex: '#556B2F' },
-        { name: 'Oro Cromo', hex: '#D4AF37' },
-        { name: 'Arena Tostada', hex: '#D2B48C' },
-        { name: 'Blanco Mate', hex: '#F8F9FA' }
-      ]
-    },
-    corporativo: {
-      name: 'Vanguardia Corporativa (Azul Índigo, Oro & Plata)',
-      swatches: [
-        { name: 'Azul Índigo', hex: '#1D3557' },
-        { name: 'Oro Metálico', hex: '#D4AF37' },
-        { name: 'Platino', hex: '#E0E1DD' },
-        { name: 'Blanco Puro', hex: '#FFFFFF' }
-      ]
-    }
-  };
-
-  // Detección de Paleta según Festejo y Temática
-  function detectBestPalette() {
-    const text = (quoteState.themePrompt + ' ' + quoteState.eventType).toLowerCase();
-    if (text.includes('safari') || text.includes('salvia') || text.includes('selva')) return PALETTES_CATALOG.safari;
-    if (text.includes('rosa') || text.includes('fucsia') || text.includes('glam') || text.includes('xv')) return PALETTES_CATALOG.rosaGlam;
-    if (text.includes('dino') || text.includes('dinosaurio')) return PALETTES_CATALOG.dino;
-    if (text.includes('pastel') || text.includes('princesa') || text.includes('arcoíris') || text.includes('rainbow')) return PALETTES_CATALOG.pastel;
-    if (text.includes('boda') || text.includes('civil') || text.includes('gala')) return PALETTES_CATALOG.gala;
-    if (text.includes('bautizo') || text.includes('comunión') || text.includes('baby')) return PALETTES_CATALOG.bautizo;
-    if (text.includes('corporativo') || text.includes('empresa') || text.includes('inauguración')) return PALETTES_CATALOG.corporativo;
-
-    if (quoteState.eventType === 'xv') return PALETTES_CATALOG.rosaGlam;
-    if (quoteState.eventType === 'boda') return PALETTES_CATALOG.gala;
-    if (quoteState.eventType === 'bautizo' || quoteState.eventType === 'babyshower') return PALETTES_CATALOG.bautizo;
-    if (quoteState.eventType === 'corporativo') return PALETTES_CATALOG.corporativo;
-    return PALETTES_CATALOG.safari;
-  }
-
-  function renderSwatches(palette) {
-    if (!resSwatchesRow || !palette) return;
-    resSwatchesRow.innerHTML = '';
-    palette.swatches.forEach(sw => {
-      const div = document.createElement('div');
-      div.className = 'ai-swatch';
-      div.style.background = sw.hex;
-      div.setAttribute('title', `${sw.name} (${sw.hex})`);
-      div.innerHTML = `<span class="swatch-name">${sw.name}</span>`;
-      resSwatchesRow.appendChild(div);
-    });
-    if (resPaletteName) {
-      resPaletteName.textContent = palette.name;
-    }
-  }
-
-  function updatePalettePreviewLive() {
-    const palette = detectBestPalette();
-    renderSwatches(palette);
-  }
-
-  // 6. Cálculo del Presupuesto y Desglose de Servicios
-  function computeQuote(animateVisual = true) {
-    const palette = detectBestPalette();
-    renderSwatches(palette);
-
-    let title = '';
-    let summary = '';
-    let specs = [];
-    let basePrice = 0;
-    let savings = 0;
-
-    const hasGlobos = quoteState.services.globos;
-    const hasYesitos = quoteState.services.yesitos;
-    const hasNieves = quoteState.services.nieves;
-    const hasMobiliario = quoteState.services.mobiliario;
-
-    // A. Combo Completo: Globos + Yesitos
-    if (hasGlobos && hasYesitos) {
-      title = 'Celebración Total VIP Nancy García';
-      summary = `Propuesta integral con paleta ${palette.name}. Combina escenografía de globos de hasta 6 metros con zona infantil de caballetes y yesitos temáticos empacados para recuerdo.`;
-      basePrice = EVENT_RATES.totalVip;
-      savings = 950;
-      specs = [
-        'Arco orgánico desestructurado de 5.0 a 6.0 metros con tratamiento High-Shine para brillo y durabilidad.',
-        'Mampara arqueada o circular para fotos con vinil personalizado con el nombre del festejado(a).',
-        'Set de 3 Cilindros blancos MDF para pastel y repostería.',
-        'Zona de arte: 6 Caballetes dobles de madera (12 plazas) + 12 banquitos barnizados + mandiles, pinceles, godetes y pinturas vinílicas lavables.',
-        '40 Yesitos temáticos cerámicos empacados individualmente en celofán para obsequio de los niños.',
-        'Bouquet de globos con número gigante de foil metálico de helio para el/la cumpleañero(a).'
-      ];
-    }
-    // B. Solo Zona de Arte (Yesitos & Caballetes)
-    else if (hasYesitos && !hasGlobos) {
-      title = 'Fiesta Creativa Nancy García (Caballetes & Arte)';
-      summary = `Estaciones infantiles de pintura y arte en madera en armonía con ${palette.name}. Los pequeños pintan sus propias figuras cerámicas para llevar a casa.`;
-      basePrice = EVENT_RATES.fiestaCreativa;
-      savings = 450;
-      specs = [
-        '4 Estaciones de Caballete Infantil Doble Cara de madera (8 plazas simultáneas).',
-        '8 Banquitos infantiles de madera barnizada y mandiles plásticos protectores.',
-        'Dotación de pinturas vinílicas no tóxicas, pinceles de diversos calibres y godetes lavables.',
-        '25 Yesitos temáticos para pintar según la temática del festejo, con bolsita individual.',
-        'Montaje, supervisión inicial, desmontaje y limpieza completa de estaciones de arte.'
-      ];
-    }
-    // C. Solo Decoración con Globos
-    else if (hasGlobos && !hasYesitos) {
-      title = 'Escenografía Mágica (Backdrop & Globos)';
-      summary = `Montaje escenográfico de alto impacto con paleta ${palette.name}. Ideal para mesa principal de pastel, área de fotos o entrada de salón.`;
-      basePrice = EVENT_RATES.escenografiaMagica;
-      savings = 600;
-      specs = [
-        'Arco orgánico desestructurado de 4.5 a 5.0 metros con globos de látex biodegradables calidad premium.',
-        'Tratamiento High-Shine para brillo deslumbrante y máxima resistencia en climas de Monterrey.',
-        'Mampara arqueada con vinil personalizado en tipografía caligráfica con nombre del festejado(a).',
-        'Set de 3 Cilindros de MDF para pastel y postres.'
-      ];
-    }
-    // D. Servicios a la Carta
-    else {
-      title = 'Servicios Seleccionados Nancy García';
-      summary = `Configuración personalizada con servicios especializados en paleta ${palette.name}.`;
-      basePrice = EVENT_RATES.aLaCartaBase;
-      savings = 0;
-      specs = [
-        'Coordinación directa de logística y montaje con Nancy García.',
-        'Materiales de alta durabilidad adaptados a interior o exteriores en SPGG y Monterrey.'
-      ];
-    }
-
-    // Add-on Barra de Nieves
-    if (hasNieves) {
-      basePrice += EVENT_RATES.barraNieves;
-      specs.push('Barra de Nieve de Garrafa Estilo Jalisco: 50 porciones servidas en vaso con chamoy líquido y en polvo, más Tostitos preparados con elote desgranado.');
-    }
-
-    // Add-on Mobiliario si está marcado y no estaba en el paquete
-    if (hasMobiliario && !hasGlobos) {
-      basePrice += EVENT_RATES.mobiliarioCilindros;
-      specs.push('Renta de Set de 3 Cilindros MDF de repostería y mampara circular para fotos.');
-    }
-
-    // Ajuste por aforo extendido
-    if (quoteState.guests === 'grande') {
-      basePrice += 800;
-      specs.push('Ampliación de material y plazas infantiles para aforo de 50 a 90 personas.');
-    } else if (quoteState.guests === 'monumental') {
-      basePrice += 1600;
-      specs.push('Escala monumental para 100+ personas con soporte y equipo de montaje extendido.');
-    }
-
-    const flete = quoteState.flete;
-    const total = basePrice + flete;
-    const deposit = Math.round(total * 0.5);
-
-    // Actualizar Interfaz
-    if (resTitle) resTitle.textContent = title;
-    if (resSubtitle) resSubtitle.textContent = summary;
-
-    if (resSpecsList) {
-      resSpecsList.innerHTML = '';
-      specs.forEach(s => {
-        const li = document.createElement('li');
-        li.innerHTML = `<i class="bi bi-check-circle-fill"></i> ${s}`;
-        resSpecsList.appendChild(li);
-      });
-    }
-
-    if (resPriceEstimate) {
-      resPriceEstimate.innerHTML = `$${total.toLocaleString('es-MX')} <span class="ai-price-currency">MXN</span>`;
-    }
-    if (resPriceNote) {
-      resPriceNote.textContent = `*Incluye flete y montaje en ${quoteState.zoneLabel}`;
-    }
-    if (resDiscountTag) {
-      resDiscountTag.textContent = savings > 0 ? `~$${savings.toLocaleString('es-MX')} MXN` : 'PRECIO PREFERENCIAL';
-    }
-    if (resBaseCost) {
-      resBaseCost.textContent = `$${basePrice.toLocaleString('es-MX')} MXN`;
-    }
-    if (resFleteCost) {
-      resFleteCost.textContent = `$${flete.toLocaleString('es-MX')} MXN (${quoteState.zoneLabel})`;
-    }
-    if (resDepositCost) {
-      resDepositCost.textContent = `$${deposit.toLocaleString('es-MX')} MXN (50%)`;
-    }
-
-    // Formateador del Mensaje de WhatsApp
-    if (sendWhatsAppBtn) {
-      sendWhatsAppBtn.onclick = () => {
-        triggerHaptic([20, 40, 20]);
-        const themeText = quoteState.themePrompt ? quoteState.themePrompt : palette.name;
-        const msg =
-`👑 *COTIZACIÓN DE SERVICIOS — NANCY GARCÍA EVENTOS* 👑
-------------------------------------------------
-🎯 *Tipo de Festejo:* ${quoteState.eventLabel}
-📍 *Municipio / Zona:* ${quoteState.zoneLabel} (Flete: $${flete} MXN)
-👥 *Aforo Estimado:* ${quoteState.guestsLabel}
-🎨 *Colores / Temática:* ${themeText}
-💎 *Paleta Sugerida:* ${palette.name}
-📦 *Paquete / Configuración:* ${title}
-💰 *Inversión Total Estimada:* $${total.toLocaleString('es-MX')} MXN
-💵 *Anticipo para Apartar (50%):* $${deposit.toLocaleString('es-MX')} MXN
-
-✨ *Servicios Incluidos:*
-${specs.slice(0, 5).map(s => '• ' + s).join('\n')}
-
-Hola Nancy García! Armé esta cotización en su cotizador web y me gustaría consultar disponibilidad de fecha para mi evento.`;
-
-        const waUrl = `https://wa.me/528110626302?text=${encodeURIComponent(msg)}`;
-        window.open(waUrl, '_blank');
-      };
-    }
-  }
-
-  // 7. Botón de Calcular Presupuesto
-  if (generateBtn) {
-    generateBtn.addEventListener('click', () => {
-      triggerHaptic([20, 30, 20]);
-      if (spinner && btnText) {
-        spinner.style.display = 'inline-block';
-        btnText.textContent = 'CALCULANDO PRESUPUESTO...';
-        generateBtn.disabled = true;
-      }
-
-      setTimeout(() => {
-        computeQuote(true);
-        if (spinner && btnText) {
-          spinner.style.display = 'none';
-          btnText.textContent = 'ACTUALIZAR PRESUPUESTO';
-          generateBtn.disabled = false;
-        }
-
-        // Scroll suave al resultado en móvil
-        if (window.innerWidth < 992) {
-          const resultCard = document.getElementById('aiResultCard');
-          if (resultCard) {
-            resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-        }
-      }, 300);
-    });
-  }
-
-  // Cálculo inicial al cargar
-  computeQuote(false);
+  // Inicializar en Juárez y Guadalupe por defecto
+  updateZone('jg');
 }
+
 
 

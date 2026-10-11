@@ -226,7 +226,7 @@
           <li><a href="#seccion-nieves" class="nav-link">Nieves & Snacks</a></li>
           <li><a href="#seccion-arte-infantil" class="nav-link">Yesitos & Caballetes</a></li>
           <li><a href="#portafolio" class="nav-link">Galería</a></li>
-          <li><a href="#cotizador-en-vivo" class="nav-link nav-ai-highlight"><i class="bi bi-calculator" style="color: var(--turquoise-neon);"></i> Cotizador en Vivo</a></li>
+          <li><a href="#paquetes" class="nav-link nav-ai-highlight"><i class="bi bi-gift-fill" style="color: var(--turquoise-neon);"></i> Paquetes Oficiales</a></li>
           <li><a href="https://www.facebook.com/Caballetes.Garcia" target="_blank" rel="noopener" class="nav-link" style="color: #1877F2; font-weight: 700;"><i class="bi bi-facebook"></i> Facebook</a></li>
           <li><a href="#cotizacion" class="nav-link">Cotizar</a></li>
           <li class="nav-menu-wa-item">
@@ -303,8 +303,8 @@
             <a href="https://wa.me/528110626302?text=Hola%20Nancy%20Garc%C3%ADa%20Eventos,%20me%20gustar%C3%ADa%20cotizar%20servicios%20integrales%20para%20mi%20evento." target="_blank" rel="noopener" class="btn btn-primary hero-btn-main">
               <i class="bi bi-whatsapp"></i> COTIZAR POR WHATSAPP: 81-1062-6302
             </a>
-            <a href="#cotizador-en-vivo" class="btn btn-ai-sparkle">
-              <i class="bi bi-calculator-fill"></i> COTIZAR EN VIVO
+            <a href="#paquetes" class="btn btn-ai-sparkle">
+              <i class="bi bi-gift-fill"></i> VER PAQUETES OFICIALES
             </a>
             <a href="#divisiones" class="btn btn-secondary hero-btn-sub">
               <i class="bi bi-stars"></i> EXPLORAR SERVICIOS
@@ -1434,183 +1434,218 @@
       </div>
     </section>
 
-    <!-- SECCIÓN INTERACTIVA — COTIZADOR EN VIVO (CALCULADOR DE PRESUPUESTO) -->
-    <section id="cotizador-en-vivo" class="ai-studio-section">
+    <!-- SECCIÓN ESTELAR — PAQUETES OFICIALES PARA TU EVENTO -->
+    <div id="cotizador-en-vivo"></div>
+    <section id="paquetes" class="ai-studio-section">
       <div class="container">
+        <!-- Encabezado de la sección -->
         <div class="ai-section-header">
           <div class="section-tag ai-pulse-badge">
-            <i class="bi bi-calculator-fill"></i> COTIZADOR EN VIVO
+            <i class="bi bi-gift-fill"></i> PAQUETES OFICIALES
           </div>
           <h2 class="section-title">
-            CALCULA TU <span class="gradient-text-ai">PRESUPUESTO EN VIVO</span>
+            PAQUETES COMPLETOS PARA <span class="gradient-text-ai">TU EVENTO</span>
           </h2>
           <p class="section-subtitle">
-            Selecciona los servicios para tu festejo, visualiza tu combinación de colores y obtén un estimado con montaje y flete en Monterrey y San Pedro Garza García al instante.
+            Elige el paquete ideal para tu celebración con decoración profesional de globos, taller de arte infantil o deliciosa barra de snacks. Tarifas oficiales para Juárez, Guadalupe y Monterrey.
           </p>
         </div>
 
-        <div class="ai-studio-grid">
-          <!-- Columna 1: Panel de Control Interactivo del Evento (Mobile & Desktop) -->
-          <div class="ai-controls-card">
-            <div class="ai-card-badge"><i class="bi bi-sliders"></i> 1. CONFIGURA TU EVENTO</div>
-            
-            <!-- Paso 1: Tipo de Evento -->
-            <div class="ai-step">
-              <label class="ai-label"><i class="bi bi-balloon-heart-fill" style="color:var(--magenta-neon);"></i> ¿Qué tipo de festejo celebras?</label>
-              <div class="ai-chips-grid" id="aiEventTypeGroup">
-                <button type="button" class="ai-chip active" data-type="infantil" data-label="Cumpleaños Infantil">🎈 Infantil / Cumple</button>
-                <button type="button" class="ai-chip" data-type="xv" data-label="XV Años de Gala">👑 XV Años</button>
-                <button type="button" class="ai-chip" data-type="boda" data-label="Boda & Gala Social">💍 Boda / Civil</button>
-                <button type="button" class="ai-chip" data-type="bautizo" data-label="Bautizo & Primera Comunión">🕊️ Bautizo / Comunión</button>
-                <button type="button" class="ai-chip" data-type="babyshower" data-label="Baby Shower & Gender Reveal">🍼 Baby Shower</button>
-                <button type="button" class="ai-chip" data-type="corporativo" data-label="Inauguración & Corporativo">🏢 Corporativo / Marca</button>
+        <!-- Selector Interactivo de Municipio / Zona -->
+        <div class="pkg-zone-switcher-wrap">
+          <span class="pkg-zone-label"><i class="bi bi-geo-alt-fill"></i> Ver tarifas por municipio:</span>
+          <div class="pkg-zone-toggle" id="pkgZoneToggle">
+            <button type="button" class="pkg-zone-btn active" data-zone="jg" id="pkgZoneBtnJG">
+              <i class="bi bi-geo-alt"></i> Juárez y Guadalupe <span class="pkg-zone-badge">Tarifa Base</span>
+            </button>
+            <button type="button" class="pkg-zone-btn" data-zone="mty" id="pkgZoneBtnMty">
+              <i class="bi bi-buildings"></i> Monterrey <span class="pkg-zone-badge">Área Metropolitana</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Grid de las 3 Tarjetas de Paquetes Oficiales -->
+        <div class="pkg-cards-grid">
+          <!-- CARD PAQUETE #1 -->
+          <div class="pkg-card" id="pkgCard1">
+            <div class="pkg-card-ribbon">🎈 COMBO FIESTA & ARTE</div>
+            <div class="pkg-card-badge-top"><i class="bi bi-balloon-heart-fill"></i> PAQUETE #1</div>
+            <h3 class="pkg-card-title">Aro Decorado & Caballetes (1 Hora)</h3>
+            <p class="pkg-card-desc">
+              Decoración elegante con globos para fotos y mesa de pastel, combinada con 1 hora de taller de caballetes guiado por staff.
+            </p>
+
+            <div class="pkg-price-box">
+              <div class="pkg-price-main">
+                <span class="pkg-price-number" id="pkg1PriceDisplay">$2,000</span>
+                <span class="pkg-price-currency">MXN</span>
+              </div>
+              <span class="pkg-price-zone-tag" id="pkg1ZoneTag">Juárez y Guadalupe</span>
+              <span class="pkg-price-deposit" id="pkg1DepositDisplay">Aparta con el 50%: <strong>$1,000 MXN</strong></span>
+              <div class="pkg-both-zones">
+                <span>Juárez y Guadalupe: <strong>$2,000</strong></span>
+                <span>Monterrey: <strong>$2,500</strong></span>
               </div>
             </div>
 
-            <!-- Paso 2: Municipio / Zona de Monterrey & SPGG -->
-            <div class="ai-step">
-              <label class="ai-label" for="aiZoneSelect"><i class="bi bi-geo-alt-fill" style="color:var(--turquoise-neon);"></i> Municipio o Zona del Evento</label>
-              <select id="aiZoneSelect" class="form-select ai-select">
-                <option value="spgg" data-flete="250" selected>San Pedro Garza García (Valle Oriente, Chipinque, San Agustín)</option>
-                <option value="mty-cumbres" data-flete="200">Monterrey (Cumbres, San Jerónimo, Mitras, Obispado)</option>
-                <option value="mty-sur" data-flete="250">Monterrey Sur (Contry, Satélite, Tec)</option>
-                <option value="sn-guadalupe" data-flete="280">San Nicolás & Guadalupe</option>
-                <option value="carretera" data-flete="400">Carretera Nacional / Santiago / Los Rodríguez</option>
-                <option value="apodaca-escobedo" data-flete="350">Apodaca / Santa Catarina / García / Escobedo</option>
-              </select>
-            </div>
+            <ul class="pkg-features-list">
+              <li class="pkg-feature-item">
+                <i class="bi bi-check-circle-fill"></i>
+                <span><strong>Aro Decorado Profesional:</strong> Enmarcado con 2 a 3 tonos de globos orgánicos.</span>
+              </li>
+              <li class="pkg-feature-item">
+                <i class="bi bi-check-circle-fill"></i>
+                <span><strong>Letrero Temático:</strong> A elegir entre Luz LED Neón o MDF calado.</span>
+              </li>
+              <li class="pkg-feature-item">
+                <i class="bi bi-check-circle-fill"></i>
+                <span><strong>Mesita para Pastel:</strong> Mesa de apoyo para exhibición de pastel o postres.</span>
+              </li>
+              <li class="pkg-feature-item accent-gold">
+                <i class="bi bi-palette-fill"></i>
+                <span><strong>Servicio de Caballetes (1 Hora):</strong> 5 caballetes dobles de madera (10 espacios infantiles).</span>
+              </li>
+              <li class="pkg-feature-item accent-gold">
+                <i class="bi bi-stars"></i>
+                <span><strong>Materiales Ilimitados:</strong> Pinturas y dibujos ilimitados, pinceles, agua y toallitas húmedas.</span>
+              </li>
+              <li class="pkg-feature-item accent-cyan">
+                <i class="bi bi-person-badge-fill"></i>
+                <span><strong>1 Persona de Staff:</strong> Apoyo, cuidado y guía continua durante la hora de servicio.</span>
+              </li>
+            </ul>
 
-            <!-- Paso 3: Dimensión Estimada -->
-            <div class="ai-step">
-              <label class="ai-label"><i class="bi bi-people-fill" style="color:var(--gold-metallic);"></i> Dimensión estimada del festejo</label>
-              <div class="ai-chips-grid" id="aiGuestsGroup">
-                <button type="button" class="ai-chip" data-guests="intimo" data-label="Íntimo (15-25 invitados)">15 - 25 personas</button>
-                <button type="button" class="ai-chip active" data-guests="medio" data-label="Mediano (25-50 invitados)">25 - 50 personas</button>
-                <button type="button" class="ai-chip" data-guests="grande" data-label="Grande (50-90 invitados)">50 - 90 personas</button>
-                <button type="button" class="ai-chip" data-guests="monumental" data-label="Magno Evento (100+ invitados)">100+ personas</button>
-              </div>
-            </div>
-
-            <!-- Paso 4: Servicios Deseados (Multi-selección) -->
-            <div class="ai-step">
-              <label class="ai-label"><i class="bi bi-check2-square" style="color:var(--pink-neon);"></i> Servicios de tu interés</label>
-              <div class="ai-services-checklist">
-                <label class="ai-check-pill active">
-                  <input type="checkbox" id="aiSrvGlobos" checked>
-                  <span>🎈 Arco & Escenografía con Globos</span>
-                </label>
-                <label class="ai-check-pill active">
-                  <input type="checkbox" id="aiSrvYesitos" checked>
-                  <span>🎨 Caballetes & Taller de Yesitos</span>
-                </label>
-                <label class="ai-check-pill">
-                  <input type="checkbox" id="aiSrvNieves">
-                  <span>🍧 Barra Nieves Jalisco & Tostitos</span>
-                </label>
-                <label class="ai-check-pill">
-                  <input type="checkbox" id="aiSrvMobiliario">
-                  <span>🪑 Cilindros MDF, Mampara o Mobiliario</span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Paso 5: Temática o Colores Deseados -->
-            <div class="ai-step">
-              <div class="ai-label-row">
-                <label class="ai-label" for="aiThemePrompt"><i class="bi bi-palette-fill" style="color:var(--violet-deep);"></i> Temática o Colores Deseados</label>
-                <span class="ai-tip">¡Elige tu combinación favorita!</span>
-              </div>
-              <div class="ai-input-wrap">
-                <input type="text" id="aiThemePrompt" class="form-input ai-text-input" placeholder="Ej. Safari salvia y oro / Princesas pastel / Blanco y dorado...">
-              </div>
-              <div class="ai-quick-prompts">
-                <button type="button" class="ai-quick-btn" data-preset="Safari Chic Salvia, Oro Cromo & Marfil">🌿 Safari Chic</button>
-                <button type="button" class="ai-quick-btn" data-preset="Pastel Rainbow & Marfil Sampetrino">🌈 Pastel Dream</button>
-                <button type="button" class="ai-quick-btn" data-preset="Gala Oro Metálico, Champagne & Blanco Reflex">✨ Gala Oro & Blanco</button>
-                <button type="button" class="ai-quick-btn" data-preset="Rosa Glam, Fucsia & Oro">🌸 Rosa Glam & Oro</button>
-              </div>
-            </div>
-
-            <!-- Botón de Cálculo -->
-            <div style="margin-top: 24px;">
-              <button type="button" id="aiGenerateBtn" class="btn btn-ai-generate">
-                <i class="bi bi-calculator-fill"></i>
-                <span id="aiBtnText">CALCULAR PRESUPUESTO EN VIVO</span>
-                <div id="aiSpinner" class="ai-loading-spinner" style="display: none;"></div>
-              </button>
+            <div class="pkg-card-actions">
+              <a href="https://wa.me/528110626302?text=Hola%20Nancy%20Garc%C3%ADa!%20Deseo%20pedir%20informes%20y%20consultar%20disponibilidad%20para%20el%20Paquete%20%231%20(Aro%20Decorado%20%2B%20Caballetes%201h)." target="_blank" rel="noopener" class="btn btn-whatsapp btn-pkg-wa" id="pkg1WaBtn">
+                <i class="bi bi-whatsapp"></i> PEDIR INFORMES POR WHATSAPP
+              </a>
             </div>
           </div>
 
-          <!-- Columna 2: Resumen del Presupuesto -->
-          <div class="ai-result-card" id="aiResultCard">
-            <div class="ai-card-badge ai-blueprint-badge">
-              <i class="bi bi-receipt-cutoff"></i> 2. RESUMEN DE TU COTIZACIÓN
-            </div>
+          <!-- CARD PAQUETE #2 (DESTACADO / MÁS POPULAR) -->
+          <div class="pkg-card featured" id="pkgCard2">
+            <div class="pkg-card-ribbon neon">👑 EL MÁS COMPLETO · ANTOJITOS & DECO</div>
+            <div class="pkg-card-badge-top"><i class="bi bi-star-fill"></i> PAQUETE #2 · DESTACADO</div>
+            <h3 class="pkg-card-title">Elotes, Tostitos & Decoración de Gala</h3>
+            <p class="pkg-card-desc">
+              ¡El consentido de la fiesta! 50 porciones de snacks calientitos con barra libre de aderezos y toppings más escenografía a elegir.
+            </p>
 
-            <!-- Encabezado de la propuesta -->
-            <div class="ai-result-header">
-              <div class="ai-badge-status"><i class="bi bi-check2-circle"></i> ESTIMACIÓN PERSONALIZADA PARA MTY & SPGG</div>
-              <h3 id="aiResultTitle" class="ai-result-heading">Celebración Total VIP Nancy García</h3>
-              <p id="aiResultSubtitle" class="ai-result-summary">
-                Propuesta sugerida que combina escenografía de globos y zona de arte infantil para tu celebración.
-              </p>
-            </div>
-
-            <!-- Muestra de Paleta de Color sugerida -->
-            <div class="ai-palette-box">
-              <div class="ai-palette-title">
-                <span><i class="bi bi-palette-fill"></i> PALETA CROMÁTICA RECOMENDADA:</span>
-                <strong id="aiPaletteName">Sampetrino Luxury (Salvia & Oro Cromo)</strong>
+            <div class="pkg-price-box">
+              <div class="pkg-price-main">
+                <span class="pkg-price-number" id="pkg2PriceDisplay">$4,000</span>
+                <span class="pkg-price-currency">MXN</span>
               </div>
-              <div class="ai-swatches-row" id="aiSwatchesRow">
-                <div class="ai-swatch" style="background: #3A5A40;" title="Verde Salvia Orgánico"><span class="swatch-name">Salvia</span></div>
-                <div class="ai-swatch" style="background: #D4AF37;" title="Oro Cromo Reflex"><span class="swatch-name">Oro Cromo</span></div>
-                <div class="ai-swatch" style="background: #FFFDD0;" title="Crema Marfil Seda"><span class="swatch-name">Marfil</span></div>
-                <div class="ai-swatch" style="background: #FFFFFF;" title="Blanco Nieve Satinado"><span class="swatch-name">Blanco</span></div>
+              <span class="pkg-price-zone-tag" id="pkg2ZoneTag">Juárez y Guadalupe</span>
+              <span class="pkg-price-deposit" id="pkg2DepositDisplay">Aparta con el 50%: <strong>$2,000 MXN</strong></span>
+              <div class="pkg-both-zones">
+                <span>Juárez y Guadalupe: <strong>$4,000</strong></span>
+                <span>Monterrey: <strong>$4,200</strong></span>
               </div>
             </div>
 
-            <!-- Desglose de Servicios y Montaje -->
-            <div class="ai-specs-box">
-              <h4 class="ai-specs-title"><i class="bi bi-box-seam-fill"></i> DETALLES DEL SERVICIO Y MONTAJE:</h4>
-              <ul class="ai-specs-list" id="aiSpecsList">
-                <li><i class="bi bi-check-circle-fill"></i> Arco orgánico desestructurado de 4.5 a 6.0 metros con tratamiento High-Shine para brillo duradero.</li>
-                <li><i class="bi bi-check-circle-fill"></i> Mampara arqueada para fotos personalizada con el nombre del festejado(a).</li>
-                <li><i class="bi bi-check-circle-fill"></i> Set de 3 Cilindros blancos MDF para pastel y repostería.</li>
-                <li><i class="bi bi-check-circle-fill"></i> Zona de arte con 4 a 6 caballetes dobles de madera, banquitos, mandiles y yesitos temáticos empacados.</li>
-              </ul>
-            </div>
+            <ul class="pkg-features-list">
+              <li class="pkg-feature-item accent-gold">
+                <i class="bi bi-cup-hot-fill"></i>
+                <span><strong>25 Elotes en Vaso:</strong> Grano tierno desgranado calientito al vapor.</span>
+              </li>
+              <li class="pkg-feature-item accent-gold">
+                <i class="bi bi-bag-check-fill"></i>
+                <span><strong>25 Tostitos Preparados:</strong> Servidos en barquito tradicional.</span>
+              </li>
+              <li class="pkg-feature-item">
+                <i class="bi bi-check2-circle"></i>
+                <span><strong>7 Aderezos en Barra:</strong> Crema, mayonesa, chipotle, chile elote, queso amarillo caliente, salsa botanera y salsa casera.</span>
+              </li>
+              <li class="pkg-feature-item">
+                <i class="bi bi-check2-circle"></i>
+                <span><strong>5 Toppings Crujientes:</strong> Cacahuates, Cheetos, Ruffles, Doritos y queso rallado fresco.</span>
+              </li>
+              <li class="pkg-feature-item accent-cyan">
+                <i class="bi bi-balloon-heart-fill"></i>
+                <span><strong>Decoración a Elegir:</strong> Ya sea <strong>Aro</strong> o <strong>Mampara</strong> con 2 o 3 tonos de globos.</span>
+              </li>
+              <li class="pkg-feature-item accent-cyan">
+                <i class="bi bi-lightbulb-fill"></i>
+                <span><strong>Letrero & Mesita:</strong> Letrero LED Neón o MDF temático + mesita para pastel.</span>
+              </li>
+            </ul>
 
-            <!-- Desglose Presupuestal Estimado -->
-            <div class="ai-pricing-card">
-              <div class="ai-pricing-row">
-                <div>
-                  <span class="ai-price-label">INVERSIÓN ESTIMADA SUGERIDA</span>
-                  <div class="ai-price-value" id="aiPriceEstimate">$6,400 <span class="ai-price-currency">MXN</span></div>
-                  <span class="ai-price-note" id="aiPriceNote">*Incluye flete y montaje en San Pedro Garza García</span>
-                </div>
-                <div class="ai-pricing-chip">
-                  <span class="ai-chip-tag">AHORRO EN PAQUETE</span>
-                  <strong id="aiDiscountTag">~$950 MXN</strong>
-                </div>
+            <div class="pkg-card-actions">
+              <a href="https://wa.me/528110626302?text=Hola%20Nancy%20Garc%C3%ADa!%20Deseo%20pedir%20informes%20y%20consultar%20disponibilidad%20para%20el%20Paquete%20%232%20(25%20Elotes%20%2B%2025%20Tostitos%20%2B%20Decoraci%C3%B3n)." target="_blank" rel="noopener" class="btn btn-whatsapp btn-pkg-wa" id="pkg2WaBtn">
+                <i class="bi bi-whatsapp"></i> PEDIR INFORMES POR WHATSAPP
+              </a>
+            </div>
+          </div>
+
+          <!-- CARD PAQUETE #3 -->
+          <div class="pkg-card" id="pkgCard3">
+            <div class="pkg-card-ribbon violet">🎨 ARTE INFANTIL & RECUERDOS</div>
+            <div class="pkg-card-badge-top"><i class="bi bi-brush-fill"></i> PAQUETE #3</div>
+            <h3 class="pkg-card-title">Taller Creativo (2 Horas) & Bienvenida</h3>
+            <p class="pkg-card-desc">
+              2 horas completas de diversión sin prisas, caballete de bienvenida con foto y 30 yesitos temáticos para que los niños se lleven a casa.
+            </p>
+
+            <div class="pkg-price-box">
+              <div class="pkg-price-main">
+                <span class="pkg-price-number" id="pkg3PriceDisplay">$1,900</span>
+                <span class="pkg-price-currency">MXN</span>
               </div>
-
-              <div class="ai-price-breakdown" id="aiPriceBreakdown">
-                <div class="breakdown-item"><span>Montaje y materiales:</span> <strong id="aiBaseCost">$6,150 MXN</strong></div>
-                <div class="breakdown-item"><span>Logística y flete zona:</span> <strong id="aiFleteCost">$250 MXN</strong></div>
-                <div class="breakdown-item"><span>Apartado con 50%:</span> <strong id="aiDepositCost">$3,200 MXN</strong></div>
+              <span class="pkg-price-zone-tag" id="pkg3ZoneTag">Juárez y Guadalupe</span>
+              <span class="pkg-price-deposit" id="pkg3DepositDisplay">Aparta con el 50%: <strong>$950 MXN</strong></span>
+              <div class="pkg-both-zones">
+                <span>Juárez y Guadalupe: <strong>$1,900</strong></span>
+                <span>Monterrey: <strong>$2,200</strong></span>
               </div>
             </div>
 
-            <!-- Botón One-Tap a WhatsApp -->
-            <div class="ai-cta-action">
-              <button type="button" id="aiSendWhatsAppBtn" class="btn btn-whatsapp ai-btn-wa">
-                <i class="bi bi-whatsapp"></i> SOLICITAR ESTA COTIZACIÓN POR WHATSAPP
-              </button>
-              <p class="ai-guarantee-text">
-                <i class="bi bi-lock-fill"></i> Atención directa por Nancy García · WhatsApp Oficial 81-1062-6302 · Sin intermediarios.
-              </p>
+            <ul class="pkg-features-list">
+              <li class="pkg-feature-item accent-gold">
+                <i class="bi bi-clock-history"></i>
+                <span><strong>2 Horas de Caballetes:</strong> Mayor tiempo de pintura y entretenimiento infantil.</span>
+              </li>
+              <li class="pkg-feature-item">
+                <i class="bi bi-shield-check"></i>
+                <span><strong>10 Mandiles Protectores:</strong> Para que los pequeños pinten cómodos y limpios.</span>
+              </li>
+              <li class="pkg-feature-item">
+                <i class="bi bi-check-circle-fill"></i>
+                <span><strong>Insumos 100% Ilimitados:</strong> Pinturas no tóxicas, dibujos ilimitados, pinceles, agua y toallitas.</span>
+              </li>
+              <li class="pkg-feature-item accent-cyan">
+                <i class="bi bi-camera-fill"></i>
+                <span><strong>Caballete de Bienvenida:</strong> Con foto de la festejada(o) y arco con 2 o 3 tonos de globos.</span>
+              </li>
+              <li class="pkg-feature-item accent-cyan">
+                <i class="bi bi-box2-heart-fill"></i>
+                <span><strong>30 Yesitos Personalizados:</strong> Cada uno lleva figura de yeso cerámico + pincel + pintura de recuerdo.</span>
+              </li>
+            </ul>
+
+            <div class="pkg-card-actions">
+              <a href="https://wa.me/528110626302?text=Hola%20Nancy%20Garc%C3%ADa!%20Deseo%20pedir%20informes%20y%20consultar%20disponibilidad%20para%20el%20Paquete%20%233%20(Taller%202h%20%2B%20Caballete%20Bienvenida%20%2B%2030%20Yesitos)." target="_blank" rel="noopener" class="btn btn-whatsapp btn-pkg-wa" id="pkg3WaBtn">
+                <i class="bi bi-whatsapp"></i> PEDIR INFORMES POR WHATSAPP
+              </a>
             </div>
+          </div>
+        </div>
+
+        <!-- Banner de Informes Personalizados -->
+        <div class="pkg-help-banner">
+          <div class="pkg-help-content">
+            <div class="pkg-help-icon-wrap">
+              <i class="bi bi-chat-heart-fill"></i>
+            </div>
+            <div>
+              <h4 class="pkg-help-title">¿Tienes dudas sobre disponibilidad o deseas pedir informes?</h4>
+              <p class="pkg-help-text">Nancy García te atiende personalmente sin intermediarios. Consulta disponibilidad de fecha para tu evento en Juárez, Guadalupe y Monterrey.</p>
+            </div>
+          </div>
+          <div class="pkg-help-actions">
+            <a href="https://wa.me/528110626302?text=Hola%20Nancy%20Garc%C3%ADa!%20Deseo%20pedir%20informes%20sobre%20los%20paquetes%20para%20mi%20evento." target="_blank" rel="noopener" class="btn btn-whatsapp pkg-help-wa-btn">
+              <i class="bi bi-whatsapp"></i> PEDIR INFORMES AL 81-1062-6302
+            </a>
           </div>
         </div>
       </div>
@@ -1648,14 +1683,14 @@
               <div class="form-group">
                 <label class="form-label" for="qEventType">Servicio de Interés</label>
                 <select id="qEventType" class="form-select">
-                  <option value="👑 Paquete Fiesta Completa (Globos, Nieves, Yesitos, Mobiliario e Inflables)">👑 Paquete Fiesta Completa (Todo Incluido)</option>
-                  <option value="🎈 Decoración con Globos (Arcos, Aros, Mamparas y Bienvenida)">🎈 Decoración con Globos (Arcos, Aros y Mamparas)</option>
+                  <option value="🎈 Paquete #1: Aro Decorado & Caballetes (1h)">🎈 Paquete #1: Aro Decorado & Caballetes 1hr ($2,000 Juárez/Gpe · $2,500 Mty)</option>
+                  <option value="🌽 Paquete #2: Elotes, Tostitos Preparados & Decoración" selected>🌽 Paquete #2: Elotes, Tostitos & Deco ($4,000 Juárez/Gpe · $4,200 Mty)</option>
+                  <option value="🎨 Paquete #3: Taller 2 Horas, Bienvenida & 30 Yesitos">🎨 Paquete #3: Taller 2h, Foto Bienvenida & 30 Yesitos ($1,900 Juárez/Gpe · $2,200 Mty)</option>
+                  <option value="🎈 Solo Decoración con Globos (Arcos, Aros, Mamparas)">🎈 Solo Decoración con Globos (Arcos, Aros y Mamparas)</option>
                   <option value="🍧 Barra de Nieve Estilo Jalisco & Tostitos con Elote">🍧 Barra de Nieve Estilo Jalisco & Tostitos con Elote</option>
-                  <option value="🎨 Zona Creativa Infantil (Taller de Yesitos & Caballetes)">🎨 Zona Creativa Infantil (Taller de Yesitos & Caballetes)</option>
-                  <option value="📲 Invitaciones Digitales con GPS (Waze / Google Maps)">📲 Invitaciones Digitales con GPS & Pases WhatsApp</option>
-                  <option value="📷 Fotografía Profesional para Fiestas y Eventos">📷 Fotografía Profesional para Eventos</option>
-                  <option value="🪑 Renta de Mobiliario (Mesas, Sillas) e Inflables">🪑 Renta de Mobiliario (Mesas, Sillas) e Inflables</option>
-                  <option value="🎤 Animación, Shows Infantiles y Sonido">🎤 Animación, Shows Infantiles y Sonido</option>
+                  <option value="🎨 Zona Creativa Infantil (Taller de Yesitos & Caballetes)">🎨 Solo Renta de Caballetes & Taller de Yesitos</option>
+                  <option value="📲 Invitaciones Digitales con GPS & Pases WhatsApp">📲 Invitaciones Digitales con GPS & Pases WhatsApp</option>
+                  <option value="📷 Fotografía Profesional para Eventos">📷 Fotografía Profesional para Eventos</option>
                 </select>
               </div>
 
@@ -1731,7 +1766,7 @@
             <li><i class="bi bi-cup-hot-fill" style="color: var(--gold-metallic); margin-right: 8px;"></i> <a href="#seccion-nieves" style="color: rgba(255,255,255,0.85); text-decoration: none;">Nieves Jalisco & Snacks</a></li>
             <li><i class="bi bi-palette-fill" style="color: var(--pink-neon); margin-right: 8px;"></i> <a href="#seccion-arte-infantil" style="color: rgba(255,255,255,0.85); text-decoration: none;">Yesitos & Caballetes</a></li>
             <li><i class="bi bi-chair-fill" style="color: var(--turquoise-neon); margin-right: 8px;"></i> <a href="#servicios" style="color: rgba(255,255,255,0.85); text-decoration: none;">Mobiliario & Salas Lounge</a></li>
-            <li><i class="bi bi-stars" style="color: var(--gold-champagne); margin-right: 8px;"></i> <a href="#cotizador-en-vivo" style="color: rgba(255,255,255,0.85); text-decoration: none;">Paquete Todo Incluido</a></li>
+            <li><i class="bi bi-stars" style="color: var(--gold-champagne); margin-right: 8px;"></i> <a href="#paquetes" style="color: rgba(255,255,255,0.85); text-decoration: none;">Paquetes Oficiales</a></li>
           </ul>
         </div>
 
