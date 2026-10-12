@@ -364,9 +364,9 @@ function initHeroCanvas() {
     }
   }
 
-  // Create adaptive party balloons: 20 on mobile to save CPU/battery, 42 on desktop
-  const isMobile = window.innerWidth < 640;
-  const balloonCount = isMobile ? 20 : 42;
+  // Conteo adaptativo: 8 en móvil para liberar 100% el hilo principal de CPU, 38 en escritorio
+  const isMobile = window.innerWidth < 768;
+  const balloonCount = isMobile ? 8 : 38;
   for (let i = 0; i < balloonCount; i++) {
     balloons.push(new FestiveBalloon(true));
   }
@@ -416,7 +416,15 @@ function initHeroCanvas() {
     }
   });
 
-  startAnimation();
+  if (isMobile) {
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(startAnimation, { timeout: 1500 });
+    } else {
+      setTimeout(startAnimation, 800);
+    }
+  } else {
+    startAnimation();
+  }
 }
 
 /* --------------------------------------------------------------------------
