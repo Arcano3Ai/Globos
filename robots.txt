@@ -1,5 +1,5 @@
 # Robots.txt para Nancy García Eventos · Monterrey & San Pedro Garza García
-# https://www.nancyeventos.com/
+# https://nancyeventos.com/
 
 User-agent: *
 Allow: /
@@ -23,4 +23,4 @@ User-agent: Applebot-Extended
 Allow: /
 
 # Sitemap Location
-Sitemap: https://www.nancyeventos.com/sitemap.xml
+Sitemap: https://nancyeventos.com/sitemap.xml
