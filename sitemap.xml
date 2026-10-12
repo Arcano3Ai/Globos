@@ -3,12 +3,12 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://www.nancyeventos.com/</loc>
-    <lastmod>2026-10-04</lastmod>
+    <lastmod>2026-10-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://www.nancyeventos.com/assets/images/og_whatsapp_preview.jpg</image:loc>
-      <image:title>Nancy García Eventos · Todo para tu Fiesta en Monterrey y San Pedro Garza García</image:title>
+      <image:loc>https://www.nancyeventos.com/assets/images/portada_whatsapp.jpg</image:loc>
+      <image:title>Nancy García Eventos · Globos, Banquetes, Mobiliario y Shows en Monterrey y San Pedro</image:title>
       <image:caption>Decoración profesional con globos, nieves de garrafa estilo Jalisco, taller de arte de yesitos y mobiliario.</image:caption>
     </image:image>
     <image:image>
@@ -22,6 +22,14 @@
     <image:image>
       <image:loc>https://www.nancyeventos.com/assets/images/servicios/taller_arte_caballetes.jpg</image:loc>
       <image:title>Taller de Arte Infantil Yesitos y Caballetes Nancy García</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.nancyeventos.com/assets/images/servicios/tostitos_preparados_elote.jpg</image:loc>
+      <image:title>Barra de Tostitos Preparados con Elote y Queso Monterrey</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.nancyeventos.com/assets/images/hero_sampetrino_luxury.jpg</image:loc>
+      <image:title>Decoración Luxury Sampetrino Nancy García Eventos</image:title>
     </image:image>
   </url>
 </urlset>
