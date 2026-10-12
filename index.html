@@ -202,8 +202,8 @@
 </head>
 <body>
 
-  <!-- Audio Element for Ambient Music -->
-  <audio id="ambientAudio" loop preload="auto">
+  <!-- Audio Element for Ambient Music (preload none para optimización móvil) -->
+  <audio id="ambientAudio" loop preload="none">
     <source src="assets/musica/Electric Pulse.mp3" type="audio/mpeg">
   </audio>
 
@@ -993,8 +993,7 @@
         <div class="video-grid">
           <!-- Video 1 -->
           <div class="video-container" id="openVideoShowreelContainer" title="Clic para reproducir en pantalla completa con audio">
-            <video class="showreel-video" autoplay muted loop playsinline poster="assets/images/cumple7.jpeg">
-              <source src="assets/video/Animal_bonito_para_web_202608310229.mp4" type="video/mp4">
+            <video class="showreel-video" muted loop playsinline preload="none" poster="assets/images/cumple7.jpeg" data-src="assets/video/Animal_bonito_para_web_202608310229.mp4">
             </video>
             <div class="video-overlay-play">
               <div class="play-icon-glow"><i class="bi bi-play-fill"></i></div>
@@ -1004,8 +1003,7 @@
 
           <!-- Video 2 -->
           <div class="video-container video-container-secondary">
-            <video class="showreel-video" autoplay muted loop playsinline poster="assets/images/mejora_el_fondo_202609020006.jpeg">
-              <source src="assets/images/mejora_la_toma_202609012348.mp4" type="video/mp4">
+            <video class="showreel-video" muted loop playsinline preload="none" poster="assets/images/mejora_el_fondo_202609020006.jpeg" data-src="assets/images/mejora_la_toma_202609012348.mp4">
             </video>
             <div class="video-caption-overlay">
               <span class="video-badge">VIDEO ESPECIAL</span>
@@ -1025,7 +1023,7 @@
         </button>
 
         <div class="video-wrapper">
-          <video id="modalVideoPlayer" controls playsinline preload="auto">
+          <video id="modalVideoPlayer" controls playsinline preload="none">
             <source src="assets/video/Animal_bonito_para_web_202608310229.mp4" type="video/mp4">
             Tu navegador no soporta la reproducción de video HTML5.
           </video>
@@ -1120,7 +1118,7 @@
     <!-- LIGHTBOX MODAL -->
     <div id="lightboxModal" class="lightbox-modal">
       <div class="lightbox-content">
-        <button id="lightboxClose" class="lightbox-close"><i class="bi bi-x"></i></button>
+        <button id="lightboxClose" class="lightbox-close" aria-label="Cerrar vista previa ampliada" title="Cerrar"><i class="bi bi-x"></i></button>
         <div class="lightbox-img-wrap">
           <img id="lightboxImg" src="" alt="Detalle del proyecto" loading="lazy" decoding="async">
         </div>

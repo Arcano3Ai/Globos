@@ -149,6 +149,9 @@ function initMobileMenu() {
    3. Ambient Music Player Toggle (Electric Pulse)
    -------------------------------------------------------------------------- */
 function initAudioPlayer() {
+  // En móviles no inicializar para máximo rendimiento y ahorro de datos
+  if (window.innerWidth <= 768) return;
+
   const audioBtn = document.getElementById('audioToggleBtn');
   const audio = document.getElementById('ambientAudio');
 
@@ -187,6 +190,17 @@ function initAudioPlayer() {
    4. Video Lightbox Modal with Close Functionality (X / Backdrop / ESC)
    -------------------------------------------------------------------------- */
 function initVideoModal() {
+  // Carga diferida de videos showreel solo en pantallas de escritorio (>768px)
+  if (window.innerWidth > 768) {
+    document.querySelectorAll('.showreel-video[data-src]').forEach(vid => {
+      if (!vid.src && vid.dataset.src) {
+        vid.src = vid.dataset.src;
+        vid.load();
+        vid.play().catch(() => {});
+      }
+    });
+  }
+
   const modal = document.getElementById('videoModal');
   const backdrop = document.getElementById('videoModalBackdrop');
   const closeBtn = document.getElementById('closeVideoModalBtn');
