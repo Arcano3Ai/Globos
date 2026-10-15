@@ -225,6 +225,65 @@ body {
   font-size: 1rem;
 }
 
+/* BARRA Y ACCIONES PARA SUMAR PAQUETES JUNTOS */
+.add-package-box {
+  background: rgba(0, 245, 212, 0.05);
+  border: 1px solid rgba(0, 245, 212, 0.25);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+}
+
+.add-package-box select {
+  background: rgba(14, 11, 24, 0.85);
+  color: white;
+  border: 1px solid var(--dark-border);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+.active-packages-wrap {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.active-packages-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.active-pkg-badge {
+  background: linear-gradient(135deg, rgba(200, 91, 163, 0.3), rgba(147, 51, 234, 0.3));
+  border: 1px solid var(--pink-main);
+  border-radius: 20px;
+  color: white;
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.active-pkg-badge .btn-remove-pkg {
+  background: none;
+  border: none;
+  color: #FDA4AF;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.active-pkg-badge .btn-remove-pkg:hover {
+  color: #F43F5E;
+}
+
 /* SELECTOR DE PAQUETES (PRESETS) */
 .preset-grid {
   display: grid;
@@ -243,6 +302,7 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: 'Outfit', sans-serif;
+  position: relative;
 }
 
 .btn-preset:hover {
@@ -251,9 +311,27 @@ body {
 }
 
 .btn-preset.active {
-  background: var(--pink-main);
-  border-color: var(--pink-neon);
-  box-shadow: 0 2px 10px rgba(200, 91, 163, 0.4);
+  background: linear-gradient(135deg, var(--pink-main), #9333EA);
+  border-color: var(--turquoise-neon);
+  box-shadow: 0 0 12px rgba(0, 245, 212, 0.35);
+}
+
+.btn-preset.active::after {
+  content: '✓';
+  position: absolute;
+  top: 3px;
+  right: 6px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  color: var(--turquoise-neon);
+  background: rgba(14, 11, 24, 0.65);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .btn-preset .preset-name {
@@ -652,6 +730,15 @@ input:focus, select:focus, textarea:focus {
   display: flex;
   justify-content: space-between;
   color: #475569;
+}
+
+.sheet-total-row.discount {
+  color: #E11D48;
+  font-weight: 700;
+  background: #FFF1F2;
+  padding: 3px 6px;
+  border-radius: 4px;
+  border: 1px dashed #FECDD3;
 }
 
 .sheet-total-row.grand {

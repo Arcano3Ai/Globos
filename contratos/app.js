@@ -160,6 +160,7 @@
     folio: generateFolio(),
     fechaEmision: getFormattedCurrentDate(),
     zona: 'monterrey',
+    paquetesSeleccionados: ['paquete1'],
     paqueteSeleccionado: 'paquete1',
     clienteNombre: 'C. Alejandro Ramírez Salinas',
     clienteTelefono: '81-8399-2211',
@@ -179,6 +180,8 @@
     flete: 0,
     descuento: 0,
     anticipoPorcentaje: 50,
+    anticipoMonto: 0,
+    anticipoModo: 'porcentaje',
     notasBancarias: 'Banco: BBVA / Banorte | Beneficiaria: Nancy García (Nancy Eventos) | Cuenta / CLABE: 012 580 00123456789 0'
   };
 
@@ -211,7 +214,9 @@
     dom.inpHoraDesmontaje = document.getElementById('inpHoraDesmontaje');
     dom.inpFlete = document.getElementById('inpFlete');
     dom.inpDescuento = document.getElementById('inpDescuento');
+    dom.btnClearDescuento = document.getElementById('btnClearDescuento');
     dom.inpAnticipoPct = document.getElementById('inpAnticipoPct');
+    dom.inpAnticipoMonto = document.getElementById('inpAnticipoMonto');
     dom.inpNotasBancarias = document.getElementById('inpNotasBancarias');
     dom.itemsContainer = document.getElementById('itemsContainer');
 
@@ -235,13 +240,24 @@
     dom.sheetHorariosInfo = document.getElementById('sheetHorariosInfo');
     dom.sheetTableBody = document.getElementById('sheetTableBody');
     dom.sheetSubtotalVal = document.getElementById('sheetSubtotalVal');
+    dom.sheetDescuentoRow = document.getElementById('sheetDescuentoRow');
+    dom.sheetDescuentoVal = document.getElementById('sheetDescuentoVal');
     dom.sheetFleteVal = document.getElementById('sheetFleteVal');
     dom.sheetTotalVal = document.getElementById('sheetTotalVal');
+    dom.sheetAnticipoLabel = document.getElementById('sheetAnticipoLabel');
     dom.sheetAnticipoVal = document.getElementById('sheetAnticipoVal');
     dom.sheetSaldoVal = document.getElementById('sheetSaldoVal');
     dom.sheetTotalLetras = document.getElementById('sheetTotalLetras');
     dom.sheetSignCliente = document.getElementById('sheetSignCliente');
     dom.sheetBankInfo = document.getElementById('sheetBankInfo');
+
+    // Barra y controles para sumar paquetes juntos
+    dom.selQuickAddPackage = document.getElementById('selQuickAddPackage');
+    dom.btnQuickAddPackage = document.getElementById('btnQuickAddPackage');
+    dom.activePackagesWrap = document.getElementById('activePackagesWrap');
+    dom.activePackagesList = document.getElementById('activePackagesList');
+    dom.btnClearAllPackages = document.getElementById('btnClearAllPackages');
+    dom.btnOpenAddPackage = document.getElementById('btnOpenAddPackage');
 
     // Botones de presets y adicionales
     dom.btnPreset1 = document.getElementById('btnPreset1');
@@ -265,13 +281,65 @@
   }
 
   // =========================================================================
-  // FUNCIONES AUXILIARES & FORMATOS
+  // FUNCIONES AUXILIARES & FORMATOS (FOLIOS CONSECUTIVOS DESDE 00691)
   // =========================================================================
-  function generateFolio() {
+  const FOLIO_STORAGE_KEY = 'nancy_contrato_folio_counter';
+  const FOLIO_START_NUM = 691;
+
+  function getCurrentFolioNumber() {
+    try {
+      const stored = localStorage.getItem(FOLIO_STORAGE_KEY);
+      const parsed = parseInt(stored, 10);
+      if (!isNaN(parsed) && parsed >= FOLIO_START_NUM) {
+        return parsed;
+      }
+    } catch (e) {}
+    return FOLIO_START_NUM;
+  }
+
+  function setFolioNumber(num) {
+    try {
+      if (typeof num === 'number' && !isNaN(num) && num >= FOLIO_START_NUM) {
+        localStorage.setItem(FOLIO_STORAGE_KEY, String(num));
+      }
+    } catch (e) {}
+  }
+
+  function formatFolioString(num, template = null) {
+    const seq = String(num).padStart(5, '0');
+    // Si el usuario borró o cambió el prefijo CTR- manualmente (ej. dejó sólo "00691")
+    if (template && typeof template === 'string' && !template.includes('CTR-')) {
+      const customMatch = template.match(/^(.*?)(\d{3,6})$/);
+      if (customMatch) {
+        return `${customMatch[1]}${seq}`;
+      }
+      return seq;
+    }
     const d = new Date();
     const year = d.getFullYear();
-    const randomSeq = Math.floor(100 + Math.random() * 900);
-    return `CTR-${year}-${randomSeq}`;
+    return `CTR-${year}-${seq}`;
+  }
+
+  function generateFolio(advance = false) {
+    let currentNum = getCurrentFolioNumber();
+    if (advance) {
+      currentNum += 1;
+      setFolioNumber(currentNum);
+    } else {
+      setFolioNumber(currentNum);
+    }
+    return formatFolioString(currentNum, (typeof state !== 'undefined' && state && state.folio) ? state.folio : null);
+  }
+
+  function syncFolioCounterFromText(text) {
+    if (!text) return;
+    const match = String(text).match(/\d{3,6}/);
+    if (match) {
+      const num = parseInt(match[0], 10);
+      if (!isNaN(num) && num >= FOLIO_START_NUM) {
+        setFolioNumber(num);
+      }
+    }
   }
 
   function getFormattedCurrentDate() {
@@ -322,17 +390,96 @@
   }
 
   // =========================================================================
-  // CARGA DE PAQUETES
+  // GESTIÓN Y COMBINACIÓN DE PAQUETES (SELECCIÓN MÚLTIPLE FLEXIBLE)
   // =========================================================================
-  function cargarItemsDePaquete(paqueteKey, zona) {
+  function agregarPaquete(paqueteKey) {
     const paquete = PAQUETES[paqueteKey];
     if (!paquete) return;
 
+    if (!Array.isArray(state.paquetesSeleccionados)) {
+      state.paquetesSeleccionados = [];
+    }
+
+    state.paquetesSeleccionados.push(paqueteKey);
+
+    const batchId = 'pkg_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+    paquete.items.forEach((itemDef, itemIdx) => {
+      const unitPrice = typeof itemDef.precio === 'function' ? itemDef.precio(state.zona) : itemDef.precio;
+      state.items.push({
+        id: 'item_' + Date.now() + '_' + paqueteKey + '_' + itemIdx + '_' + Math.floor(Math.random() * 1000),
+        paqueteKey: paqueteKey,
+        batchId: batchId,
+        itemIndex: itemIdx,
+        cant: itemDef.cant,
+        titulo: itemDef.titulo,
+        descripcion: itemDef.descripcion,
+        horario: itemDef.horario,
+        precioUnitario: unitPrice
+      });
+    });
+
+    state.paqueteSeleccionado = state.paquetesSeleccionados.length > 0 ? state.paquetesSeleccionados[0] : 'custom';
+
+    if (state.zona === 'otras_zonas' && state.flete === 0) {
+      state.flete = 350;
+    }
+
+    showToast(`¡Sumado al contrato: ${paquete.badge}!`, 'success');
+    renderAll();
+  }
+
+  function removerPaquetePorClave(paqueteKey) {
+    if (!Array.isArray(state.paquetesSeleccionados)) return;
+    const idx = state.paquetesSeleccionados.indexOf(paqueteKey);
+    if (idx >= 0) {
+      state.paquetesSeleccionados.splice(idx, 1);
+      state.items = state.items.filter(it => it.paqueteKey !== paqueteKey);
+    }
+    state.paqueteSeleccionado = state.paquetesSeleccionados.length > 0 ? state.paquetesSeleccionados[0] : 'custom';
+    showToast(`Paquete retirado del contrato.`, 'info');
+    renderAll();
+  }
+
+  function limpiarTodosLosPaquetes() {
+    state.paquetesSeleccionados = [];
+    state.items = state.items.filter(it => !it.paqueteKey);
+    state.paqueteSeleccionado = 'custom';
+    showToast('Se limpiaron los paquetes del contrato.', 'info');
+    renderAll();
+  }
+
+  function togglePaquete(paqueteKey) {
+    const paquete = PAQUETES[paqueteKey];
+    if (!paquete) return;
+
+    if (!Array.isArray(state.paquetesSeleccionados)) {
+      state.paquetesSeleccionados = [];
+    }
+
+    const idx = state.paquetesSeleccionados.indexOf(paqueteKey);
+
+    if (idx >= 0) {
+      // Si ya está agregado, quitarlo
+      removerPaquetePorClave(paqueteKey);
+    } else {
+      // Si no está agregado, sumarlo
+      agregarPaquete(paqueteKey);
+    }
+  }
+
+  // Compatibilidad legacy de carga directa
+  function cargarItemsDePaquete(paqueteKey, zona) {
+    state.paquetesSeleccionados = [paqueteKey];
     state.paqueteSeleccionado = paqueteKey;
+    const paquete = PAQUETES[paqueteKey];
+    if (!paquete) return;
+
     state.items = paquete.items.map((itemDef, index) => {
       const unitPrice = typeof itemDef.precio === 'function' ? itemDef.precio(zona) : itemDef.precio;
       return {
-        id: 'item_' + Date.now() + '_' + index,
+        id: 'item_' + Date.now() + '_' + paqueteKey + '_' + index,
+        paqueteKey: paqueteKey,
+        itemIndex: index,
         cant: itemDef.cant,
         titulo: itemDef.titulo,
         descripcion: itemDef.descripcion,
@@ -341,7 +488,6 @@
       };
     });
 
-    // Ajustar flete por defecto según zona
     if (zona === 'otras_zonas') {
       state.flete = 350;
     } else {
@@ -355,8 +501,43 @@
   function renderAll() {
     renderFormInputs();
     renderSidebarItems();
+    renderActivePackages();
     renderSheet();
     updateCalculations();
+  }
+
+  function renderActivePackages() {
+    if (!dom.activePackagesWrap || !dom.activePackagesList) return;
+    const seleccionados = Array.isArray(state.paquetesSeleccionados) ? state.paquetesSeleccionados : [];
+
+    if (seleccionados.length === 0) {
+      dom.activePackagesWrap.style.display = 'none';
+      dom.activePackagesList.innerHTML = '';
+      return;
+    }
+
+    dom.activePackagesWrap.style.display = 'block';
+    dom.activePackagesList.innerHTML = '';
+
+    // Contar ocurrencias de paquetes acumulados
+    const counts = {};
+    seleccionados.forEach(k => {
+      counts[k] = (counts[k] || 0) + 1;
+    });
+
+    Object.entries(counts).forEach(([pkgKey, count]) => {
+      const pkg = PAQUETES[pkgKey];
+      if (!pkg) return;
+
+      const badge = document.createElement('span');
+      badge.className = 'active-pkg-badge';
+      const labelCount = count > 1 ? ` (${count}x)` : '';
+      badge.innerHTML = `
+        <span>📦 ${escapeHtml(pkg.badge)}${labelCount}</span>
+        <button type="button" class="btn-remove-pkg" data-pkg="${pkgKey}" title="Quitar este paquete">✕</button>
+      `;
+      dom.activePackagesList.appendChild(badge);
+    });
   }
 
   function renderFormInputs() {
@@ -379,18 +560,31 @@
     if (dom.inpHoraDesmontaje) dom.inpHoraDesmontaje.value = state.horaDesmontaje;
     if (dom.inpFlete) dom.inpFlete.value = state.flete;
     if (dom.inpDescuento) dom.inpDescuento.value = state.descuento;
-    if (dom.inpAnticipoPct) dom.inpAnticipoPct.value = state.anticipoPorcentaje;
+    if (dom.inpAnticipoPct && document.activeElement !== dom.inpAnticipoPct) dom.inpAnticipoPct.value = state.anticipoPorcentaje;
+    if (dom.inpAnticipoMonto && document.activeElement !== dom.inpAnticipoMonto) dom.inpAnticipoMonto.value = state.anticipoMonto;
     if (dom.inpNotasBancarias) dom.inpNotasBancarias.value = state.notasBancarias;
 
-    // Actualizar botones de preset
-    [dom.btnPreset1, dom.btnPreset2, dom.btnPreset3, dom.btnPresetInvitaciones, dom.btnPresetFotografia].forEach(btn => {
-      if (btn) btn.classList.remove('active');
+    // Actualizar botones de preset con soporte multi-selección
+    const presetMap = {
+      paquete1: dom.btnPreset1,
+      paquete2: dom.btnPreset2,
+      paquete3: dom.btnPreset3,
+      paquete_invitaciones: dom.btnPresetInvitaciones,
+      paquete_fotografia: dom.btnPresetFotografia
+    };
+
+    const seleccionados = Array.isArray(state.paquetesSeleccionados) ? state.paquetesSeleccionados : [state.paqueteSeleccionado];
+
+    Object.entries(presetMap).forEach(([key, btn]) => {
+      if (!btn) return;
+      if (seleccionados.includes(key)) {
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+      } else {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+      }
     });
-    if (state.paqueteSeleccionado === 'paquete1' && dom.btnPreset1) dom.btnPreset1.classList.add('active');
-    if (state.paqueteSeleccionado === 'paquete2' && dom.btnPreset2) dom.btnPreset2.classList.add('active');
-    if (state.paqueteSeleccionado === 'paquete3' && dom.btnPreset3) dom.btnPreset3.classList.add('active');
-    if (state.paqueteSeleccionado === 'paquete_invitaciones' && dom.btnPresetInvitaciones) dom.btnPresetInvitaciones.classList.add('active');
-    if (state.paqueteSeleccionado === 'paquete_fotografia' && dom.btnPresetFotografia) dom.btnPresetFotografia.classList.add('active');
   }
 
   function renderSidebarItems() {
@@ -478,9 +672,28 @@
     const descuento = Number(state.descuento) || 0;
     const total = Math.max(0, subtotal + flete - descuento);
 
-    const pct = Number(state.anticipoPorcentaje) || 50;
-    const anticipo = Math.round(total * (pct / 100));
+    let anticipo = 0;
+    let pct = 50;
+
+    if (state.anticipoModo === 'monto') {
+      anticipo = Math.min(total, Math.max(0, Number(state.anticipoMonto) || 0));
+      pct = total > 0 ? Math.round((anticipo / total) * 100) : 0;
+      state.anticipoPorcentaje = pct;
+    } else {
+      pct = Number(state.anticipoPorcentaje) || 50;
+      anticipo = Math.round(total * (pct / 100));
+      state.anticipoMonto = anticipo;
+    }
+
     const saldo = Math.max(0, total - anticipo);
+
+    // Sincronizar inputs de anticipo sin interrumpir el foco del usuario
+    if (dom.inpAnticipoPct && document.activeElement !== dom.inpAnticipoPct) {
+      dom.inpAnticipoPct.value = pct;
+    }
+    if (dom.inpAnticipoMonto && document.activeElement !== dom.inpAnticipoMonto) {
+      dom.inpAnticipoMonto.value = anticipo;
+    }
 
     // Actualizar Sidebar
     if (dom.sideSubtotal) dom.sideSubtotal.textContent = formatMoney(subtotal);
@@ -490,12 +703,23 @@
     if (dom.sideAnticipo) dom.sideAnticipo.textContent = formatMoney(anticipo);
     if (dom.sideSaldo) dom.sideSaldo.textContent = formatMoney(saldo);
 
-    // Actualizar Hoja
+    // Actualizar Hoja Membretada Oficial
     if (dom.sheetSubtotalVal) dom.sheetSubtotalVal.textContent = formatMoney(subtotal);
     if (dom.sheetFleteVal) dom.sheetFleteVal.textContent = formatMoney(flete);
     if (dom.sheetTotalVal) dom.sheetTotalVal.textContent = formatMoney(total);
     if (dom.sheetAnticipoVal) dom.sheetAnticipoVal.textContent = formatMoney(anticipo);
     if (dom.sheetSaldoVal) dom.sheetSaldoVal.textContent = formatMoney(saldo);
+    if (dom.sheetAnticipoLabel) dom.sheetAnticipoLabel.textContent = `${pct}%`;
+
+    // Desglose de Descuento en la Hoja (visible sólo si descuento > 0)
+    if (dom.sheetDescuentoRow && dom.sheetDescuentoVal) {
+      if (descuento > 0) {
+        dom.sheetDescuentoRow.style.display = 'flex';
+        dom.sheetDescuentoVal.textContent = '-' + formatMoney(descuento);
+      } else {
+        dom.sheetDescuentoRow.style.display = 'none';
+      }
+    }
 
     // Actualizar Barra Flotante en Móviles (Sticky Live Bar)
     if (dom.mBarTotal) dom.mBarTotal.textContent = formatMoney(total);
@@ -522,6 +746,13 @@
     };
 
     bindInput(dom.inpFolio, 'folio');
+    if (dom.inpFolio) {
+      ['input', 'change'].forEach(evt => {
+        dom.inpFolio.addEventListener(evt, e => {
+          syncFolioCounterFromText(e.target.value);
+        });
+      });
+    }
     bindInput(dom.inpFechaEmision, 'fechaEmision');
     bindInput(dom.inpClienteNombre, 'clienteNombre');
     bindInput(dom.inpClienteTelefono, 'clienteTelefono');
@@ -539,8 +770,39 @@
     bindInput(dom.inpHoraDesmontaje, 'horaDesmontaje');
     bindInput(dom.inpFlete, 'flete', true);
     bindInput(dom.inpDescuento, 'descuento', true);
-    bindInput(dom.inpAnticipoPct, 'anticipoPorcentaje', true);
     bindInput(dom.inpNotasBancarias, 'notasBancarias');
+
+    // Botón para limpiar descuento a $0
+    if (dom.btnClearDescuento) {
+      dom.btnClearDescuento.addEventListener('click', () => {
+        state.descuento = 0;
+        if (dom.inpDescuento) dom.inpDescuento.value = 0;
+        renderSheet();
+        updateCalculations();
+        showToast('Descuento eliminado ($0). Total actualizado.', 'info');
+      });
+    }
+
+    // Sincronización dual de Anticipo (% y $ MXN)
+    if (dom.inpAnticipoPct) {
+      ['input', 'change', 'keyup'].forEach(evt => {
+        dom.inpAnticipoPct.addEventListener(evt, e => {
+          state.anticipoModo = 'porcentaje';
+          state.anticipoPorcentaje = Number(e.target.value) || 0;
+          updateCalculations();
+        });
+      });
+    }
+
+    if (dom.inpAnticipoMonto) {
+      ['input', 'change', 'keyup'].forEach(evt => {
+        dom.inpAnticipoMonto.addEventListener(evt, e => {
+          state.anticipoModo = 'monto';
+          state.anticipoMonto = Number(e.target.value) || 0;
+          updateCalculations();
+        });
+      });
+    }
 
     // Sincronización bidireccional desde la hoja membretada hacia el formulario (contenteditable)
     const bindContentEditable = (sheetEl, key, inputEl) => {
@@ -565,48 +827,102 @@
     bindContentEditable(dom.sheetLugarEvento, 'lugarEvento', dom.inpLugarEvento);
     bindContentEditable(dom.sheetSignCliente, 'clienteNombre', dom.inpClienteNombre);
     bindContentEditable(dom.sheetFolio, 'folio', dom.inpFolio);
+    if (dom.sheetFolio) {
+      ['input', 'blur'].forEach(evt => {
+        dom.sheetFolio.addEventListener(evt, () => {
+          syncFolioCounterFromText(dom.sheetFolio.textContent);
+        });
+      });
+    }
     bindContentEditable(dom.sheetFechaEmision, 'fechaEmision', dom.inpFechaEmision);
 
-    // Cambio de Zona de Flete / Tarifas
+    // Cambio de Zona de Flete / Tarifas (actualiza todos los paquetes activos)
     if (dom.selZona) {
       dom.selZona.addEventListener('change', e => {
         state.zona = e.target.value;
-        if (state.paqueteSeleccionado) {
-          cargarItemsDePaquete(state.paqueteSeleccionado, state.zona);
+        state.items.forEach(it => {
+          if (it.paqueteKey && PAQUETES[it.paqueteKey]) {
+            const itemDef = PAQUETES[it.paqueteKey].items[it.itemIndex];
+            if (itemDef && typeof itemDef.precio === 'function') {
+              it.precioUnitario = itemDef.precio(state.zona);
+            }
+          }
+        });
+
+        if (state.zona === 'otras_zonas') {
+          state.flete = 350;
+        } else if (state.flete === 350) {
+          state.flete = 0;
         }
         renderAll();
       });
     }
 
-    // Botones de presets oficiales
+    // Botones de presets oficiales (Selección Múltiple Combinable en 1 clic)
     if (dom.btnPreset1) {
       dom.btnPreset1.addEventListener('click', () => {
-        cargarItemsDePaquete('paquete1', state.zona);
-        renderAll();
+        togglePaquete('paquete1');
       });
     }
     if (dom.btnPreset2) {
       dom.btnPreset2.addEventListener('click', () => {
-        cargarItemsDePaquete('paquete2', state.zona);
-        renderAll();
+        togglePaquete('paquete2');
       });
     }
     if (dom.btnPreset3) {
       dom.btnPreset3.addEventListener('click', () => {
-        cargarItemsDePaquete('paquete3', state.zona);
-        renderAll();
+        togglePaquete('paquete3');
       });
     }
     if (dom.btnPresetInvitaciones) {
       dom.btnPresetInvitaciones.addEventListener('click', () => {
-        cargarItemsDePaquete('paquete_invitaciones', state.zona);
-        renderAll();
+        togglePaquete('paquete_invitaciones');
       });
     }
     if (dom.btnPresetFotografia) {
       dom.btnPresetFotografia.addEventListener('click', () => {
-        cargarItemsDePaquete('paquete_fotografia', state.zona);
-        renderAll();
+        togglePaquete('paquete_fotografia');
+      });
+    }
+
+    // Barra de agregar paquetes rápidos al contrato
+    if (dom.btnQuickAddPackage && dom.selQuickAddPackage) {
+      dom.btnQuickAddPackage.addEventListener('click', () => {
+        agregarPaquete(dom.selQuickAddPackage.value);
+      });
+    }
+
+    // Botón para limpiar todos los paquetes del contrato
+    if (dom.btnClearAllPackages) {
+      dom.btnClearAllPackages.addEventListener('click', () => {
+        limpiarTodosLosPaquetes();
+      });
+    }
+
+    // Botón en Sección 5 para abrir / hacer foco en selector de paquetes
+    if (dom.btnOpenAddPackage) {
+      dom.btnOpenAddPackage.addEventListener('click', () => {
+        if (dom.selQuickAddPackage) {
+          dom.selQuickAddPackage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          dom.selQuickAddPackage.focus();
+          dom.selQuickAddPackage.style.outline = '2px solid var(--turquoise-neon)';
+          setTimeout(() => {
+            dom.selQuickAddPackage.style.outline = '';
+          }, 1500);
+        }
+      });
+    }
+
+    // Delegación de eventos para badges de paquetes activos (eliminar paquete con botón ✕)
+    if (dom.activePackagesList) {
+      dom.activePackagesList.addEventListener('click', e => {
+        const btn = e.target.closest('.btn-remove-pkg');
+        if (btn) {
+          const pkgKey = btn.dataset.pkg;
+          if (pkgKey) {
+            removerPaquetePorClave(pkgKey);
+          }
+        }
       });
     }
 
@@ -694,13 +1010,14 @@
       });
     });
 
-    // Botón nuevo folio
+    // Botón nuevo folio (incrementa el consecutivo: 00691 -> 00692 -> 00693...)
     if (dom.btnNewFolio) {
       dom.btnNewFolio.addEventListener('click', () => {
-        state.folio = generateFolio();
+        state.folio = generateFolio(true);
         if (dom.inpFolio) dom.inpFolio.value = state.folio;
         renderSheet();
         updateCalculations();
+        showToast(`Nuevo Folio Consecutivo: ${state.folio}`, 'info');
       });
     }
 
@@ -732,15 +1049,17 @@
       });
     }
 
-    // Botón Reset
+    // Botón Reset / Nuevo Contrato
     if (dom.btnReset) {
       dom.btnReset.addEventListener('click', () => {
-        if (confirm('¿Deseas reiniciar el formulario a un contrato nuevo? Se generará un nuevo folio.')) {
+        if (confirm('¿Deseas reiniciar el formulario a un contrato nuevo? Se generará un nuevo folio consecutivo.')) {
           localStorage.removeItem('nancy_contrato_draft');
-          state.folio = generateFolio();
+          state.folio = generateFolio(true);
           state.fechaEmision = getFormattedCurrentDate();
+          state.descuento = 0;
           cargarItemsDePaquete('paquete1', state.zona);
           renderAll();
+          showToast(`Nuevo Contrato Iniciado: ${state.folio}`, 'success');
         }
       });
     }
@@ -842,12 +1161,25 @@
     const flete = Number(state.flete) || 0;
     const descuento = Number(state.descuento) || 0;
     const total = Math.max(0, subtotal + flete - descuento);
-    const pct = Number(state.anticipoPorcentaje) || 50;
-    const anticipo = Math.round(total * (pct / 100));
+
+    let anticipo = 0;
+    let pct = 50;
+    if (state.anticipoModo === 'monto') {
+      anticipo = Math.min(total, Math.max(0, Number(state.anticipoMonto) || 0));
+      pct = total > 0 ? Math.round((anticipo / total) * 100) : 0;
+    } else {
+      pct = Number(state.anticipoPorcentaje) || 50;
+      anticipo = Math.round(total * (pct / 100));
+    }
     const saldo = Math.max(0, total - anticipo);
 
     const fechaFestejo = formatDateForDisplay(state.fechaEvento);
-    const itemsText = state.items.map(it => `  • ${it.cant}x ${it.titulo}`).join('\n');
+    const itemsText = state.items.map(it => `  • ${it.cant}x ${it.titulo} (${formatMoney((Number(it.cant) || 1) * (Number(it.precioUnitario) || 0))})`).join('\n');
+
+    const desgloseExtra = [];
+    if (flete > 0) desgloseExtra.push(`🚚 *Flete / Logística:* ${formatMoney(flete)} MXN`);
+    if (descuento > 0) desgloseExtra.push(`🎁 *Descuento Especial Aplicado:* -${formatMoney(descuento)} MXN`);
+    const extraStr = desgloseExtra.length > 0 ? '\n' + desgloseExtra.join('\n') : '';
 
     return `¡Hola ${state.clienteNombre}! 🎈 Te saluda Nancy Eventos.
 
@@ -859,9 +1191,9 @@ Adjunto tu Contrato Oficial de Servicio con Folio *${state.folio}* para el feste
 
 📋 *Servicios y Mobiliario:*
 ${itemsText}
-
+${extraStr}
 💰 *Inversión Total:* ${formatMoney(total)} MXN
-🔒 *Anticipo de Reserva (50%):* ${formatMoney(anticipo)} MXN
+🔒 *Anticipo de Reserva (${pct}%):* ${formatMoney(anticipo)} MXN
 💵 *Saldo restante al montaje:* ${formatMoney(saldo)} MXN
 
 💳 *Datos para Transferencia / Depósito:*
@@ -912,6 +1244,25 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
       if (saved) {
         const parsed = JSON.parse(saved);
         Object.assign(state, parsed);
+
+        // Migración hacia selección múltiple de paquetes
+        if (!Array.isArray(state.paquetesSeleccionados)) {
+          state.paquetesSeleccionados = state.paqueteSeleccionado ? [state.paqueteSeleccionado] : ['paquete1'];
+        }
+
+        // Limpieza automática del descuento fantasma ($2,500) atascado de pruebas previas
+        if (state.descuento === 2500) {
+          state.descuento = 0;
+        }
+
+        // Migración hacia serie consecutiva oficial (empieza en 00691 y sube)
+        const folioDigits = String(state.folio || '').match(/\d{3,6}/);
+        const currentFolioNum = folioDigits ? parseInt(folioDigits[0], 10) : 0;
+        if (currentFolioNum < FOLIO_START_NUM) {
+          state.folio = generateFolio(false); // Asigna CTR-2026-00691
+        } else {
+          setFolioNumber(currentFolioNum);
+        }
       }
     } catch (e) {
       // Usar estado inicial si falla
