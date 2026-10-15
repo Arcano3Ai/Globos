@@ -928,6 +928,41 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
   }
 
   // =========================================================================
+  // SISTEMA DE NOTIFICACIONES TOAST (FEEDBACK EN TIEMPO REAL)
+  // =========================================================================
+  function showToast(message, type = 'info') {
+    if (!message) return;
+    try {
+      let toastContainer = document.getElementById('nancyToastContainer');
+      if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'nancyToastContainer';
+        toastContainer.className = 'nancy-toast-container';
+        document.body.appendChild(toastContainer);
+      }
+
+      const toast = document.createElement('div');
+      toast.className = `nancy-toast nancy-toast-${type}`;
+      const iconClass = type === 'success' ? 'bi-check-circle-fill' : type === 'warning' ? 'bi-exclamation-triangle-fill' : 'bi-info-circle-fill';
+      toast.innerHTML = `
+        <i class="bi ${iconClass}"></i>
+        <span class="nancy-toast-text">${escapeHtml(message)}</span>
+      `;
+
+      toastContainer.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.add('nancy-toast-hiding');
+        setTimeout(() => {
+          if (toast.parentNode) toast.remove();
+        }, 300);
+      }, 3500);
+    } catch (e) {
+      console.log('Toast:', message);
+    }
+  }
+
+  // =========================================================================
   // CONTROLADOR DE SEGURIDAD Y ACCESO POR PIN (NANCY EVENTOS)
   // =========================================================================
   const MASTER_PIN = '1062';
@@ -1175,20 +1210,29 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
   }
 
   // =========================================================================
-  // INICIALIZACIÓN
+  // INICIALIZACIÓN BLINDADA (CICLO DE VIDA SEGURO)
   // =========================================================================
-  document.addEventListener('DOMContentLoaded', () => {
-    initDom();
-    if (window.NANCY_LOGO_DATA_URI) {
-      document.querySelectorAll('.sheet-emblem-img, .header-brand-logo, .auth-logo').forEach(img => {
-        img.src = window.NANCY_LOGO_DATA_URI;
-      });
-    }
-    initSecurity();
-    initPwa();
-    loadFromStorage();
-    renderAll();
-    setupEventListeners();
-  });
+  function initApp() {
+    try { initDom(); } catch (e) { console.error('Nancy Contratos: Error en initDom:', e); }
+    try {
+      if (window.NANCY_LOGO_DATA_URI) {
+        document.querySelectorAll('.sheet-emblem-img, .header-brand-logo, .auth-logo').forEach(img => {
+          img.src = window.NANCY_LOGO_DATA_URI;
+        });
+      }
+    } catch (e) { console.error('Nancy Contratos: Error en logo:', e); }
+    try { initSecurity(); } catch (e) { console.error('Nancy Contratos: Error en initSecurity:', e); }
+    try { initPwa(); } catch (e) { console.error('Nancy Contratos: Error en initPwa:', e); }
+    try { loadFromStorage(); } catch (e) { console.error('Nancy Contratos: Error en loadFromStorage:', e); }
+    try { renderAll(); } catch (e) { console.error('Nancy Contratos: Error en renderAll:', e); }
+    try { setupEventListeners(); } catch (e) { console.error('Nancy Contratos: Error en setupEventListeners:', e); }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+  } else {
+    // Si el DOM ya cargó (por cache o scripts diferidos)
+    initApp();
+  }
 
 })();
