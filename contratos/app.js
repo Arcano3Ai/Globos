@@ -1,0 +1,1006 @@
+/**
+ * APLICACIÓN GENERADORA DE CONTRATOS - NANCY GARCÍA DECORACIÓN
+ * Módulo 100% autónomo y portable.
+ * Arquitectura limpia en Vanilla JS sin dependencias mandatorias.
+ */
+
+(function () {
+  'use strict';
+
+  // =========================================================================
+  // CATÁLOGO OFICIAL DE PAQUETES Y PRECIOS
+  // =========================================================================
+  const PAQUETES = {
+    paquete1: {
+      nombre: 'Paquete 1: Aro Decorado + Caballetes (1 Hora)',
+      badge: 'Aro + Caballetes 1H',
+      precios: {
+        juarez_guadalupe: 2000,
+        monterrey: 2500,
+        otras_zonas: 2600
+      },
+      items: [
+        {
+          cant: 1,
+          titulo: 'Decoración Principal: Aro Decorado Profesional & Mesita',
+          descripcion: 'Aro metálico profesional con arco orgánico de globos (2 a 3 tonos de látex alta durabilidad con tratamiento High-Shine), letrero a elegir (Luz LED Neón o MDF temático calado) y mesita para pastel o repostería.',
+          horario: 'Evento Completo',
+          precio: function(zona) {
+            return zona === 'juarez_guadalupe' ? 1200 : 1500;
+          }
+        },
+        {
+          cant: 1,
+          titulo: 'Servicio de Caballetes Infantil de Arte (1 Hora Continua)',
+          descripcion: '5 Caballetes dobles de madera (10 plazas infantiles simultáneas), pinturas vinílicas lavables no tóxicas ilimitadas, dibujos temáticos ilimitados, pinceles, recipientes con agua, toallitas limpiadoras y 1 persona de Staff de atención continua.',
+          horario: '1 Hora de Servicio',
+          precio: function(zona) {
+            return zona === 'juarez_guadalupe' ? 800 : 1000;
+          }
+        }
+      ]
+    },
+
+    paquete2: {
+      nombre: 'Paquete 2: Elotes, Tostitos & Decoración Completa',
+      badge: 'Elotes + Tostitos + Deco',
+      precios: {
+        juarez_guadalupe: 4000,
+        monterrey: 4200,
+        otras_zonas: 4400
+      },
+      items: [
+        {
+          cant: 1,
+          titulo: 'Barra de Antojitos: 25 Elotes en Vaso + 25 Tostitos Preparados',
+          descripcion: '25 Vasos de elote tierno desgranado cocido al vapor en el evento + 25 bolsas de Tostitos preparados en barquitos biodegradables. Incluye 7 aderezos (crema, mayonesa, chipotle, chile en polvo, queso cheddar caliente, salsa botanera y salsa casera) y 5 toppings (cacahuates, Cheetos, Ruffles, Doritos y queso rallado).',
+          horario: 'Barra de Snacks',
+          precio: function(zona) {
+            return 2200;
+          }
+        },
+        {
+          cant: 1,
+          titulo: 'Decoración Escenográfica: Aro o Mampara con Arco Orgánico High-Shine',
+          descripcion: 'Estructura a elegir (Aro Decorado o Mampara Escenográfica lisa/texturizada) con arco orgánico en 2-3 tonos con abrillantador profesional High-Shine, letrero LED Neón o MDF temático y mesita para pastel.',
+          horario: 'Evento Completo',
+          precio: function(zona) {
+            return zona === 'juarez_guadalupe' ? 1800 : 2000;
+          }
+        }
+      ]
+    },
+
+    paquete3: {
+      nombre: 'Paquete 3: Taller Creativo (2 Horas), Caballete Bienvenida & 30 Yesitos',
+      badge: 'Taller 2H + Bienvenida + Yesitos',
+      precios: {
+        juarez_guadalupe: 1900,
+        monterrey: 2200,
+        otras_zonas: 2300
+      },
+      items: [
+        {
+          cant: 1,
+          titulo: 'Taller Creativo Infantil de Arte en Caballetes (2 Horas Continuas)',
+          descripcion: '5 Caballetes dobles de madera (10 espacios infantiles simultáneos), 10 mandilitos protectores de tela lavable, pinturas vinílicas no tóxicas ilimitadas, dibujos temáticos para colorear ilimitados, pinceles y 1 persona de Staff a cargo.',
+          horario: '2 Horas de Taller',
+          precio: function(zona) {
+            return zona === 'juarez_guadalupe' ? 1000 : 1200;
+          }
+        },
+        {
+          cant: 1,
+          titulo: 'Caballete de Entrada / Bienvenida con Foto y Marco de Globos',
+          descripcion: 'Caballete de bienvenida con fotografía o póster temático impreso de la festejada/o, enmarcado con arco orgánico de globos en 2 a 3 tonos coordinados.',
+          horario: 'Recepción',
+          precio: function(zona) {
+            return 450;
+          }
+        },
+        {
+          cant: 30,
+          titulo: 'Yesitos Temáticos Artesanales (Recuerdos para Llevar)',
+          descripcion: '30 Figuras de yeso cerámico temáticas en bolsita de celofán individual con listón rizado, pincel y botecito de pintura lavable para que los niños pinten y lleven a casa.',
+          horario: 'Consumible / Souvenir',
+          precio: function(zona) {
+            return zona === 'juarez_guadalupe' ? 450 : 550;
+          }
+        }
+      ]
+    }
+  };
+
+  // =========================================================================
+  // ESTADO DE LA APLICACIÓN
+  // =========================================================================
+  const state = {
+    folio: generateFolio(),
+    fechaEmision: getFormattedCurrentDate(),
+    zona: 'monterrey',
+    paqueteSeleccionado: 'paquete1',
+    clienteNombre: 'C. Alejandro Ramírez Salinas',
+    clienteTelefono: '81-8399-2211',
+    clienteEmail: '',
+    festejado: 'Mía Ramírez',
+    edadFestejado: '5 años',
+    tipoFestejo: 'Cumpleaños Infantil',
+    tematica: 'Princesas & Fantasía Mágica',
+    coloresGlobos: 'Rosa pastel, lavanda y toques cromo oro',
+    tipoLetrero: 'Luz LED Neón ("Happy Birthday")',
+    fechaEvento: getSuggestedEventDate(),
+    lugarEvento: 'Salón Las Nubes, San Pedro Garza García, N.L.',
+    horaMontaje: '14:30 hrs (2 horas antes)',
+    horaEvento: '16:30 a 20:30 hrs',
+    horaDesmontaje: '20:45 hrs',
+    items: [],
+    flete: 0,
+    descuento: 0,
+    anticipoPorcentaje: 50,
+    notasBancarias: 'Banco: BBVA / Banorte | Beneficiaria: Nancy García (Nancy Eventos) | Cuenta / CLABE: 012 580 00123456789 0'
+  };
+
+  // Inicializar items con el Paquete 1 por defecto
+  cargarItemsDePaquete('paquete1', state.zona);
+
+  // =========================================================================
+  // REFERENCIAS DOM
+  // =========================================================================
+  const dom = {};
+
+  function initDom() {
+    // Entradas del panel
+    dom.inpFolio = document.getElementById('inpFolio');
+    dom.inpFechaEmision = document.getElementById('inpFechaEmision');
+    dom.selZona = document.getElementById('selZona');
+    dom.inpClienteNombre = document.getElementById('inpClienteNombre');
+    dom.inpClienteTelefono = document.getElementById('inpClienteTelefono');
+    dom.inpClienteEmail = document.getElementById('inpClienteEmail');
+    dom.inpFestejado = document.getElementById('inpFestejado');
+    dom.inpEdadFestejado = document.getElementById('inpEdadFestejado');
+    dom.inpTipoFestejo = document.getElementById('inpTipoFestejo');
+    dom.inpTematica = document.getElementById('inpTematica');
+    dom.inpColoresGlobos = document.getElementById('inpColoresGlobos');
+    dom.inpTipoLetrero = document.getElementById('inpTipoLetrero');
+    dom.inpFechaEvento = document.getElementById('inpFechaEvento');
+    dom.inpLugarEvento = document.getElementById('inpLugarEvento');
+    dom.inpHoraMontaje = document.getElementById('inpHoraMontaje');
+    dom.inpHoraEvento = document.getElementById('inpHoraEvento');
+    dom.inpHoraDesmontaje = document.getElementById('inpHoraDesmontaje');
+    dom.inpFlete = document.getElementById('inpFlete');
+    dom.inpDescuento = document.getElementById('inpDescuento');
+    dom.inpAnticipoPct = document.getElementById('inpAnticipoPct');
+    dom.inpNotasBancarias = document.getElementById('inpNotasBancarias');
+    dom.itemsContainer = document.getElementById('itemsContainer');
+
+    // Totales en Sidebar
+    dom.sideSubtotal = document.getElementById('sideSubtotal');
+    dom.sideFlete = document.getElementById('sideFlete');
+    dom.sideDescuento = document.getElementById('sideDescuento');
+    dom.sideTotal = document.getElementById('sideTotal');
+    dom.sideAnticipo = document.getElementById('sideAnticipo');
+    dom.sideSaldo = document.getElementById('sideSaldo');
+
+    // Elementos en la Hoja Membretada (Print Preview)
+    dom.sheetFolio = document.getElementById('sheetFolio');
+    dom.sheetFechaEmision = document.getElementById('sheetFechaEmision');
+    dom.sheetClienteNombre = document.getElementById('sheetClienteNombre');
+    dom.sheetClienteTelefono = document.getElementById('sheetClienteTelefono');
+    dom.sheetLugarEvento = document.getElementById('sheetLugarEvento');
+    dom.sheetFechaEvento = document.getElementById('sheetFechaEvento');
+    dom.sheetFestejadoInfo = document.getElementById('sheetFestejadoInfo');
+    dom.sheetTematicaInfo = document.getElementById('sheetTematicaInfo');
+    dom.sheetHorariosInfo = document.getElementById('sheetHorariosInfo');
+    dom.sheetTableBody = document.getElementById('sheetTableBody');
+    dom.sheetSubtotalVal = document.getElementById('sheetSubtotalVal');
+    dom.sheetFleteVal = document.getElementById('sheetFleteVal');
+    dom.sheetTotalVal = document.getElementById('sheetTotalVal');
+    dom.sheetAnticipoVal = document.getElementById('sheetAnticipoVal');
+    dom.sheetSaldoVal = document.getElementById('sheetSaldoVal');
+    dom.sheetTotalLetras = document.getElementById('sheetTotalLetras');
+    dom.sheetSignCliente = document.getElementById('sheetSignCliente');
+    dom.sheetBankInfo = document.getElementById('sheetBankInfo');
+
+    // Botones
+    dom.btnPreset1 = document.getElementById('btnPreset1');
+    dom.btnPreset2 = document.getElementById('btnPreset2');
+    dom.btnPreset3 = document.getElementById('btnPreset3');
+    dom.btnAddItem = document.getElementById('btnAddItem');
+    dom.btnPrint = document.getElementById('btnPrint');
+    dom.btnDownloadPdf = document.getElementById('btnDownloadPdf');
+    dom.btnWhatsApp = document.getElementById('btnWhatsApp');
+    dom.btnCopySummary = document.getElementById('btnCopySummary');
+    dom.btnReset = document.getElementById('btnReset');
+    dom.btnNewFolio = document.getElementById('btnNewFolio');
+  }
+
+  // =========================================================================
+  // FUNCIONES AUXILIARES & FORMATOS
+  // =========================================================================
+  function generateFolio() {
+    const d = new Date();
+    const year = d.getFullYear();
+    const randomSeq = Math.floor(100 + Math.random() * 900);
+    return `CTR-${year}-${randomSeq}`;
+  }
+
+  function getFormattedCurrentDate() {
+    const meses = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    const d = new Date();
+    return `${d.getDate()} de ${meses[d.getMonth()]} de ${d.getFullYear()}`;
+  }
+
+  function getSuggestedEventDate() {
+    const d = new Date();
+    d.setDate(d.getDate() + 21); // 3 semanas después
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  function formatDateForDisplay(isoDateString) {
+    if (!isoDateString) return 'Por confirmar';
+    try {
+      const parts = isoDateString.split('-');
+      if (parts.length === 3) {
+        const meses = [
+          'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        const day = parseInt(parts[2], 10);
+        const monthIndex = parseInt(parts[1], 10) - 1;
+        const year = parts[0];
+        return `${day} de ${meses[monthIndex]} de ${year}`;
+      }
+      return isoDateString;
+    } catch (e) {
+      return isoDateString;
+    }
+  }
+
+  function formatMoney(amount) {
+    const num = Number(amount) || 0;
+    return new Intl.NumberFormat('es-MX', {
+      style: 'currency',
+      currency: 'MXN',
+      minimumFractionDigits: 2
+    }).format(num);
+  }
+
+  // =========================================================================
+  // CARGA DE PAQUETES
+  // =========================================================================
+  function cargarItemsDePaquete(paqueteKey, zona) {
+    const paquete = PAQUETES[paqueteKey];
+    if (!paquete) return;
+
+    state.paqueteSeleccionado = paqueteKey;
+    state.items = paquete.items.map((itemDef, index) => {
+      const unitPrice = typeof itemDef.precio === 'function' ? itemDef.precio(zona) : itemDef.precio;
+      return {
+        id: 'item_' + Date.now() + '_' + index,
+        cant: itemDef.cant,
+        titulo: itemDef.titulo,
+        descripcion: itemDef.descripcion,
+        horario: itemDef.horario,
+        precioUnitario: unitPrice
+      };
+    });
+
+    // Ajustar flete por defecto según zona
+    if (zona === 'otras_zonas') {
+      state.flete = 350;
+    } else {
+      state.flete = 0;
+    }
+  }
+
+  // =========================================================================
+  // RENDERIZADO DEL PANEL Y LA HOJA
+  // =========================================================================
+  function renderAll() {
+    renderFormInputs();
+    renderSidebarItems();
+    renderSheet();
+    updateCalculations();
+  }
+
+  function renderFormInputs() {
+    if (dom.inpFolio) dom.inpFolio.value = state.folio;
+    if (dom.inpFechaEmision) dom.inpFechaEmision.value = state.fechaEmision;
+    if (dom.selZona) dom.selZona.value = state.zona;
+    if (dom.inpClienteNombre) dom.inpClienteNombre.value = state.clienteNombre;
+    if (dom.inpClienteTelefono) dom.inpClienteTelefono.value = state.clienteTelefono;
+    if (dom.inpClienteEmail) dom.inpClienteEmail.value = state.clienteEmail;
+    if (dom.inpFestejado) dom.inpFestejado.value = state.festejado;
+    if (dom.inpEdadFestejado) dom.inpEdadFestejado.value = state.edadFestejado;
+    if (dom.inpTipoFestejo) dom.inpTipoFestejo.value = state.tipoFestejo;
+    if (dom.inpTematica) dom.inpTematica.value = state.tematica;
+    if (dom.inpColoresGlobos) dom.inpColoresGlobos.value = state.coloresGlobos;
+    if (dom.inpTipoLetrero) dom.inpTipoLetrero.value = state.tipoLetrero;
+    if (dom.inpFechaEvento) dom.inpFechaEvento.value = state.fechaEvento;
+    if (dom.inpLugarEvento) dom.inpLugarEvento.value = state.lugarEvento;
+    if (dom.inpHoraMontaje) dom.inpHoraMontaje.value = state.horaMontaje;
+    if (dom.inpHoraEvento) dom.inpHoraEvento.value = state.horaEvento;
+    if (dom.inpHoraDesmontaje) dom.inpHoraDesmontaje.value = state.horaDesmontaje;
+    if (dom.inpFlete) dom.inpFlete.value = state.flete;
+    if (dom.inpDescuento) dom.inpDescuento.value = state.descuento;
+    if (dom.inpAnticipoPct) dom.inpAnticipoPct.value = state.anticipoPorcentaje;
+    if (dom.inpNotasBancarias) dom.inpNotasBancarias.value = state.notasBancarias;
+
+    // Actualizar botones de preset
+    [dom.btnPreset1, dom.btnPreset2, dom.btnPreset3].forEach(btn => {
+      if (btn) btn.classList.remove('active');
+    });
+    if (state.paqueteSeleccionado === 'paquete1' && dom.btnPreset1) dom.btnPreset1.classList.add('active');
+    if (state.paqueteSeleccionado === 'paquete2' && dom.btnPreset2) dom.btnPreset2.classList.add('active');
+    if (state.paqueteSeleccionado === 'paquete3' && dom.btnPreset3) dom.btnPreset3.classList.add('active');
+  }
+
+  function renderSidebarItems() {
+    if (!dom.itemsContainer) return;
+    dom.itemsContainer.innerHTML = '';
+
+    state.items.forEach((item, index) => {
+      const row = document.createElement('div');
+      row.className = 'item-edit-row';
+      row.innerHTML = `
+        <input type="number" min="1" max="500" value="${item.cant}" data-index="${index}" data-field="cant" style="text-align: center; font-weight: 700;">
+        <div>
+          <input type="text" value="${escapeHtml(item.titulo)}" data-index="${index}" data-field="titulo" style="font-weight: 600; margin-bottom: 4px;" placeholder="Título del concepto">
+          <input type="text" value="${escapeHtml(item.descripcion)}" data-index="${index}" data-field="descripcion" style="font-size: 0.72rem; color: #CBD5E1;" placeholder="Descripción técnica / inclusiones">
+          <div style="display: flex; gap: 6px; margin-top: 4px;">
+            <input type="text" value="${escapeHtml(item.horario)}" data-index="${index}" data-field="horario" style="font-size: 0.72rem;" placeholder="Horario / Vigencia">
+          </div>
+        </div>
+        <div>
+          <label style="font-size: 0.65rem;">Precio c/u</label>
+          <input type="number" min="0" step="50" value="${item.precioUnitario}" data-index="${index}" data-field="precioUnitario" style="text-align: right; font-weight: 700;">
+        </div>
+        <button type="button" class="btn-remove-item" data-index="${index}" title="Eliminar concepto">
+          <i class="bi bi-trash3-fill"></i>
+        </button>
+      `;
+      dom.itemsContainer.appendChild(row);
+    });
+  }
+
+  function renderSheet() {
+    // Encabezado
+    if (dom.sheetFolio) dom.sheetFolio.textContent = state.folio;
+    if (dom.sheetFechaEmision) dom.sheetFechaEmision.textContent = state.fechaEmision;
+
+    // Comparecientes
+    if (dom.sheetClienteNombre) dom.sheetClienteNombre.textContent = state.clienteNombre || 'Nombre del Cliente';
+    if (dom.sheetClienteTelefono) dom.sheetClienteTelefono.textContent = state.clienteTelefono || '81-0000-0000';
+    if (dom.sheetLugarEvento) dom.sheetLugarEvento.textContent = state.lugarEvento || 'Salón o Domicilio por confirmar';
+    if (dom.sheetFechaEvento) dom.sheetFechaEvento.textContent = formatDateForDisplay(state.fechaEvento);
+    if (dom.sheetSignCliente) dom.sheetSignCliente.textContent = state.clienteNombre || 'Nombre del Cliente';
+
+    // Festejado y Temática
+    if (dom.sheetFestejadoInfo) {
+      dom.sheetFestejadoInfo.textContent = `${state.festejado || 'Festejado'} (${state.edadFestejado || 'Cumpleaños'}) · ${state.tipoFestejo}`;
+    }
+    if (dom.sheetTematicaInfo) {
+      dom.sheetTematicaInfo.textContent = `Temática: ${state.tematica} | Paleta: ${state.coloresGlobos} | Letrero: ${state.tipoLetrero}`;
+    }
+    if (dom.sheetHorariosInfo) {
+      dom.sheetHorariosInfo.textContent = `Montaje: ${state.horaMontaje} | Evento: ${state.horaEvento} | Desmontaje: ${state.horaDesmontaje}`;
+    }
+
+    if (dom.sheetBankInfo) {
+      dom.sheetBankInfo.textContent = state.notasBancarias;
+    }
+
+    // Tabla de la Hoja
+    if (dom.sheetTableBody) {
+      dom.sheetTableBody.innerHTML = '';
+      state.items.forEach(item => {
+        const totalLinea = (Number(item.cant) || 1) * (Number(item.precioUnitario) || 0);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="col-center" style="font-weight: 700;">${item.cant}</td>
+          <td>
+            <span class="item-title-text">${escapeHtml(item.titulo)}</span>
+            <span class="item-desc-text">${escapeHtml(item.descripcion)}</span>
+          </td>
+          <td class="col-center" style="font-size: 0.75rem; color: #475569;">${escapeHtml(item.horario)}</td>
+          <td class="col-right" style="font-weight: 700; color: #0E0B18;">${formatMoney(totalLinea)}</td>
+        `;
+        dom.sheetTableBody.appendChild(tr);
+      });
+    }
+  }
+
+  function updateCalculations() {
+    let subtotal = 0;
+    state.items.forEach(item => {
+      subtotal += (Number(item.cant) || 1) * (Number(item.precioUnitario) || 0);
+    });
+
+    const flete = Number(state.flete) || 0;
+    const descuento = Number(state.descuento) || 0;
+    const total = Math.max(0, subtotal + flete - descuento);
+
+    const pct = Number(state.anticipoPorcentaje) || 50;
+    const anticipo = Math.round(total * (pct / 100));
+    const saldo = Math.max(0, total - anticipo);
+
+    // Actualizar Sidebar
+    if (dom.sideSubtotal) dom.sideSubtotal.textContent = formatMoney(subtotal);
+    if (dom.sideFlete) dom.sideFlete.textContent = formatMoney(flete);
+    if (dom.sideDescuento) dom.sideDescuento.textContent = formatMoney(descuento);
+    if (dom.sideTotal) dom.sideTotal.textContent = formatMoney(total);
+    if (dom.sideAnticipo) dom.sideAnticipo.textContent = formatMoney(anticipo);
+    if (dom.sideSaldo) dom.sideSaldo.textContent = formatMoney(saldo);
+
+    // Actualizar Hoja
+    if (dom.sheetSubtotalVal) dom.sheetSubtotalVal.textContent = formatMoney(subtotal);
+    if (dom.sheetFleteVal) dom.sheetFleteVal.textContent = formatMoney(flete);
+    if (dom.sheetTotalVal) dom.sheetTotalVal.textContent = formatMoney(total);
+    if (dom.sheetAnticipoVal) dom.sheetAnticipoVal.textContent = formatMoney(anticipo);
+    if (dom.sheetSaldoVal) dom.sheetSaldoVal.textContent = formatMoney(saldo);
+
+    // Auto-guardado en LocalStorage
+    saveToStorage();
+  }
+
+  // =========================================================================
+  // EVENT LISTENERS & VINCULACIÓN REACTIVA
+  // =========================================================================
+  function setupEventListeners() {
+    // Inputs del formulario
+    const bindInput = (el, key, isNumber = false) => {
+      if (!el) return;
+      el.addEventListener('input', e => {
+        state[key] = isNumber ? Number(e.target.value) || 0 : e.target.value;
+        renderSheet();
+        updateCalculations();
+      });
+    };
+
+    bindInput(dom.inpFolio, 'folio');
+    bindInput(dom.inpFechaEmision, 'fechaEmision');
+    bindInput(dom.inpClienteNombre, 'clienteNombre');
+    bindInput(dom.inpClienteTelefono, 'clienteTelefono');
+    bindInput(dom.inpClienteEmail, 'clienteEmail');
+    bindInput(dom.inpFestejado, 'festejado');
+    bindInput(dom.inpEdadFestejado, 'edadFestejado');
+    bindInput(dom.inpTipoFestejo, 'tipoFestejo');
+    bindInput(dom.inpTematica, 'tematica');
+    bindInput(dom.inpColoresGlobos, 'coloresGlobos');
+    bindInput(dom.inpTipoLetrero, 'tipoLetrero');
+    bindInput(dom.inpFechaEvento, 'fechaEvento');
+    bindInput(dom.inpLugarEvento, 'lugarEvento');
+    bindInput(dom.inpHoraMontaje, 'horaMontaje');
+    bindInput(dom.inpHoraEvento, 'horaEvento');
+    bindInput(dom.inpHoraDesmontaje, 'horaDesmontaje');
+    bindInput(dom.inpFlete, 'flete', true);
+    bindInput(dom.inpDescuento, 'descuento', true);
+    bindInput(dom.inpAnticipoPct, 'anticipoPorcentaje', true);
+    bindInput(dom.inpNotasBancarias, 'notasBancarias');
+
+    // Cambio de Zona de Flete / Tarifas
+    if (dom.selZona) {
+      dom.selZona.addEventListener('change', e => {
+        state.zona = e.target.value;
+        if (state.paqueteSeleccionado) {
+          cargarItemsDePaquete(state.paqueteSeleccionado, state.zona);
+        }
+        renderAll();
+      });
+    }
+
+    // Botones de presets
+    if (dom.btnPreset1) {
+      dom.btnPreset1.addEventListener('click', () => {
+        cargarItemsDePaquete('paquete1', state.zona);
+        renderAll();
+      });
+    }
+    if (dom.btnPreset2) {
+      dom.btnPreset2.addEventListener('click', () => {
+        cargarItemsDePaquete('paquete2', state.zona);
+        renderAll();
+      });
+    }
+    if (dom.btnPreset3) {
+      dom.btnPreset3.addEventListener('click', () => {
+        cargarItemsDePaquete('paquete3', state.zona);
+        renderAll();
+      });
+    }
+
+    // Edición de items en el panel lateral
+    if (dom.itemsContainer) {
+      dom.itemsContainer.addEventListener('input', e => {
+        const index = e.target.dataset.index;
+        const field = e.target.dataset.field;
+        if (index !== undefined && field && state.items[index]) {
+          state.items[index][field] = (field === 'cant' || field === 'precioUnitario')
+            ? Number(e.target.value) || 0
+            : e.target.value;
+          renderSheet();
+          updateCalculations();
+        }
+      });
+
+      dom.itemsContainer.addEventListener('click', e => {
+        const btn = e.target.closest('.btn-remove-item');
+        if (btn) {
+          const index = btn.dataset.index;
+          if (index !== undefined) {
+            state.items.splice(index, 1);
+            state.paqueteSeleccionado = 'custom';
+            renderSidebarItems();
+            renderSheet();
+            updateCalculations();
+          }
+        }
+      });
+    }
+
+    // Botón agregar concepto manual
+    if (dom.btnAddItem) {
+      dom.btnAddItem.addEventListener('click', () => {
+        state.items.push({
+          id: 'item_' + Date.now(),
+          cant: 1,
+          titulo: 'Servicio / Mobiliario Adicional',
+          descripcion: 'Especificaciones del mobiliario o decoración solicitada.',
+          horario: 'Evento Completo',
+          precioUnitario: 500
+        });
+        state.paqueteSeleccionado = 'custom';
+        renderSidebarItems();
+        renderSheet();
+        updateCalculations();
+      });
+    }
+
+    // Botones de adicionales rápidos (chips)
+    document.querySelectorAll('.btn-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const cant = Number(chip.dataset.cant) || 1;
+        const titulo = chip.dataset.titulo || 'Adicional';
+        const desc = chip.dataset.desc || '';
+        const precio = Number(chip.dataset.precio) || 0;
+        const horario = chip.dataset.horario || 'Evento Completo';
+
+        state.items.push({
+          id: 'item_' + Date.now(),
+          cant: cant,
+          titulo: titulo,
+          descripcion: desc,
+          horario: horario,
+          precioUnitario: precio
+        });
+        state.paqueteSeleccionado = 'custom';
+        renderSidebarItems();
+        renderSheet();
+        updateCalculations();
+      });
+    });
+
+    // Botón nuevo folio
+    if (dom.btnNewFolio) {
+      dom.btnNewFolio.addEventListener('click', () => {
+        state.folio = generateFolio();
+        if (dom.inpFolio) dom.inpFolio.value = state.folio;
+        renderSheet();
+        updateCalculations();
+      });
+    }
+
+    // Botón Imprimir / PDF
+    if (dom.btnPrint) {
+      dom.btnPrint.addEventListener('click', () => {
+        window.print();
+      });
+    }
+
+    // Botón Descargar PDF directo
+    if (dom.btnDownloadPdf) {
+      dom.btnDownloadPdf.addEventListener('click', () => {
+        triggerPdfExport();
+      });
+    }
+
+    // Botón WhatsApp
+    if (dom.btnWhatsApp) {
+      dom.btnWhatsApp.addEventListener('click', () => {
+        enviarPorWhatsApp();
+      });
+    }
+
+    // Botón Copiar Resumen
+    if (dom.btnCopySummary) {
+      dom.btnCopySummary.addEventListener('click', () => {
+        copiarResumenAlPortapapeles();
+      });
+    }
+
+    // Botón Reset
+    if (dom.btnReset) {
+      dom.btnReset.addEventListener('click', () => {
+        if (confirm('¿Deseas reiniciar el formulario a un contrato nuevo? Se generará un nuevo folio.')) {
+          localStorage.removeItem('nancy_contrato_draft');
+          state.folio = generateFolio();
+          state.fechaEmision = getFormattedCurrentDate();
+          cargarItemsDePaquete('paquete1', state.zona);
+          renderAll();
+        }
+      });
+    }
+  }
+
+  // =========================================================================
+  // EXPORTACIÓN A PDF Y WHATSAPP
+  // =========================================================================
+  function triggerPdfExport() {
+    const btn = dom.btnDownloadPdf;
+    const originalHtml = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Generando PDF...';
+      btn.disabled = true;
+      btn.style.opacity = '0.75';
+    }
+
+    const cleanClientName = (state.clienteNombre || 'Cliente').replace(/[^a-zA-Z0-9]/g, '_');
+    const filename = `Contrato_NancyEventos_${state.folio}_${cleanClientName}.pdf`;
+
+    // Si tenemos el Data URI del logo, lo inyectamos directamente para evitar que el canvas se considere "tainted" por file:///
+    if (window.NANCY_LOGO_DATA_URI) {
+      const emblem = document.querySelector('.sheet-emblem-img');
+      if (emblem) emblem.src = window.NANCY_LOGO_DATA_URI;
+    }
+
+    // Función para restaurar botón
+    const restoreBtn = () => {
+      if (btn) {
+        btn.innerHTML = originalHtml;
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      }
+    };
+
+    // Si la librería html2pdf está disponible
+    if (typeof window.html2pdf === 'function') {
+      const opt = {
+        margin: [6, 6, 6, 6],
+        filename: filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          logging: false,
+          scrollY: 0,
+          scrollX: 0
+        },
+        jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
+      };
+
+      try {
+        const worker = window.html2pdf().set(opt).from(sheetEl);
+
+        // Intentar guardar con temporizador de seguridad (fallback a impresión tras 4.5 segundos si el navegador bloquea blobs en file:///)
+        let finished = false;
+
+        const downloadTimer = setTimeout(() => {
+          if (!finished) {
+            finished = true;
+            console.warn('html2pdf tardó demasiado o fue bloqueado por file:///. Activando diálogo nativo...');
+            restoreBtn();
+            window.print();
+          }
+        }, 4500);
+
+        worker.save().then(() => {
+          if (!finished) {
+            finished = true;
+            clearTimeout(downloadTimer);
+            restoreBtn();
+          }
+        }).catch(err => {
+          if (!finished) {
+            finished = true;
+            clearTimeout(downloadTimer);
+            console.warn('html2pdf save error, usando diálogo de impresión:', err);
+            restoreBtn();
+            window.print();
+          }
+        });
+      } catch (err) {
+        console.warn('Excepción al invocar html2pdf:', err);
+        restoreBtn();
+        window.print();
+      }
+    } else {
+      restoreBtn();
+      window.print();
+    }
+  }
+
+  function buildWhatsAppMessage() {
+    let subtotal = 0;
+    state.items.forEach(item => {
+      subtotal += (Number(item.cant) || 1) * (Number(item.precioUnitario) || 0);
+    });
+    const flete = Number(state.flete) || 0;
+    const descuento = Number(state.descuento) || 0;
+    const total = Math.max(0, subtotal + flete - descuento);
+    const pct = Number(state.anticipoPorcentaje) || 50;
+    const anticipo = Math.round(total * (pct / 100));
+    const saldo = Math.max(0, total - anticipo);
+
+    const fechaFestejo = formatDateForDisplay(state.fechaEvento);
+    const itemsText = state.items.map(it => `  • ${it.cant}x ${it.titulo}`).join('\n');
+
+    return `¡Hola ${state.clienteNombre}! 🎈 Te saluda Nancy Eventos.
+
+Adjunto tu Contrato Oficial de Servicio con Folio *${state.folio}* para el festejo de *${state.festejado}* (${state.edadFestejado}) el día *${fechaFestejo}*.
+
+📍 *Lugar:* ${state.lugarEvento}
+🎨 *Temática:* ${state.tematica}
+⏰ *Montaje:* ${state.horaMontaje}
+
+📋 *Servicios y Mobiliario:*
+${itemsText}
+
+💰 *Inversión Total:* ${formatMoney(total)} MXN
+🔒 *Anticipo de Reserva (50%):* ${formatMoney(anticipo)} MXN
+💵 *Saldo restante al montaje:* ${formatMoney(saldo)} MXN
+
+💳 *Datos para Transferencia / Depósito:*
+${state.notasBancarias}
+
+En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en nuestra agenda. ¡Muchas gracias por tu confianza! ✨`;
+  }
+
+  function enviarPorWhatsApp() {
+    const rawPhone = (state.clienteTelefono || '').replace(/[^0-9]/g, '');
+    let cleanPhone = rawPhone;
+    if (cleanPhone.length === 10) {
+      cleanPhone = '52' + cleanPhone;
+    }
+
+    const msg = buildWhatsAppMessage();
+    const encoded = encodeURIComponent(msg);
+    const targetUrl = cleanPhone.length >= 10
+      ? `https://wa.me/${cleanPhone}?text=${encoded}`
+      : `https://wa.me/528110626302?text=${encoded}`;
+
+    window.open(targetUrl, '_blank');
+  }
+
+  function copiarResumenAlPortapapeles() {
+    const msg = buildWhatsAppMessage();
+    navigator.clipboard.writeText(msg).then(() => {
+      alert('¡Resumen del contrato copiado al portapapeles! Listo para pegarlo en WhatsApp.');
+    }).catch(() => {
+      prompt('Copia el texto del contrato:', msg);
+    });
+  }
+
+  // =========================================================================
+  // PERSISTENCIA (LOCALSTORAGE)
+  // =========================================================================
+  function saveToStorage() {
+    try {
+      localStorage.setItem('nancy_contrato_draft', JSON.stringify(state));
+    } catch (e) {
+      // Ignorar errores de cuota o modo privado
+    }
+  }
+
+  function loadFromStorage() {
+    try {
+      const saved = localStorage.getItem('nancy_contrato_draft');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        Object.assign(state, parsed);
+      }
+    } catch (e) {
+      // Usar estado inicial si falla
+    }
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // =========================================================================
+  // CONTROLADOR DE SEGURIDAD Y ACCESO POR PIN (NANCY EVENTOS)
+  // =========================================================================
+  const MASTER_PIN = '1062';
+  const AUTH_STORAGE_KEY = 'nancy_eventos_auth_v1';
+  let currentPin = '';
+
+  function initSecurity() {
+    const authOverlay = document.getElementById('authOverlay');
+    const pinDots = document.querySelectorAll('#pinDots .pin-dot');
+    const pinStatusMsg = document.getElementById('pinStatusMsg');
+    const chkRemember = document.getElementById('chkRememberDevice');
+    const btnLockApp = document.getElementById('btnLockApp');
+    const keypadButtons = document.querySelectorAll('.key-btn');
+    const authCard = authOverlay ? authOverlay.querySelector('.auth-card') : null;
+
+    function updateDots() {
+      pinDots.forEach((dot, index) => {
+        if (index < currentPin.length) {
+          dot.classList.add('filled');
+        } else {
+          dot.classList.remove('filled', 'success');
+        }
+      });
+    }
+
+    function unlockApp(isFromMagicLink) {
+      document.body.classList.add('authenticated');
+      if (chkRemember && chkRemember.checked) {
+        try {
+          localStorage.setItem(AUTH_STORAGE_KEY, 'authenticated');
+        } catch (e) {
+          // localStorage no disponible en modo ultra incógnito
+        }
+      }
+      if (isFromMagicLink) {
+        showToast('¡Bienvenida Nancy! Sesión recordada en este dispositivo.');
+      }
+    }
+
+    function lockApp() {
+      try {
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+      } catch (e) {}
+      document.body.classList.remove('authenticated');
+      currentPin = '';
+      updateDots();
+      if (pinStatusMsg) {
+        pinStatusMsg.textContent = 'Sesión cerrada. Ingresa tu PIN para volver a entrar.';
+        pinStatusMsg.classList.remove('success');
+      }
+    }
+
+    function validatePin() {
+      if (currentPin === MASTER_PIN) {
+        pinDots.forEach(dot => dot.classList.add('success'));
+        if (pinStatusMsg) {
+          pinStatusMsg.textContent = '¡PIN Correcto! Accediendo...';
+          pinStatusMsg.classList.add('success');
+        }
+        setTimeout(() => {
+          unlockApp(false);
+          currentPin = '';
+          updateDots();
+          if (pinStatusMsg) pinStatusMsg.textContent = '';
+        }, 250);
+      } else {
+        if (authCard) {
+          authCard.classList.remove('shake');
+          void authCard.offsetWidth; // Forzar reflow para reiniciar animación
+          authCard.classList.add('shake');
+        }
+        if (pinStatusMsg) {
+          pinStatusMsg.textContent = 'PIN incorrecto. Intenta nuevamente.';
+          pinStatusMsg.classList.remove('success');
+        }
+        setTimeout(() => {
+          currentPin = '';
+          updateDots();
+        }, 350);
+      }
+    }
+
+    function handleKeyPress(key) {
+      if (document.body.classList.contains('authenticated')) return;
+
+      if (key === 'clear') {
+        currentPin = '';
+        updateDots();
+        if (pinStatusMsg) pinStatusMsg.textContent = '';
+        return;
+      }
+
+      if (key === 'enter') {
+        if (currentPin.length > 0) validatePin();
+        return;
+      }
+
+      if (/^[0-9]$/.test(key)) {
+        if (currentPin.length < 4) {
+          currentPin += key;
+          updateDots();
+          if (pinStatusMsg) pinStatusMsg.textContent = '';
+          if (currentPin.length === 4) {
+            validatePin();
+          }
+        }
+      }
+    }
+
+    // Configurar botones del teclado en pantalla
+    keypadButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const key = btn.getAttribute('data-key');
+        handleKeyPress(key);
+      });
+    });
+
+    // Soporte para teclado físico o teclado nativo de móvil
+    window.addEventListener('keydown', (e) => {
+      if (document.body.classList.contains('authenticated')) return;
+      if (e.key >= '0' && e.key <= '9') {
+        handleKeyPress(e.key);
+      } else if (e.key === 'Backspace' || e.key === 'Delete') {
+        handleKeyPress('clear');
+      } else if (e.key === 'Enter') {
+        handleKeyPress('enter');
+      }
+    });
+
+    // Botón de Bloqueo en la barra superior
+    if (btnLockApp) {
+      btnLockApp.addEventListener('click', () => {
+        if (confirm('¿Deseas bloquear el acceso a los contratos en este dispositivo?')) {
+          lockApp();
+        }
+      });
+    }
+
+    // 1. Verificar si viene por Enlace Mágico (URL Query: ?pin=1062 o ?key=1062)
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryPin = urlParams.get('pin') || urlParams.get('key');
+
+    if (queryPin && queryPin.trim() === MASTER_PIN) {
+      // Remover el PIN de la barra de direcciones para que no sea visible
+      try {
+        const cleanUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+      } catch (e) {}
+
+      unlockApp(true);
+      return;
+    }
+
+    // 2. Verificar si ya estaba autenticado en este dispositivo
+    try {
+      const savedAuth = localStorage.getItem(AUTH_STORAGE_KEY);
+      if (savedAuth === 'authenticated') {
+        document.body.classList.add('authenticated');
+        return;
+      }
+    } catch (e) {}
+
+    // Si no está autenticado, mantener el bloqueo activo
+    document.body.classList.remove('authenticated');
+  }
+
+  // =========================================================================
+  // INICIALIZACIÓN
+  // =========================================================================
+  document.addEventListener('DOMContentLoaded', () => {
+    initDom();
+    if (window.NANCY_LOGO_DATA_URI) {
+      document.querySelectorAll('.sheet-emblem-img, .header-brand-logo, .auth-logo').forEach(img => {
+        img.src = window.NANCY_LOGO_DATA_URI;
+      });
+    }
+    initSecurity();
+    loadFromStorage();
+    renderAll();
+    setupEventListeners();
+  });
+
+})();

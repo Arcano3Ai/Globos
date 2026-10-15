@@ -7,7 +7,7 @@
     "start": "node server.js",
     "dev": "node server.js",
     "build": "echo \"Build successfully completed\"",
-    "test": "node -c script.js && node -c server.js"
+    "test": "node -c script.js && node -c server.js && node -c contratos/app.js"
   },
   "keywords": [
     "nancy-garcia",

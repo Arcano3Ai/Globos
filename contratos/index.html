@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <title>Generador Oficial de Contratos de Servicio | Nancy Eventos</title>
+
+  <!-- Tipografías Corporativas Oficiales -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Estilos del Generador y Hoja Membretada -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Librería local para exportación directa a PDF (100% offline) con fallback a CDN -->
+  <script src="assets/html2pdf.bundle.min.js"></script>
+  <script>
+    if (typeof html2pdf === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>');
+    }
+  </script>
+  <!-- Logo embebido en Base64 para prevenir errores de canvas en local file:/// -->
+  <script src="assets/logo_data.js"></script>
+</head>
+<body>
+
+  <!-- MODAL DE ACCESO SEGURO CON PIN PARA NANCY -->
+  <div id="authOverlay" class="auth-overlay">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <img src="assets/nancy_eventos_logo_oficial.png" alt="Nancy Eventos" class="auth-logo">
+        <h2>Nancy Eventos</h2>
+        <span class="auth-tag"><i class="bi bi-shield-lock-fill"></i> ACCESO ADMINISTRATIVO PRIVADO</span>
+      </div>
+
+      <p class="auth-subtitle">Ingresa tu PIN de 4 dígitos para gestionar contratos</p>
+
+      <!-- Indicadores visuales de PIN -->
+      <div class="pin-dots-container" id="pinDots">
+        <span class="pin-dot"></span>
+        <span class="pin-dot"></span>
+        <span class="pin-dot"></span>
+        <span class="pin-dot"></span>
+      </div>
+
+      <!-- Input invisible para soporte de teclado físico/móvil nativo -->
+      <input type="password" id="pinHiddenInput" maxlength="4" inputmode="numeric" pattern="[0-9]*" class="pin-hidden-input" autocomplete="off">
+
+      <!-- Teclado táctil optimizado para una mano en móvil -->
+      <div class="pin-keypad">
+        <button type="button" class="key-btn" data-key="1">1</button>
+        <button type="button" class="key-btn" data-key="2">2</button>
+        <button type="button" class="key-btn" data-key="3">3</button>
+        <button type="button" class="key-btn" data-key="4">4</button>
+        <button type="button" class="key-btn" data-key="5">5</button>
+        <button type="button" class="key-btn" data-key="6">6</button>
+        <button type="button" class="key-btn" data-key="7">7</button>
+        <button type="button" class="key-btn" data-key="8">8</button>
+        <button type="button" class="key-btn" data-key="9">9</button>
+        <button type="button" class="key-btn key-action" data-key="clear" title="Borrar"><i class="bi bi-backspace-fill"></i></button>
+        <button type="button" class="key-btn" data-key="0">0</button>
+        <button type="button" class="key-btn key-action key-enter" data-key="enter" title="Entrar"><i class="bi bi-arrow-right-short"></i></button>
+      </div>
+
+      <!-- Checkbox para recordar sesión en su teléfono -->
+      <label class="auth-remember-label">
+        <input type="checkbox" id="chkRememberDevice" checked>
+        <span>Recordar en este celular (no volver a pedir)</span>
+      </label>
+
+      <!-- Mensaje de estado / error -->
+      <div id="pinStatusMsg" class="auth-status-msg"></div>
+
+      <div class="auth-footer-help">
+        <i class="bi bi-phone-fill"></i> Nancy: También puedes usar tu enlace directo de WhatsApp para entrar en un solo toque sin teclear.
+      </div>
+    </div>
+  </div>
+
+  <!-- BARRA SUPERIOR DE ACCIONES -->
+  <header class="app-header">
+    <div class="header-left">
+      <img src="assets/nancy_eventos_logo_oficial.png" alt="Nancy Eventos" class="header-brand-logo">
+      <div class="header-title-box">
+        <h1>
+          <span>Nancy Eventos</span>
+          <span style="font-size: 0.65rem; background: var(--pink-main); padding: 2px 7px; border-radius: 4px; font-weight: 700;">CONTRATOS</span>
+        </h1>
+        <p>Decoración · Globos · Detalles | Paquetes Oficiales 1, 2 y 3</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button type="button" class="btn btn-primary" id="btnPrint" title="Imprimir o exportar en PDF">
+        <i class="bi bi-printer-fill"></i> Imprimir / Guardar en PDF
+      </button>
+      <button type="button" class="btn btn-accent" id="btnDownloadPdf" title="Descarga directa en archivo PDF">
+        <i class="bi bi-file-earmark-pdf-fill"></i> Descargar PDF
+      </button>
+      <button type="button" class="btn btn-whatsapp" id="btnWhatsApp" title="Abrir chat de WhatsApp con el contrato y montos">
+        <i class="bi bi-whatsapp"></i> Enviar por WhatsApp
+      </button>
+      <button type="button" class="btn btn-dark" id="btnCopySummary" title="Copiar texto resumen">
+        <i class="bi bi-clipboard-check"></i> Copiar Resumen
+      </button>
+      <button type="button" class="btn btn-dark" id="btnReset" title="Reiniciar y crear nuevo contrato">
+        <i class="bi bi-arrow-counterclockwise"></i> Nuevo Contrato
+      </button>
+      <button type="button" class="btn btn-dark" id="btnLockApp" title="Bloquear / Cerrar Sesión Segura">
+        <i class="bi bi-shield-lock-fill"></i> Bloquear
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTENEDOR DUAL: PANEL DE CONTROL + HOJA EN VIVO -->
+  <div class="workspace-container">
+
+    <!-- PANEL LATERAL DE EDICIÓN Y PRESETS -->
+    <aside class="controls-sidebar">
+
+      <!-- 1. PRESETS RÁPIDOS DE PAQUETES -->
+      <section class="form-section">
+        <div class="section-title">
+          <span>1. Paquetes Comerciales Oficiales</span>
+          <i class="bi bi-stars"></i>
+        </div>
+        <p style="font-size: 0.72rem; color: #CBD5E1; margin-bottom: 10px;">
+          Haz clic en cualquiera de los 3 paquetes para cargar automáticamente la descripción, inclusión de staff y precios oficiales.
+        </p>
+
+        <div class="preset-grid">
+          <button type="button" class="btn-preset active" id="btnPreset1">
+            <span class="preset-name">Paquete 1</span>
+            <span class="preset-price">Aro + Caballetes 1H</span>
+          </button>
+          <button type="button" class="btn-preset" id="btnPreset2">
+            <span class="preset-name">Paquete 2</span>
+            <span class="preset-price">Elotes + Tostitos</span>
+          </button>
+          <button type="button" class="btn-preset" id="btnPreset3">
+            <span class="preset-name">Paquete 3</span>
+            <span class="preset-price">Taller 2H + Yesitos</span>
+          </button>
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label for="selZona"><i class="bi bi-geo-alt-fill"></i> Zona / Cobertura (Fija tarifas oficiales):</label>
+          <select id="selZona">
+            <option value="monterrey">Monterrey (Tarifa estándar Mty)</option>
+            <option value="juarez_guadalupe">Juárez y Guadalupe (Tarifa preferencial taller)</option>
+            <option value="otras_zonas">San Pedro, Cumbres, Apodaca, Santa Catarina (+$350 flete)</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- 2. FOLIO Y FECHAS -->
+      <section class="form-section">
+        <div class="section-title">
+          <span>2. Folio y Fechas Oficiales</span>
+          <i class="bi bi-hash"></i>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inpFolio">Folio de Contrato:</label>
+            <div style="display: flex; gap: 4px;">
+              <input type="text" id="inpFolio" value="CTR-2026-089" style="font-weight: 700; color: var(--turquoise-neon);">
+              <button type="button" class="btn btn-dark" id="btnNewFolio" title="Generar nuevo número" style="padding: 6px 10px;">
+                <i class="bi bi-arrow-repeat"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inpFechaEmision">Fecha de Emisión:</label>
+            <input type="text" id="inpFechaEmision" value="31 de Agosto de 2026">
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. DATOS DEL CLIENTE Y FESTEJADO -->
+      <section class="form-section">
+        <div class="section-title">
+          <span>3. Cliente y Datos del Festejo</span>
+          <i class="bi bi-person-badge-fill"></i>
+        </div>
+
+        <div class="form-group">
+          <label for="inpClienteNombre">Nombre Completo del Cliente (Arrendatario):</label>
+          <input type="text" id="inpClienteNombre" placeholder="Ej. C. Alejandro Ramírez Salinas" value="C. Alejandro Ramírez Salinas">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inpClienteTelefono"><i class="bi bi-whatsapp"></i> WhatsApp / Teléfono:</label>
+            <input type="text" id="inpClienteTelefono" placeholder="Ej. 81-8399-2211" value="81-8399-2211">
+          </div>
+          <div class="form-group">
+            <label for="inpClienteEmail">Correo (Opcional):</label>
+            <input type="email" id="inpClienteEmail" placeholder="cliente@correo.com">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inpFestejado">Nombre de Festejada/o:</label>
+            <input type="text" id="inpFestejado" placeholder="Ej. Mía Ramírez" value="Mía Ramírez">
+          </div>
+          <div class="form-group">
+            <label for="inpEdadFestejado">Edad / Aniversario:</label>
+            <input type="text" id="inpEdadFestejado" placeholder="Ej. 5 Años" value="5 Años">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inpTipoFestejo">Tipo de Celebración:</label>
+          <input type="text" id="inpTipoFestejo" placeholder="Ej. Cumpleaños Infantil, Bautizo, Primera Comunión..." value="Cumpleaños Infantil">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inpTematica">Temática del Evento:</label>
+            <input type="text" id="inpTematica" placeholder="Ej. Safari, Princesas, Sonic..." value="Princesas & Fantasía Mágica">
+          </div>
+          <div class="form-group">
+            <label for="inpColoresGlobos">Paleta de Colores de Globos:</label>
+            <input type="text" id="inpColoresGlobos" placeholder="Ej. Rosa pastel, lila y cromo oro" value="Rosa pastel, lila y cromo oro">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inpTipoLetrero">Tipo de Letrero a Elegir:</label>
+          <input type="text" id="inpTipoLetrero" placeholder="Ej. Luz LED Neón 'Happy Birthday' o MDF calado" value="Luz LED Neón ('Happy Birthday')">
+        </div>
+      </section>
+
+      <!-- 4. LUGAR Y HORARIOS -->
+      <section class="form-section">
+        <div class="section-title">
+          <span>4. Ubicación y Horarios</span>
+          <i class="bi bi-clock-fill"></i>
+        </div>
+
+        <div class="form-group">
+          <label for="inpFechaEvento"><i class="bi bi-calendar-event"></i> Fecha del Festejo:</label>
+          <input type="date" id="inpFechaEvento">
+        </div>
+
+        <div class="form-group">
+          <label for="inpLugarEvento"><i class="bi bi-geo-alt"></i> Salón o Domicilio del Evento:</label>
+          <input type="text" id="inpLugarEvento" placeholder="Ej. Salón Las Nubes, San Pedro Garza García, N.L." value="Salón Las Nubes, San Pedro Garza García, N.L.">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inpHoraMontaje">Horario de Montaje:</label>
+            <input type="text" id="inpHoraMontaje" value="14:30 hrs (2 horas antes)">
+          </div>
+          <div class="form-group">
+            <label for="inpHoraEvento">Horario del Festejo:</label>
+            <input type="text" id="inpHoraEvento" value="16:30 a 20:30 hrs">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inpHoraDesmontaje">Horario de Desmontaje / Recolección:</label>
+          <input type="text" id="inpHoraDesmontaje" value="20:45 hrs (Al concluir)">
+        </div>
+      </section>
+
+      <!-- 5. CONCEPTOS CONTRATADOS Y ADICIONALES -->
+      <section class="form-section">
+        <div class="section-title">
+          <span>5. Conceptos y Mobiliario</span>
+          <i class="bi bi-box-seam-fill"></i>
+        </div>
+
+        <div id="itemsContainer">
+          <!-- Se inyecta dinámicamente con JavaScript -->
+        </div>
+
+        <button type="button" class="btn btn-dark" id="btnAddItem" style="width: 100%; margin-top: 6px;">
+          <i class="bi bi-plus-circle-fill"></i> + Agregar Concepto Personalizado
+        </button>
+
+        <div style="margin-top: 14px;">
+          <label style="font-size: 0.72rem; color: var(--turquoise-neon);">+ Adicionales frecuentes (clic para sumar):</label>
+          <div class="quick-addons-wrap">
+            <button type="button" class="btn-chip" data-cant="1" data-titulo="Metro Extra de Arco Orgánico de Globos" data-desc="Elaborado con látex de alta densidad y tratamiento de brillo High-Shine." data-precio="550" data-horario="Evento Completo">+1m Arco ($550)</button>
+            <button type="button" class="btn-chip" data-cant="1" data-titulo="Bouquet Deluxe con Números Gigantes" data-desc="Base orgánica estructurada + 1 o 2 números gigantes de foil con helio." data-precio="950" data-horario="Consumible">+Bouquet Deluxe ($950)</button>
+            <button type="button" class="btn-chip" data-cant="10" data-titulo="Lote 10 Yesitos Temáticos Extras" data-desc="Figuras de yeso cerámico con bolsita individual, listón, pincel y botecito de pintura." data-precio="250" data-horario="Consumible">+10 Yesitos ($250)</button>
+            <button type="button" class="btn-chip" data-cant="50" data-titulo="Lote 50 Yesitos Temáticos Mayoreo" data-desc="Figuras surtidas para pintar y llevar como recuerdo para todos los invitados." data-precio="1100" data-horario="Consumible">+50 Yesitos ($1,100)</button>
+            <button type="button" class="btn-chip" data-cant="1" data-titulo="Estación Doble de Caballete Infantil Extra" data-desc="Caballete de madera doble (2 puestos más) con banquitos, mandiles y pinturas." data-precio="350" data-horario="1 a 2 Horas">+1 Caballete Doble ($350)</button>
+            <button type="button" class="btn-chip" data-cant="1" data-titulo="Hora Adicional de Servicio de Taller / Staff" data-desc="Extensión de tiempo de atención continua para dinamizar el área infantil." data-precio="450" data-horario="1 Hora Extra">+1 Hora Staff ($450)</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. AJUSTES FINANCIEROS Y ANTICIPO -->
+      <section class="form-section">
+        <div class="section-title">
+          <span>6. Totales y Condiciones de Cobro</span>
+          <i class="bi bi-cash-coin"></i>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inpFlete">Flete / Logística (MXN):</label>
+            <input type="number" id="inpFlete" min="0" step="50" value="0">
+          </div>
+          <div class="form-group">
+            <label for="inpDescuento">Descuento Especial (MXN):</label>
+            <input type="number" id="inpDescuento" min="0" step="50" value="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inpAnticipoPct">Porcentaje de Anticipo (% para apartado de fecha):</label>
+          <input type="number" id="inpAnticipoPct" min="10" max="100" step="5" value="50">
+        </div>
+
+        <div class="form-group">
+          <label for="inpNotasBancarias">Datos Bancarios para Transferencia:</label>
+          <textarea id="inpNotasBancarias" rows="2" style="resize: vertical;">Banco: BBVA / Banorte | Beneficiaria: Nancy García | Cuenta / CLABE: 012 580 00123456789 0</textarea>
+        </div>
+
+        <!-- TARJETA RESUMEN EN EL PANEL -->
+        <div class="totals-summary-card">
+          <div class="summary-line">
+            <span>Subtotal Conceptos:</span>
+            <strong id="sideSubtotal">$0.00</strong>
+          </div>
+          <div class="summary-line">
+            <span>Flete / Logística:</span>
+            <span id="sideFlete">$0.00</span>
+          </div>
+          <div class="summary-line">
+            <span>Descuento aplicado:</span>
+            <span id="sideDescuento">$0.00</span>
+          </div>
+          <div class="summary-line summary-total">
+            <span>Inversión Total:</span>
+            <span id="sideTotal">$0.00</span>
+          </div>
+
+          <div class="deposit-split-box">
+            <div class="deposit-pill">
+              <span class="label">Anticipo (50% Reserva)</span>
+              <span class="val" id="sideAnticipo" style="color: var(--turquoise-neon);">$0.00</span>
+            </div>
+            <div class="deposit-pill">
+              <span class="label">Saldo al Montaje (50%)</span>
+              <span class="val" id="sideSaldo" style="color: #FF9EE2;">$0.00</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </aside>
+
+    <!-- PANEL DERECHO: VISOR DE HOJA MEMBRETADA (LIVE PREVIEW & PRINT TARGET) -->
+    <main class="preview-viewport">
+
+      <article class="sheet" id="contractSheet">
+
+        <!-- ENCABEZADO OFICIAL DE MEMBRETE -->
+        <header class="sheet-header">
+          <div class="header-grid">
+            <div class="sheet-brand-combo">
+              <img src="assets/nancy_eventos_logo_oficial.png" alt="Nancy Eventos" class="sheet-emblem-img">
+              <div class="sheet-brand-text">
+                <h2 class="sheet-brand-name">NANCY EVENTOS</h2>
+                <div class="sheet-brand-sub">DECORACIÓN · GLOBOS · DETALLES</div>
+                <div class="sheet-brand-tagline">Soluciones Integrales para Eventos & Experiencias de Alta Gama</div>
+              </div>
+            </div>
+            <div class="sheet-meta-box">
+              <div class="doc-name">Contrato de Prestación de Servicios</div>
+              <div class="doc-number">FOLIO: <span id="sheetFolio" contenteditable="true">CTR-2026-089</span></div>
+              <div class="doc-date">Monterrey, N.L. a <span id="sheetFechaEmision" contenteditable="true">31 de Agosto de 2026</span></div>
+            </div>
+          </div>
+        </header>
+
+        <!-- COMPARECIENTES Y DECLARACIÓN DE LAS PARTES -->
+        <section class="contract-parties-box">
+          <div class="parties-header">Comparecientes y Términos Generales</div>
+          <p>
+            Contrato celebrado entre <strong>NANCY EVENTOS · DECORACIÓN · GLOBOS · DETALLES</strong> (en lo sucesivo "EL PRESTADOR"), con atención y Concierge al WhatsApp <strong>81-1062-6302</strong>, y por la otra parte <strong id="sheetClienteNombre" contenteditable="true">C. Alejandro Ramírez Salinas</strong> (en lo sucesivo "EL CLIENTE / ARRENDATARIO"), con teléfono <strong id="sheetClienteTelefono" contenteditable="true">81-8399-2211</strong>. El presente instrumento formaliza la contratación de servicios y renta de mobiliario para el festejo de <strong id="sheetFestejadoInfo" contenteditable="true">Mía Ramírez (5 Años) · Cumpleaños Infantil</strong>, a realizarse en las instalaciones de <strong id="sheetLugarEvento" contenteditable="true">Salón Las Nubes, San Pedro Garza García, N.L.</strong> el día <strong id="sheetFechaEvento" contenteditable="true">19 de Septiembre de 2026</strong>.
+          </p>
+          <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #E2E8F0; font-size: 0.76rem; color: #475569;">
+            <div id="sheetTematicaInfo" contenteditable="true">Temática: Princesas & Fantasía Mágica | Paleta: Rosa pastel, lila y cromo oro | Letrero: Luz LED Neón ("Happy Birthday")</div>
+            <div id="sheetHorariosInfo" contenteditable="true" style="margin-top: 2px;">Montaje: 14:30 hrs (2 horas antes) | Evento: 16:30 a 20:30 hrs | Desmontaje: 20:45 hrs</div>
+          </div>
+        </section>
+
+        <!-- TABLA DE SERVICIOS Y MOBILIARIO -->
+        <section>
+          <table class="sheet-table">
+            <thead>
+              <tr>
+                <th style="width: 8%; text-align: center;">Cant.</th>
+                <th style="width: 58%;">Descripción del Servicio / Mobiliario Arrendado</th>
+                <th style="width: 17%; text-align: center;">Horario / Vigencia</th>
+                <th style="width: 17%; text-align: right;">Importe</th>
+              </tr>
+            </thead>
+            <tbody id="sheetTableBody" contenteditable="true">
+              <!-- Filas dinámicas generadas por app.js -->
+            </tbody>
+          </table>
+        </section>
+
+        <!-- RESUMEN FINANCIERO Y CUENTA BANCARIA -->
+        <section class="sheet-financials-grid">
+          <div class="sheet-bank-box">
+            <div class="bank-title">Forma de Pago y Transferencia Oficial:</div>
+            <p id="sheetBankInfo" contenteditable="true">
+              Banco: BBVA / Banorte | Beneficiaria: Nancy García | Cuenta / CLABE: 012 580 00123456789 0
+            </p>
+            <p style="margin-top: 5px; font-size: 0.7rem; color: #64748B;">
+              * Para garantizar el apartado exclusivo de fecha en calendario se requiere el envío del comprobante de anticipo vía WhatsApp al 81-1062-6302.
+            </p>
+          </div>
+
+          <div class="sheet-totals-card">
+            <div class="sheet-total-row">
+              <span>Subtotal:</span>
+              <strong id="sheetSubtotalVal">$0.00</strong>
+            </div>
+            <div class="sheet-total-row">
+              <span>Flete / Logística:</span>
+              <span id="sheetFleteVal">$0.00</span>
+            </div>
+            <div class="sheet-total-row grand">
+              <span>Inversión Total:</span>
+              <span id="sheetTotalVal">$0.00</span>
+            </div>
+            <div class="sheet-deposit-badge">
+              Anticipo 50%: <span id="sheetAnticipoVal">$0.00</span> | Saldo Restante: <span id="sheetSaldoVal">$0.00</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- CLÁUSULAS CONTRACTUALES BLINDADAS -->
+        <section class="sheet-clauses" contenteditable="true">
+          <div class="clause-block">
+            <span class="clause-tag">PRIMERA. OBJETO:</span> EL PRESTADOR se compromete a la instalación, acondicionamiento y renta temporal del mobiliario, escenografía y/o barra de snacks especificados en el cuadro anterior en la fecha y domicilio pactado.
+          </div>
+          <div class="clause-block">
+            <span class="clause-tag">SEGUNDA. PRECIO Y FORMA DE LIQUIDACIÓN:</span> El costo convenido se encuentra especificado en el resumen anterior. EL CLIENTE entrega en este acto el <strong>50% de anticipo</strong> para reserva exclusiva de fecha e insumos. El <strong>saldo restante del 50% será liquidado al momento de finalizar el montaje</strong> en el salón o domicilio, previo al inicio del festejo.
+          </div>
+          <div class="clause-block">
+            <span class="clause-tag">TERCERA. CUIDADO Y RESPONSABILIDAD DEL MOBILIARIO EN RENTA:</span> Los caballetes dobles de madera, banquitos, bases cilíndricas, estructuras y letreros son propiedad de EL PRESTADOR en calidad de arrendamiento temporal. EL CLIENTE asume la custodia responsable durante el evento. Daños graves, fracturas o extravíos imputables a negligencia de terceros causarán costo de reposición de taller ($250 MXN por banquito / $600 MXN por caballete doble / $900 MXN por letrero LED neón).
+          </div>
+          <div class="clause-block">
+            <span class="clause-tag">CUARTA. CONDICIONES CLIMÁTICAS EN NUEVO LEÓN (GLOBOS):</span> El látex 100% biodegradable es sensible a los cambios térmicos de Monterrey. Con sol directo o temperaturas superiores a 35°C el látex experimenta dilatación y oxidación natural. EL PRESTADOR aplica tratamiento abrillantador High-Shine; sin embargo, no se asume responsabilidad por ponchaduras por exposición solar directa prolongada a la intemperie.
+          </div>
+          <div class="clause-block">
+            <span class="clause-tag">QUINTA. CANCELACIONES O CAMBIOS DE FECHA:</span> El anticipo no es reembolsable debido al bloqueo de agenda. Los cambios de fecha se permiten con un mínimo de 5 días de anticipación sujeto a disponibilidad en el calendario dentro de los 60 días posteriores.
+          </div>
+        </section>
+
+        <!-- BLOQUE DE FIRMAS LEGALES -->
+        <section class="sheet-signatures-grid">
+          <div class="sign-line-box">
+            <div class="sign-name-label">Nancy García</div>
+            <div class="sign-role-label">Por: Nancy Eventos · Decoración · Globos · Detalles</div>
+          </div>
+          <div class="sign-line-box">
+            <div class="sign-name-label" id="sheetSignCliente" contenteditable="true">C. Alejandro Ramírez Salinas</div>
+            <div class="sign-role-label">El Cliente / Arrendatario (Firma de Conformidad)</div>
+          </div>
+        </section>
+
+        <!-- PIE DE PÁGINA DEL MEMBRETE -->
+        <footer class="sheet-footer">
+          <div class="footer-contact-row">
+            <span>📞 WhatsApp Concierge: <strong>81-1062-6302</strong></span>
+            <span>Facebook: <strong>Nancy Eventos &bull; Decoraciones García</strong></span>
+            <span>San Pedro Garza García &bull; Monterrey y Área Metropolitana, N.L.</span>
+          </div>
+        </footer>
+
+      </article>
+
+    </main>
+
+  </div>
+
+  <!-- SCRIPT PRINCIPAL -->
+  <script src="app.js"></script>
+</body>
+</html>

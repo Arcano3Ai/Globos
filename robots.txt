@@ -3,7 +3,8 @@
 
 User-agent: *
 Allow: /
-Disallow: /documentos/arcano*
+Disallow: /contratos/
+Disallow: /documentos/
 Disallow: /.git/
 
 # AI Crawlers & LLM Search Agents
