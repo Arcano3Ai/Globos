@@ -22,27 +22,18 @@
       items: [
         {
           cant: 1,
-          titulo: 'Decoración Principal: Aro Decorado Profesional & Mesita',
-          descripcion: 'Aro metálico profesional con arco orgánico de globos (2 a 3 tonos de látex alta durabilidad con tratamiento High-Shine), letrero a elegir (Luz LED Neón o MDF temático calado) y mesita para pastel o repostería.',
-          horario: 'Evento Completo',
+          titulo: 'Paquete 1: Aro Decorado con Globos High-Shine & Servicio de Caballetes Infantil (1 Hora)',
+          descripcion: 'Aro metálico profesional con arco orgánico de globos (2 a 3 tonos de látex alta durabilidad con tratamiento de brillo High-Shine), letrero temático a elegir (Luz LED Neón o MDF calado) y mesita cilíndrica para pastel. Incluye servicio de arte con 5 caballetes dobles de madera (10 plazas infantiles simultáneas), pinturas vinílicas no tóxicas ilimitadas, dibujos temáticos, pinceles, recipientes con agua, toallitas húmedas limpiadoras y 1 persona de Staff de atención continua por 1 hora.',
+          horario: 'Evento Completo / 1 Hr Caballetes',
           precio: function(zona) {
-            return zona === 'juarez_guadalupe' ? 1200 : 1500;
-          }
-        },
-        {
-          cant: 1,
-          titulo: 'Servicio de Caballetes Infantil de Arte (1 Hora Continua)',
-          descripcion: '5 Caballetes dobles de madera (10 plazas infantiles simultáneas), pinturas vinílicas lavables no tóxicas ilimitadas, dibujos temáticos ilimitados, pinceles, recipientes con agua, toallitas limpiadoras y 1 persona de Staff de atención continua.',
-          horario: '1 Hora de Servicio',
-          precio: function(zona) {
-            return zona === 'juarez_guadalupe' ? 800 : 1000;
+            return zona === 'juarez_guadalupe' ? 2000 : 2500;
           }
         }
       ]
     },
 
     paquete2: {
-      nombre: 'Paquete 2: Elotes, Tostitos & Decoración Completa',
+      nombre: 'Paquete 2: Elotes, Tostitos Preparados & Decoración Completa',
       badge: 'Elotes + Tostitos + Deco',
       precios: {
         juarez_guadalupe: 4000,
@@ -52,20 +43,11 @@
       items: [
         {
           cant: 1,
-          titulo: 'Barra de Antojitos: 25 Elotes en Vaso + 25 Tostitos Preparados',
-          descripcion: '25 Vasos de elote tierno desgranado cocido al vapor en el evento + 25 bolsas de Tostitos preparados en barquitos biodegradables. Incluye 7 aderezos (crema, mayonesa, chipotle, chile en polvo, queso cheddar caliente, salsa botanera y salsa casera) y 5 toppings (cacahuates, Cheetos, Ruffles, Doritos y queso rallado).',
-          horario: 'Barra de Snacks',
-          precio: function(zona) {
-            return 2200;
-          }
-        },
-        {
-          cant: 1,
-          titulo: 'Decoración Escenográfica: Aro o Mampara con Arco Orgánico High-Shine',
-          descripcion: 'Estructura a elegir (Aro Decorado o Mampara Escenográfica lisa/texturizada) con arco orgánico en 2-3 tonos con abrillantador profesional High-Shine, letrero LED Neón o MDF temático y mesita para pastel.',
+          titulo: 'Paquete 2: Barra de Snacks (25 Elotes + 25 Tostitos) & Decoración Escenográfica Completa',
+          descripcion: 'Barra de antojitos calientes con 25 vasos de elote desgranado al vapor en el evento + 25 bolsas de Tostitos preparados en barquitos biodegradables con 7 aderezos (crema, mayonesa, chipotle, chile en polvo, queso cheddar caliente, salsa botanera y salsa casera) y 5 toppings crujientes (cacahuates, Cheetos, Ruffles, Doritos y queso rallado). Incluye decoración con Aro Decorado o Mampara Escenográfica con arco orgánico de globos High-Shine, letrero LED Neón o MDF temático y mesita para pastel.',
           horario: 'Evento Completo',
           precio: function(zona) {
-            return zona === 'juarez_guadalupe' ? 1800 : 2000;
+            return zona === 'juarez_guadalupe' ? 4000 : 4200;
           }
         }
       ]
@@ -82,29 +64,11 @@
       items: [
         {
           cant: 1,
-          titulo: 'Taller Creativo Infantil de Arte en Caballetes (2 Horas Continuas)',
-          descripcion: '5 Caballetes dobles de madera (10 espacios infantiles simultáneos), 10 mandilitos protectores de tela lavable, pinturas vinílicas no tóxicas ilimitadas, dibujos temáticos para colorear ilimitados, pinceles y 1 persona de Staff a cargo.',
+          titulo: 'Paquete 3: Taller Creativo de Arte (2 Horas), Caballete de Bienvenida & Lote de 30 Yesitos',
+          descripcion: 'Taller infantil continuo de 2 horas con 5 caballetes dobles de madera (10 plazas simultáneas), 10 mandilitos protectores lavables, pinturas vinílicas no tóxicas y dibujos ilimitados con 1 persona de Staff. Incluye caballete de bienvenida con fotografía/póster temático enmarcado con arco orgánico de globos, más lote de 30 figuras de yeso cerámico empacadas individualmente en celofán con listón, pincel y botecito de pintura como souvenir para llevar a casa.',
           horario: '2 Horas de Taller',
           precio: function(zona) {
-            return zona === 'juarez_guadalupe' ? 1000 : 1200;
-          }
-        },
-        {
-          cant: 1,
-          titulo: 'Caballete de Entrada / Bienvenida con Foto y Marco de Globos',
-          descripcion: 'Caballete de bienvenida con fotografía o póster temático impreso de la festejada/o, enmarcado con arco orgánico de globos en 2 a 3 tonos coordinados.',
-          horario: 'Recepción',
-          precio: function(zona) {
-            return 450;
-          }
-        },
-        {
-          cant: 1,
-          titulo: 'Lote de 30 Yesitos Temáticos Artesanales (Recuerdos en bolsita individual)',
-          descripcion: '30 Figuras de yeso cerámico temáticas en bolsita de celofán individual con listón rizado, pincel y botecito de pintura lavable para que los niños pinten y lleven a casa.',
-          horario: 'Consumible / Souvenir',
-          precio: function(zona) {
-            return zona === 'juarez_guadalupe' ? 450 : 550;
+            return zona === 'juarez_guadalupe' ? 1900 : 2200;
           }
         }
       ]
@@ -1259,6 +1223,38 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
           state.descuento = 0;
         }
 
+        // Migración hacia paquetes no desglosados (1 solo concepto limpio por paquete oficial)
+        const hasOldSplitItems = Array.isArray(state.items) && state.items.some(it => 
+          it.titulo && (
+            it.titulo.includes('Decoración Principal: Aro Decorado') ||
+            it.titulo.includes('Servicio de Caballetes Infantil de Arte (1 Hora Continua)') ||
+            it.titulo.includes('Barra de Antojitos: 25 Elotes') ||
+            it.titulo.includes('Decoración Escenográfica: Aro o Mampara') ||
+            it.titulo.includes('Taller Creativo Infantil de Arte en Caballetes (2 Horas') ||
+            it.titulo.includes('Lote de 30 Yesitos Temáticos Artesanales')
+          )
+        );
+
+        if (hasOldSplitItems) {
+          state.items = [];
+          (state.paquetesSeleccionados || ['paquete1']).forEach(pkgKey => {
+            if (PAQUETES[pkgKey]) {
+              PAQUETES[pkgKey].items.forEach(itemDef => {
+                const unitPrice = typeof itemDef.precio === 'function' ? itemDef.precio(state.zona) : itemDef.precio;
+                state.items.push({
+                  id: 'item_' + Date.now() + '_' + pkgKey + '_' + Math.floor(Math.random() * 1000),
+                  paqueteKey: pkgKey,
+                  cant: itemDef.cant,
+                  titulo: itemDef.titulo,
+                  descripcion: itemDef.descripcion,
+                  horario: itemDef.horario,
+                  precioUnitario: unitPrice
+                });
+              });
+            }
+          });
+        }
+
         // Migración hacia serie consecutiva oficial (empieza en 00691 y sube)
         const folioDigits = String(state.folio || '').match(/\d{3,6}/);
         const currentFolioNum = folioDigits ? parseInt(folioDigits[0], 10) : 0;
@@ -1322,7 +1318,6 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
   // =========================================================================
   const MASTER_USER = 'admin';
   const MASTER_PASS = 'nancylopuede';
-  const MASTER_PIN_FALLBACK = '1062'; // Soporte retrocompatible para accesos previos
   const AUTH_STORAGE_KEY = 'nancy_eventos_auth_v2';
 
   function initSecurity() {
@@ -1368,7 +1363,7 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
       const pass = (inpPass ? inpPass.value : '').trim();
 
       const isUserValid = user === MASTER_USER;
-      const isPassValid = pass === MASTER_PASS || pass === MASTER_PIN_FALLBACK;
+      const isPassValid = pass === MASTER_PASS;
 
       if (isUserValid && isPassValid) {
         if (authStatusMsg) {
@@ -1427,16 +1422,14 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
       });
     }
 
-    // 1. Verificar si viene por Enlace Mágico / Parámetros URL
+    // 1. Verificar si viene por Enlace Mágico / Parámetros URL (?u=admin&p=nancylopuede)
     const urlParams = new URLSearchParams(window.location.search);
     const qUser = (urlParams.get('u') || urlParams.get('user') || '').trim().toLowerCase();
     const qPass = (urlParams.get('p') || urlParams.get('pass') || urlParams.get('password') || '').trim();
-    const queryPin = (urlParams.get('pin') || urlParams.get('key') || '').trim();
 
-    const isMagicUserPass = qUser === MASTER_USER && qPass === MASTER_PASS;
-    const isMagicPin = queryPin === MASTER_PIN_FALLBACK || queryPin === MASTER_PASS;
+    const isMagicUserPass = (qUser === MASTER_USER && qPass === MASTER_PASS) || (urlParams.get('key') === MASTER_PASS);
 
-    if (isMagicUserPass || isMagicPin) {
+    if (isMagicUserPass) {
       // Limpiar parámetros de la barra de direcciones
       try {
         const cleanUrl = window.location.pathname;
@@ -1449,7 +1442,7 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
 
     // 2. Verificar si ya estaba autenticado en este dispositivo
     try {
-      const savedAuth = localStorage.getItem(AUTH_STORAGE_KEY) || localStorage.getItem('nancy_eventos_auth_v1');
+      const savedAuth = localStorage.getItem(AUTH_STORAGE_KEY);
       if (savedAuth === 'authenticated') {
         document.body.classList.add('authenticated');
         return;

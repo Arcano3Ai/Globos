@@ -188,7 +188,16 @@ assert(indexHtmlContent.includes('id="authPassword"'), 'index.html debe contener
 assert(indexHtmlContent.includes('id="btnTogglePassword"'), 'index.html debe contener el botón btnTogglePassword');
 assert(stylesContent.includes('.auth-form'), 'styles.css debe incluir estilos para .auth-form');
 assert(stylesContent.includes('.auth-submit-btn'), 'styles.css debe incluir estilos para .auth-submit-btn');
-console.log('  ✓ Seguridad Oficial Verificada: Usuario "admin" y Contraseña "nancylopuede" 100% integrados.');
+// 12. Verificación de Eliminación Total de PIN y Paquetes No Divididos (1 solo concepto limpio por paquete)
+assert(!appJsContent.includes('MASTER_PIN_FALLBACK'), 'El PIN de fallback no debe existir en app.js');
+assert(!appJsContent.includes("const MASTER_PIN = '1062'"), 'MASTER_PIN no debe existir en app.js');
+
+// Verificación de que cada paquete comercial es un concepto unificado (1 solo renglón por paquete)
+assert(appJsContent.includes('Paquete 1: Aro Decorado con Globos High-Shine & Servicio de Caballetes Infantil (1 Hora)'), 'Paquete 1 debe ser un solo concepto integral');
+assert(appJsContent.includes('Paquete 2: Barra de Snacks (25 Elotes + 25 Tostitos) & Decoración Escenográfica Completa'), 'Paquete 2 debe ser un solo concepto integral');
+assert(appJsContent.includes('Paquete 3: Taller Creativo de Arte (2 Horas), Caballete de Bienvenida & Lote de 30 Yesitos'), 'Paquete 3 debe ser un solo concepto integral');
+console.log('  ✓ Paquetes No Desglosados Verificados: 1 solo concepto integral y limpio por paquete contratado.');
+console.log('  ✓ Sistema de PIN completamente eliminado: Acceso exclusivo por Usuario y Contraseña.');
 
 console.log('  ✓ Barra flotante móvil, barra de agregar paquetes, selección múltiple, anticipo dual y desglose de descuento 100% verificados.');
 
