@@ -988,6 +988,85 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
   }
 
   // =========================================================================
+  // CONTROLADOR PWA (PROGRESSIVE WEB APP) & SOPORTE MÓVIL OFFLINE
+  // =========================================================================
+  function initPwa() {
+    // 1. Registro de Service Worker para soporte Offline y carga ultra rápida
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => {
+            console.log('Nancy Contratos PWA: ServiceWorker registrado en', reg.scope);
+          })
+          .catch(err => {
+            console.warn('ServiceWorker no disponible en este entorno:', err.message);
+          });
+      });
+    }
+
+    // 2. Banner de instalación nativa (Chrome / Android / Desktop)
+    let deferredPrompt;
+    const btnInstall = document.getElementById('btnInstallPwa');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (btnInstall) {
+        btnInstall.style.display = 'inline-flex';
+      }
+    });
+
+    if (btnInstall) {
+      btnInstall.addEventListener('click', async () => {
+        if (!deferredPrompt) {
+          showToast('Para instalar: abre el menú de tu navegador y selecciona "Instalar aplicación" o "Agregar a pantalla principal".');
+          return;
+        }
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          showToast('¡Nancy Contratos se instaló en tu dispositivo!');
+        }
+        deferredPrompt = null;
+        btnInstall.style.display = 'none';
+      });
+    }
+
+    window.addEventListener('appinstalled', () => {
+      if (btnInstall) btnInstall.style.display = 'none';
+      showToast('¡Nancy Contratos instalada con éxito!');
+    });
+
+    // 3. Detección y Guía visual para iPhone / iPad (Safari iOS)
+    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+    if (isIos && !isStandalone) {
+      const dismissed = localStorage.getItem('nancy_ios_pwa_toast_dismissed');
+      if (!dismissed) {
+        setTimeout(showIosInstallBanner, 1500);
+      }
+    }
+  }
+
+  function showIosInstallBanner() {
+    const toast = document.createElement('div');
+    toast.className = 'ios-install-toast';
+    toast.innerHTML = `
+      <div>
+        <strong style="color: var(--turquoise-neon); display: block; margin-bottom: 2px;">📲 Nancy: Instálala como App en tu iPhone:</strong>
+        Toca el botón <strong>Compartir</strong> <i class="bi bi-box-arrow-up"></i> y luego <strong>"Agregar a inicio"</strong> ➕
+      </div>
+      <button type="button" style="background: none; border: none; color: #FFF; font-size: 1.3rem; cursor: pointer; padding: 4px; line-height: 1;" title="Cerrar">&times;</button>
+    `;
+    toast.querySelector('button').addEventListener('click', () => {
+      localStorage.setItem('nancy_ios_pwa_toast_dismissed', 'true');
+      toast.remove();
+    });
+    document.body.appendChild(toast);
+  }
+
+  // =========================================================================
   // INICIALIZACIÓN
   // =========================================================================
   document.addEventListener('DOMContentLoaded', () => {
@@ -998,6 +1077,7 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
       });
     }
     initSecurity();
+    initPwa();
     loadFromStorage();
     renderAll();
     setupEventListeners();

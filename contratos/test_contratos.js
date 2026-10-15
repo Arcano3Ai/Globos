@@ -17,9 +17,14 @@ const requiredFiles = [
   'index.html',
   'styles.css',
   'app.js',
+  'sw.js',
+  'manifest.json',
   'PROTOCOLO_OPERATIVO_CONTRATOS.md',
   'README.md',
-  'assets/nancy_eventos_logo_oficial.png'
+  'assets/nancy_eventos_logo_oficial.png',
+  'assets/icon-192.png',
+  'assets/icon-512.png',
+  'assets/apple-touch-icon.png'
 ];
 
 requiredFiles.forEach(file => {
@@ -73,5 +78,20 @@ assert(stylesContent.includes('size: letter portrait'), 'Falta configuración de
 assert(stylesContent.includes('-webkit-print-color-adjust: exact'), 'Falta preservación de colores de impresión');
 
 console.log('  ✓ Reglas de exportación e impresión @media print Letter verificadas en styles.css.');
+
+// 5. Comprobar PWA (Manifest y Service Worker)
+const manifestContent = fs.readFileSync(path.join(CONTRATOS_DIR, 'manifest.json'), 'utf-8');
+assert(manifestContent.includes('"display": "standalone"'), 'Manifest debe tener display standalone');
+assert(manifestContent.includes('icon-192.png'), 'Manifest debe incluir icon-192.png');
+assert(manifestContent.includes('icon-512.png'), 'Manifest debe incluir icon-512.png');
+
+const swContent = fs.readFileSync(path.join(CONTRATOS_DIR, 'sw.js'), 'utf-8');
+assert(swContent.includes('CACHE_NAME'), 'Service Worker debe definir CACHE_NAME');
+assert(swContent.includes('addEventListener(\'fetch\''), 'Service Worker debe manejar evento fetch para offline');
+
+assert(indexHtmlContent.includes('rel="manifest" href="manifest.json"'), 'index.html debe vincular manifest.json');
+assert(indexHtmlContent.includes('apple-touch-icon'), 'index.html debe tener apple-touch-icon para iOS');
+
+console.log('  ✓ Soporte PWA (Manifest Standalone, Service Worker Offline e Iconos) 100% verificado.');
 
 console.log('\n🎉 ¡TODAS LAS PRUEBAS DE INTEGRIDAD PASARON SATISFACTORIAMENTE! (100% OK)');

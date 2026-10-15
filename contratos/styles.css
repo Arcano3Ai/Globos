@@ -1074,3 +1074,96 @@ body.authenticated .auth-overlay {
   30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
   40%, 60% { transform: translate3d(6px, 0, 0); }
 }
+
+/* ==========================================================================
+   PWA (PROGRESSIVE WEB APP) Y EXPERIENCIA MÓVIL
+   ========================================================================== */
+#btnInstallPwa {
+  background: linear-gradient(135deg, #00F5D4 0%, #00B49F 100%);
+  color: #0E0B18;
+  font-weight: 700;
+  border: 1px solid rgba(0, 245, 212, 0.6);
+  box-shadow: 0 0 14px rgba(0, 245, 212, 0.35);
+  animation: pwaPulse 2.5s infinite ease-in-out;
+}
+
+@keyframes pwaPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(0, 245, 212, 0.3);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 245, 212, 0.7);
+    transform: scale(1.03);
+  }
+}
+
+.ios-install-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(26, 18, 42, 0.96);
+  border: 1px solid var(--turquoise-neon);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 245, 212, 0.3);
+  padding: 14px 18px;
+  border-radius: 16px;
+  z-index: 100000;
+  max-width: 90vw;
+  width: 360px;
+  font-size: 0.82rem;
+  color: #FFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  backdrop-filter: blur(12px);
+  animation: slideUpToast 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpToast {
+  from { opacity: 0; transform: translate(-50%, 25px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@media (max-width: 768px) {
+  /* Evitar zoom automático brusco al tocar inputs en iPhone */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  .app-header {
+    padding: 10px 12px;
+    padding-top: max(10px, env(safe-area-inset-top));
+  }
+
+  .header-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 9px 8px;
+    font-size: 0.76rem;
+  }
+
+  .btn-primary, .btn-accent {
+    grid-column: span 1;
+  }
+
+  .btn-whatsapp {
+    grid-column: span 2;
+    padding: 11px;
+    font-size: 0.85rem;
+  }
+
+  .workspace-container {
+    padding-bottom: max(30px, env(safe-area-inset-bottom));
+  }
+}
+
