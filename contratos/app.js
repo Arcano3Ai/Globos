@@ -154,6 +154,86 @@
   };
 
   // =========================================================================
+  // FUNCIONES AUXILIARES & FORMATOS (FOLIOS CONSECUTIVOS DESDE 00691)
+  // =========================================================================
+  const FOLIO_STORAGE_KEY = 'nancy_contrato_folio_counter';
+  const FOLIO_START_NUM = 691;
+
+  function getCurrentFolioNumber() {
+    try {
+      const stored = localStorage.getItem(FOLIO_STORAGE_KEY);
+      const parsed = parseInt(stored, 10);
+      if (!isNaN(parsed) && parsed >= FOLIO_START_NUM) {
+        return parsed;
+      }
+    } catch (e) {}
+    return FOLIO_START_NUM;
+  }
+
+  function setFolioNumber(num) {
+    try {
+      if (typeof num === 'number' && !isNaN(num) && num >= FOLIO_START_NUM) {
+        localStorage.setItem(FOLIO_STORAGE_KEY, String(num));
+      }
+    } catch (e) {}
+  }
+
+  function formatFolioString(num, template = null) {
+    const seq = String(num).padStart(5, '0');
+    // Si el usuario borró o cambió el prefijo CTR- manualmente (ej. dejó sólo "00691")
+    if (template && typeof template === 'string' && !template.includes('CTR-')) {
+      const customMatch = template.match(/^(.*?)(\d{3,6})$/);
+      if (customMatch) {
+        return `${customMatch[1]}${seq}`;
+      }
+      return seq;
+    }
+    const d = new Date();
+    const year = d.getFullYear();
+    return `CTR-${year}-${seq}`;
+  }
+
+  function generateFolio(advance = false, template = null) {
+    let currentNum = getCurrentFolioNumber();
+    if (advance) {
+      currentNum += 1;
+      setFolioNumber(currentNum);
+    } else {
+      setFolioNumber(currentNum);
+    }
+    return formatFolioString(currentNum, template);
+  }
+
+  function syncFolioCounterFromText(text) {
+    if (!text) return;
+    const match = String(text).match(/\d{3,6}/);
+    if (match) {
+      const num = parseInt(match[0], 10);
+      if (!isNaN(num) && num >= FOLIO_START_NUM) {
+        setFolioNumber(num);
+      }
+    }
+  }
+
+  function getFormattedCurrentDate() {
+    const meses = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    const d = new Date();
+    return `${d.getDate()} de ${meses[d.getMonth()]} de ${d.getFullYear()}`;
+  }
+
+  function getSuggestedEventDate() {
+    const d = new Date();
+    d.setDate(d.getDate() + 21); // 3 semanas después
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  // =========================================================================
   // ESTADO DE LA APLICACIÓN
   // =========================================================================
   const state = {
@@ -281,84 +361,8 @@
   }
 
   // =========================================================================
-  // FUNCIONES AUXILIARES & FORMATOS (FOLIOS CONSECUTIVOS DESDE 00691)
+  // FORMATOS Y UTILIDADES
   // =========================================================================
-  const FOLIO_STORAGE_KEY = 'nancy_contrato_folio_counter';
-  const FOLIO_START_NUM = 691;
-
-  function getCurrentFolioNumber() {
-    try {
-      const stored = localStorage.getItem(FOLIO_STORAGE_KEY);
-      const parsed = parseInt(stored, 10);
-      if (!isNaN(parsed) && parsed >= FOLIO_START_NUM) {
-        return parsed;
-      }
-    } catch (e) {}
-    return FOLIO_START_NUM;
-  }
-
-  function setFolioNumber(num) {
-    try {
-      if (typeof num === 'number' && !isNaN(num) && num >= FOLIO_START_NUM) {
-        localStorage.setItem(FOLIO_STORAGE_KEY, String(num));
-      }
-    } catch (e) {}
-  }
-
-  function formatFolioString(num, template = null) {
-    const seq = String(num).padStart(5, '0');
-    // Si el usuario borró o cambió el prefijo CTR- manualmente (ej. dejó sólo "00691")
-    if (template && typeof template === 'string' && !template.includes('CTR-')) {
-      const customMatch = template.match(/^(.*?)(\d{3,6})$/);
-      if (customMatch) {
-        return `${customMatch[1]}${seq}`;
-      }
-      return seq;
-    }
-    const d = new Date();
-    const year = d.getFullYear();
-    return `CTR-${year}-${seq}`;
-  }
-
-  function generateFolio(advance = false) {
-    let currentNum = getCurrentFolioNumber();
-    if (advance) {
-      currentNum += 1;
-      setFolioNumber(currentNum);
-    } else {
-      setFolioNumber(currentNum);
-    }
-    return formatFolioString(currentNum, (typeof state !== 'undefined' && state && state.folio) ? state.folio : null);
-  }
-
-  function syncFolioCounterFromText(text) {
-    if (!text) return;
-    const match = String(text).match(/\d{3,6}/);
-    if (match) {
-      const num = parseInt(match[0], 10);
-      if (!isNaN(num) && num >= FOLIO_START_NUM) {
-        setFolioNumber(num);
-      }
-    }
-  }
-
-  function getFormattedCurrentDate() {
-    const meses = [
-      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    ];
-    const d = new Date();
-    return `${d.getDate()} de ${meses[d.getMonth()]} de ${d.getFullYear()}`;
-  }
-
-  function getSuggestedEventDate() {
-    const d = new Date();
-    d.setDate(d.getDate() + 21); // 3 semanas después
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
 
   function formatDateForDisplay(isoDateString) {
     if (!isoDateString) return 'Por confirmar';
@@ -1013,7 +1017,7 @@
     // Botón nuevo folio (incrementa el consecutivo: 00691 -> 00692 -> 00693...)
     if (dom.btnNewFolio) {
       dom.btnNewFolio.addEventListener('click', () => {
-        state.folio = generateFolio(true);
+        state.folio = generateFolio(true, state.folio);
         if (dom.inpFolio) dom.inpFolio.value = state.folio;
         renderSheet();
         updateCalculations();
@@ -1054,7 +1058,7 @@
       dom.btnReset.addEventListener('click', () => {
         if (confirm('¿Deseas reiniciar el formulario a un contrato nuevo? Se generará un nuevo folio consecutivo.')) {
           localStorage.removeItem('nancy_contrato_draft');
-          state.folio = generateFolio(true);
+          state.folio = generateFolio(true, state.folio);
           state.fechaEmision = getFormattedCurrentDate();
           state.descuento = 0;
           cargarItemsDePaquete('paquete1', state.zona);
@@ -1259,7 +1263,7 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
         const folioDigits = String(state.folio || '').match(/\d{3,6}/);
         const currentFolioNum = folioDigits ? parseInt(folioDigits[0], 10) : 0;
         if (currentFolioNum < FOLIO_START_NUM) {
-          state.folio = generateFolio(false); // Asigna CTR-2026-00691
+          state.folio = generateFolio(false, state.folio); // Asigna CTR-2026-00691
         } else {
           setFolioNumber(currentFolioNum);
         }
@@ -1314,30 +1318,23 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
   }
 
   // =========================================================================
-  // CONTROLADOR DE SEGURIDAD Y ACCESO POR PIN (NANCY EVENTOS)
+  // CONTROLADOR DE SEGURIDAD Y ACCESO (USUARIO & CONTRASEÑA OFICIAL)
   // =========================================================================
-  const MASTER_PIN = '1062';
-  const AUTH_STORAGE_KEY = 'nancy_eventos_auth_v1';
-  let currentPin = '';
+  const MASTER_USER = 'admin';
+  const MASTER_PASS = 'nancylopuede';
+  const MASTER_PIN_FALLBACK = '1062'; // Soporte retrocompatible para accesos previos
+  const AUTH_STORAGE_KEY = 'nancy_eventos_auth_v2';
 
   function initSecurity() {
     const authOverlay = document.getElementById('authOverlay');
-    const pinDots = document.querySelectorAll('#pinDots .pin-dot');
-    const pinStatusMsg = document.getElementById('pinStatusMsg');
+    const authForm = document.getElementById('authLoginForm');
+    const inpUser = document.getElementById('authUsername');
+    const inpPass = document.getElementById('authPassword');
+    const btnTogglePass = document.getElementById('btnTogglePassword');
+    const authStatusMsg = document.getElementById('authStatusMsg');
     const chkRemember = document.getElementById('chkRememberDevice');
     const btnLockApp = document.getElementById('btnLockApp');
-    const keypadButtons = document.querySelectorAll('.key-btn');
     const authCard = authOverlay ? authOverlay.querySelector('.auth-card') : null;
-
-    function updateDots() {
-      pinDots.forEach((dot, index) => {
-        if (index < currentPin.length) {
-          dot.classList.add('filled');
-        } else {
-          dot.classList.remove('filled', 'success');
-        }
-      });
-    }
 
     function unlockApp(isFromMagicLink) {
       document.body.classList.add('authenticated');
@@ -1349,7 +1346,7 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
         }
       }
       if (isFromMagicLink) {
-        showToast('¡Bienvenida Nancy! Sesión recordada en este dispositivo.');
+        showToast('¡Bienvenida Nancy! Sesión recordada en este dispositivo.', 'success');
       }
     }
 
@@ -1358,26 +1355,30 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
         localStorage.removeItem(AUTH_STORAGE_KEY);
       } catch (e) {}
       document.body.classList.remove('authenticated');
-      currentPin = '';
-      updateDots();
-      if (pinStatusMsg) {
-        pinStatusMsg.textContent = 'Sesión cerrada. Ingresa tu PIN para volver a entrar.';
-        pinStatusMsg.classList.remove('success');
+      if (inpPass) inpPass.value = '';
+      if (authStatusMsg) {
+        authStatusMsg.textContent = 'Sesión cerrada. Ingresa tus credenciales para volver a entrar.';
+        authStatusMsg.classList.remove('success');
       }
+      if (inpUser) inpUser.focus();
     }
 
-    function validatePin() {
-      if (currentPin === MASTER_PIN) {
-        pinDots.forEach(dot => dot.classList.add('success'));
-        if (pinStatusMsg) {
-          pinStatusMsg.textContent = '¡PIN Correcto! Accediendo...';
-          pinStatusMsg.classList.add('success');
+    function validateCredentials() {
+      const user = (inpUser ? inpUser.value : '').trim().toLowerCase();
+      const pass = (inpPass ? inpPass.value : '').trim();
+
+      const isUserValid = user === MASTER_USER;
+      const isPassValid = pass === MASTER_PASS || pass === MASTER_PIN_FALLBACK;
+
+      if (isUserValid && isPassValid) {
+        if (authStatusMsg) {
+          authStatusMsg.textContent = '¡Credenciales correctas! Accediendo...';
+          authStatusMsg.classList.add('success');
         }
         setTimeout(() => {
           unlockApp(false);
-          currentPin = '';
-          updateDots();
-          if (pinStatusMsg) pinStatusMsg.textContent = '';
+          if (inpPass) inpPass.value = '';
+          if (authStatusMsg) authStatusMsg.textContent = '';
         }, 250);
       } else {
         if (authCard) {
@@ -1385,64 +1386,37 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
           void authCard.offsetWidth; // Forzar reflow para reiniciar animación
           authCard.classList.add('shake');
         }
-        if (pinStatusMsg) {
-          pinStatusMsg.textContent = 'PIN incorrecto. Intenta nuevamente.';
-          pinStatusMsg.classList.remove('success');
+        if (authStatusMsg) {
+          authStatusMsg.textContent = 'Usuario o contraseña incorrectos. Intenta nuevamente.';
+          authStatusMsg.classList.remove('success');
         }
-        setTimeout(() => {
-          currentPin = '';
-          updateDots();
-        }, 350);
-      }
-    }
-
-    function handleKeyPress(key) {
-      if (document.body.classList.contains('authenticated')) return;
-
-      if (key === 'clear') {
-        currentPin = '';
-        updateDots();
-        if (pinStatusMsg) pinStatusMsg.textContent = '';
-        return;
-      }
-
-      if (key === 'enter') {
-        if (currentPin.length > 0) validatePin();
-        return;
-      }
-
-      if (/^[0-9]$/.test(key)) {
-        if (currentPin.length < 4) {
-          currentPin += key;
-          updateDots();
-          if (pinStatusMsg) pinStatusMsg.textContent = '';
-          if (currentPin.length === 4) {
-            validatePin();
-          }
+        if (inpPass) {
+          inpPass.value = '';
+          inpPass.focus();
         }
       }
     }
 
-    // Configurar botones del teclado en pantalla
-    keypadButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    // Toggle de visibilidad de contraseña
+    if (btnTogglePass && inpPass) {
+      btnTogglePass.addEventListener('click', (e) => {
         e.preventDefault();
-        const key = btn.getAttribute('data-key');
-        handleKeyPress(key);
+        const isPassword = inpPass.type === 'password';
+        inpPass.type = isPassword ? 'text' : 'password';
+        const icon = btnTogglePass.querySelector('i');
+        if (icon) {
+          icon.className = isPassword ? 'bi bi-eye-fill' : 'bi bi-eye-slash-fill';
+        }
       });
-    });
+    }
 
-    // Soporte para teclado físico o teclado nativo de móvil
-    window.addEventListener('keydown', (e) => {
-      if (document.body.classList.contains('authenticated')) return;
-      if (e.key >= '0' && e.key <= '9') {
-        handleKeyPress(e.key);
-      } else if (e.key === 'Backspace' || e.key === 'Delete') {
-        handleKeyPress('clear');
-      } else if (e.key === 'Enter') {
-        handleKeyPress('enter');
-      }
-    });
+    // Envío del formulario
+    if (authForm) {
+      authForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        validateCredentials();
+      });
+    }
 
     // Botón de Bloqueo en la barra superior
     if (btnLockApp) {
@@ -1453,12 +1427,17 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
       });
     }
 
-    // 1. Verificar si viene por Enlace Mágico (URL Query: ?pin=1062 o ?key=1062)
+    // 1. Verificar si viene por Enlace Mágico / Parámetros URL
     const urlParams = new URLSearchParams(window.location.search);
-    const queryPin = urlParams.get('pin') || urlParams.get('key');
+    const qUser = (urlParams.get('u') || urlParams.get('user') || '').trim().toLowerCase();
+    const qPass = (urlParams.get('p') || urlParams.get('pass') || urlParams.get('password') || '').trim();
+    const queryPin = (urlParams.get('pin') || urlParams.get('key') || '').trim();
 
-    if (queryPin && queryPin.trim() === MASTER_PIN) {
-      // Remover el PIN de la barra de direcciones para que no sea visible
+    const isMagicUserPass = qUser === MASTER_USER && qPass === MASTER_PASS;
+    const isMagicPin = queryPin === MASTER_PIN_FALLBACK || queryPin === MASTER_PASS;
+
+    if (isMagicUserPass || isMagicPin) {
+      // Limpiar parámetros de la barra de direcciones
       try {
         const cleanUrl = window.location.pathname;
         window.history.replaceState({}, document.title, cleanUrl);
@@ -1470,7 +1449,7 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
 
     // 2. Verificar si ya estaba autenticado en este dispositivo
     try {
-      const savedAuth = localStorage.getItem(AUTH_STORAGE_KEY);
+      const savedAuth = localStorage.getItem(AUTH_STORAGE_KEY) || localStorage.getItem('nancy_eventos_auth_v1');
       if (savedAuth === 'authenticated') {
         document.body.classList.add('authenticated');
         return;

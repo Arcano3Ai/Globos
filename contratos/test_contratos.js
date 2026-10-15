@@ -179,6 +179,17 @@ const padSeq2 = String(nextNum).padStart(5, '0');
 assert.strictEqual(padSeq2, '00692', 'El siguiente folio consecutivo debe ser 00692');
 console.log(`  ✓ Serie Consecutiva Oficial Verificada: Inicial ${padSeq1} -> Siguiente ${padSeq2} (Incremento garantizado)`);
 
+// 11. Verificación de Autenticación por Usuario y Contraseña (admin / nancylopuede)
+assert(appJsContent.includes("MASTER_USER = 'admin'"), 'app.js debe definir MASTER_USER = "admin"');
+assert(appJsContent.includes("MASTER_PASS = 'nancylopuede'"), 'app.js debe definir MASTER_PASS = "nancylopuede"');
+assert(indexHtmlContent.includes('id="authLoginForm"'), 'index.html debe contener el formulario authLoginForm');
+assert(indexHtmlContent.includes('id="authUsername"'), 'index.html debe contener el input authUsername');
+assert(indexHtmlContent.includes('id="authPassword"'), 'index.html debe contener el input authPassword');
+assert(indexHtmlContent.includes('id="btnTogglePassword"'), 'index.html debe contener el botón btnTogglePassword');
+assert(stylesContent.includes('.auth-form'), 'styles.css debe incluir estilos para .auth-form');
+assert(stylesContent.includes('.auth-submit-btn'), 'styles.css debe incluir estilos para .auth-submit-btn');
+console.log('  ✓ Seguridad Oficial Verificada: Usuario "admin" y Contraseña "nancylopuede" 100% integrados.');
+
 console.log('  ✓ Barra flotante móvil, barra de agregar paquetes, selección múltiple, anticipo dual y desglose de descuento 100% verificados.');
 
 console.log('  ✓ Soporte PWA (Manifest Standalone, Service Worker Offline e Iconos) 100% verificado.');
