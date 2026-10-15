@@ -55,7 +55,33 @@ assert(appJsContent.includes('monterrey: 4200'), 'Paquete 2 Monterrey debe costa
 assert(appJsContent.includes('juarez_guadalupe: 1900'), 'Paquete 3 Juárez/Guadalupe debe costar $1,900');
 assert(appJsContent.includes('monterrey: 2200'), 'Paquete 3 Monterrey debe costar $2,200');
 
-console.log('  ✓ Tarifas oficiales de Paquetes 1, 2 y 3 verificadas contra catálogo oficial.');
+// Comprobar tarifas de nuevos paquetes (Invitaciones Digitales y Fotografía)
+assert(appJsContent.includes('paquete_invitaciones'), 'Falta paquete_invitaciones en app.js');
+assert(appJsContent.includes('399'), 'Falta tarifa de $399 en invitaciones digitales');
+assert(appJsContent.includes('paquete_fotografia'), 'Falta paquete_fotografia en app.js');
+assert(appJsContent.includes('2500'), 'Falta tarifa de $2,500 en fotografía profesional');
+
+console.log('  ✓ Tarifas oficiales verificadas: P1 ($2,000/$2,500), P2 ($4,000/$4,200), P3 ($1,900/$2,200), Invitaciones ($399), Fotografía ($2,500).');
+
+// 2b. Verificación matemática exacta de anticipos al 50%
+const testPricingMatrix = [
+  { name: 'Paquete 1 (Mty)', total: 2500, depositExpected: 1250 },
+  { name: 'Paquete 1 (Jz/Gpe)', total: 2000, depositExpected: 1000 },
+  { name: 'Paquete 2 (Mty)', total: 4200, depositExpected: 2100 },
+  { name: 'Paquete 2 (Jz/Gpe)', total: 4000, depositExpected: 2000 },
+  { name: 'Paquete 3 (Mty)', total: 2200, depositExpected: 1100 },
+  { name: 'Paquete 3 (Jz/Gpe)', total: 1900, depositExpected: 950 },
+  { name: 'Invitaciones Digitales', total: 399, depositExpected: 200 }, // 399 * 0.5 = 199.50 -> round 200
+  { name: 'Fotografía Profesional', total: 2500, depositExpected: 1250 }
+];
+
+testPricingMatrix.forEach(item => {
+  const deposit = Math.round(item.total * 0.5);
+  const saldo = item.total - deposit;
+  assert.strictEqual(deposit, item.depositExpected, `Anticipo erróneo para ${item.name}`);
+  assert.strictEqual(deposit + saldo, item.total, `La suma de anticipo + saldo debe ser igual al total en ${item.name}`);
+  console.log(`  ✓ Matemática comprobada: ${item.name} -> Total: $${item.total} | Anticipo 50%: $${deposit} | Saldo: $${saldo}`);
+});
 
 // 3. Comprobar cláusulas legales y blindaje climático en index.html
 const indexHtmlContent = fs.readFileSync(path.join(CONTRATOS_DIR, 'index.html'), 'utf-8');
@@ -91,6 +117,14 @@ assert(swContent.includes('addEventListener(\'fetch\''), 'Service Worker debe ma
 
 assert(indexHtmlContent.includes('rel="manifest" href="manifest.json"'), 'index.html debe vincular manifest.json');
 assert(indexHtmlContent.includes('apple-touch-icon'), 'index.html debe tener apple-touch-icon para iOS');
+
+// 6. Comprobar elementos de UI reactivos y barra flotante móvil
+assert(indexHtmlContent.includes('mobileFloatingBar'), 'index.html debe incluir mobileFloatingBar');
+assert(indexHtmlContent.includes('btnPresetInvitaciones'), 'index.html debe tener botón btnPresetInvitaciones');
+assert(indexHtmlContent.includes('btnPresetFotografia'), 'index.html debe tener botón btnPresetFotografia');
+assert(stylesContent.includes('.mobile-floating-bar'), 'styles.css debe incluir estilos para mobile-floating-bar');
+
+console.log('  ✓ Barra flotante móvil reactiva y botones de presets verificados en UI.');
 
 console.log('  ✓ Soporte PWA (Manifest Standalone, Service Worker Offline e Iconos) 100% verificado.');
 

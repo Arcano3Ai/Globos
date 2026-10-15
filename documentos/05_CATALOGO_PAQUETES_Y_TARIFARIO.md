@@ -71,6 +71,32 @@
 
 ---
 
+#### 📱 PAQUETE: "Invitaciones Digitales Interactivas con GPS & WhatsApp RSVP"
+*Invitación digital multimedia y dinámica personalizada para enviar por WhatsApp y redes sociales.*
+* **Funcionalidades Incluidas:**
+  * Diseño gráfico temático personalizado con paleta de colores del evento y foto del festejado.
+  * Botón interactivo de ubicación exacta en 1 clic para **Google Maps** y **Waze**.
+  * Botón de confirmación de asistencia **RSVP directo a WhatsApp**.
+  * Itinerario de actividades de la fiesta y sección de mesa de regalos.
+  * Contador con cuenta regresiva animada para el día del evento.
+* **Precio Oficial:** **$399.00 MXN** (Tarifa única para todas las zonas).
+* **Apartado:** Anticipo de reserva $200.00 MXN y saldo $199.00 MXN contra entrega de enlace digital final.
+
+---
+
+#### 📸 PAQUETE: "Cobertura Fotográfica Profesional para Eventos"
+*Captura profesional de cada momento especial, decoración y emociones de la fiesta.*
+* **Servicio de Fotografía Profesional:**
+  * Cobertura completa durante el evento por fotógrafo profesional.
+  * Sesión fotográfica de la festejada/o y familia en el set de globos / escenografía principal.
+  * Tomas espontáneas durante dinámicas infantiles, caballetes, mesa de postres y partida de pastel.
+  * Edición y corrección de color profesional en alta resolución.
+  * Entrega en galería digital privada descargable lista para imprimir y compartir.
+* **Precio Oficial:** **$2,500.00 MXN** (Tarifa única para todas las zonas).
+* **Apartado:** 50% de anticipo ($1,250.00 MXN) y 50% restante ($1,250.00 MXN) el día del evento.
+
+---
+
 ### 3. Tarifario de Servicios Individuales (A la Carta)
 
 | Código | Servicio / Concepto | Especificaciones / Dimensiones | Precio Unitario Sugerido |

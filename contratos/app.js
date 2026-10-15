@@ -99,12 +99,54 @@
           }
         },
         {
-          cant: 30,
-          titulo: 'Yesitos Temáticos Artesanales (Recuerdos para Llevar)',
+          cant: 1,
+          titulo: 'Lote de 30 Yesitos Temáticos Artesanales (Recuerdos en bolsita individual)',
           descripcion: '30 Figuras de yeso cerámico temáticas en bolsita de celofán individual con listón rizado, pincel y botecito de pintura lavable para que los niños pinten y lleven a casa.',
           horario: 'Consumible / Souvenir',
           precio: function(zona) {
             return zona === 'juarez_guadalupe' ? 450 : 550;
+          }
+        }
+      ]
+    },
+
+    paquete_invitaciones: {
+      nombre: 'Paquete: Invitaciones Digitales Interactivas con GPS & WhatsApp RSVP',
+      badge: 'Invitaciones Digitales $399',
+      precios: {
+        juarez_guadalupe: 399,
+        monterrey: 399,
+        otras_zonas: 399
+      },
+      items: [
+        {
+          cant: 1,
+          titulo: 'Diseño de Invitación Digital Interactiva con GPS, RSVP & Mesa de Regalos',
+          descripcion: 'Invitación digital personalizada para WhatsApp y redes con botón en 1 clic a Google Maps y Waze, confirmación de asistencia RSVP directa a WhatsApp, itinerario de fiesta, mesa de regalos y cuenta regresiva animada.',
+          horario: 'Entrega Digital',
+          precio: function(zona) {
+            return 399;
+          }
+        }
+      ]
+    },
+
+    paquete_fotografia: {
+      nombre: 'Paquete: Cobertura Fotográfica Profesional para Eventos',
+      badge: 'Fotografía Profesional $2,500',
+      precios: {
+        juarez_guadalupe: 2500,
+        monterrey: 2500,
+        otras_zonas: 2500
+      },
+      items: [
+        {
+          cant: 1,
+          titulo: 'Cobertura Fotográfica Profesional para Evento (Galería Digital Editada)',
+          descripcion: 'Cobertura fotográfica durante el festejo: sesión familiar en el arco o set de globos, fotos del festejo, partida de pastel, dinámicas infantiles y momentos espontáneos. Entrega de galería digital privada con todas las fotos editadas en alta resolución listas para imprimir y compartir.',
+          horario: 'Evento Completo',
+          precio: function(zona) {
+            return 2500;
           }
         }
       ]
@@ -201,10 +243,12 @@
     dom.sheetSignCliente = document.getElementById('sheetSignCliente');
     dom.sheetBankInfo = document.getElementById('sheetBankInfo');
 
-    // Botones
+    // Botones de presets y adicionales
     dom.btnPreset1 = document.getElementById('btnPreset1');
     dom.btnPreset2 = document.getElementById('btnPreset2');
     dom.btnPreset3 = document.getElementById('btnPreset3');
+    dom.btnPresetInvitaciones = document.getElementById('btnPresetInvitaciones');
+    dom.btnPresetFotografia = document.getElementById('btnPresetFotografia');
     dom.btnAddItem = document.getElementById('btnAddItem');
     dom.btnPrint = document.getElementById('btnPrint');
     dom.btnDownloadPdf = document.getElementById('btnDownloadPdf');
@@ -212,6 +256,12 @@
     dom.btnCopySummary = document.getElementById('btnCopySummary');
     dom.btnReset = document.getElementById('btnReset');
     dom.btnNewFolio = document.getElementById('btnNewFolio');
+
+    // Elementos de la barra flotante móvil
+    dom.mBarTotal = document.getElementById('mBarTotal');
+    dom.mBarAnticipo = document.getElementById('mBarAnticipo');
+    dom.btnScrollToForm = document.getElementById('btnScrollToForm');
+    dom.btnScrollToSheet = document.getElementById('btnScrollToSheet');
   }
 
   // =========================================================================
@@ -333,12 +383,14 @@
     if (dom.inpNotasBancarias) dom.inpNotasBancarias.value = state.notasBancarias;
 
     // Actualizar botones de preset
-    [dom.btnPreset1, dom.btnPreset2, dom.btnPreset3].forEach(btn => {
+    [dom.btnPreset1, dom.btnPreset2, dom.btnPreset3, dom.btnPresetInvitaciones, dom.btnPresetFotografia].forEach(btn => {
       if (btn) btn.classList.remove('active');
     });
     if (state.paqueteSeleccionado === 'paquete1' && dom.btnPreset1) dom.btnPreset1.classList.add('active');
     if (state.paqueteSeleccionado === 'paquete2' && dom.btnPreset2) dom.btnPreset2.classList.add('active');
     if (state.paqueteSeleccionado === 'paquete3' && dom.btnPreset3) dom.btnPreset3.classList.add('active');
+    if (state.paqueteSeleccionado === 'paquete_invitaciones' && dom.btnPresetInvitaciones) dom.btnPresetInvitaciones.classList.add('active');
+    if (state.paqueteSeleccionado === 'paquete_fotografia' && dom.btnPresetFotografia) dom.btnPresetFotografia.classList.add('active');
   }
 
   function renderSidebarItems() {
@@ -445,21 +497,27 @@
     if (dom.sheetAnticipoVal) dom.sheetAnticipoVal.textContent = formatMoney(anticipo);
     if (dom.sheetSaldoVal) dom.sheetSaldoVal.textContent = formatMoney(saldo);
 
+    // Actualizar Barra Flotante en Móviles (Sticky Live Bar)
+    if (dom.mBarTotal) dom.mBarTotal.textContent = formatMoney(total);
+    if (dom.mBarAnticipo) dom.mBarAnticipo.textContent = formatMoney(anticipo);
+
     // Auto-guardado en LocalStorage
     saveToStorage();
   }
 
   // =========================================================================
-  // EVENT LISTENERS & VINCULACIÓN REACTIVA
+  // EVENT LISTENERS & VINCULACIÓN REACTIVA EN VIVO
   // =========================================================================
   function setupEventListeners() {
-    // Inputs del formulario
+    // Inputs del formulario con sincronización multievento (input, change, keyup, paste)
     const bindInput = (el, key, isNumber = false) => {
       if (!el) return;
-      el.addEventListener('input', e => {
-        state[key] = isNumber ? Number(e.target.value) || 0 : e.target.value;
-        renderSheet();
-        updateCalculations();
+      ['input', 'change', 'keyup', 'paste'].forEach(evt => {
+        el.addEventListener(evt, e => {
+          state[key] = isNumber ? Number(e.target.value) || 0 : e.target.value;
+          renderSheet();
+          updateCalculations();
+        });
       });
     };
 
@@ -484,6 +542,31 @@
     bindInput(dom.inpAnticipoPct, 'anticipoPorcentaje', true);
     bindInput(dom.inpNotasBancarias, 'notasBancarias');
 
+    // Sincronización bidireccional desde la hoja membretada hacia el formulario (contenteditable)
+    const bindContentEditable = (sheetEl, key, inputEl) => {
+      if (!sheetEl) return;
+      ['input', 'keyup', 'blur'].forEach(evt => {
+        sheetEl.addEventListener(evt, () => {
+          const val = sheetEl.innerText.trim();
+          state[key] = val;
+          if (inputEl && document.activeElement !== inputEl) {
+            inputEl.value = val;
+          }
+          if (key === 'clienteNombre' && dom.sheetSignCliente && document.activeElement !== dom.sheetSignCliente) {
+            dom.sheetSignCliente.textContent = val;
+          }
+          updateCalculations();
+        });
+      });
+    };
+
+    bindContentEditable(dom.sheetClienteNombre, 'clienteNombre', dom.inpClienteNombre);
+    bindContentEditable(dom.sheetClienteTelefono, 'clienteTelefono', dom.inpClienteTelefono);
+    bindContentEditable(dom.sheetLugarEvento, 'lugarEvento', dom.inpLugarEvento);
+    bindContentEditable(dom.sheetSignCliente, 'clienteNombre', dom.inpClienteNombre);
+    bindContentEditable(dom.sheetFolio, 'folio', dom.inpFolio);
+    bindContentEditable(dom.sheetFechaEmision, 'fechaEmision', dom.inpFechaEmision);
+
     // Cambio de Zona de Flete / Tarifas
     if (dom.selZona) {
       dom.selZona.addEventListener('change', e => {
@@ -495,7 +578,7 @@
       });
     }
 
-    // Botones de presets
+    // Botones de presets oficiales
     if (dom.btnPreset1) {
       dom.btnPreset1.addEventListener('click', () => {
         cargarItemsDePaquete('paquete1', state.zona);
@@ -512,6 +595,31 @@
       dom.btnPreset3.addEventListener('click', () => {
         cargarItemsDePaquete('paquete3', state.zona);
         renderAll();
+      });
+    }
+    if (dom.btnPresetInvitaciones) {
+      dom.btnPresetInvitaciones.addEventListener('click', () => {
+        cargarItemsDePaquete('paquete_invitaciones', state.zona);
+        renderAll();
+      });
+    }
+    if (dom.btnPresetFotografia) {
+      dom.btnPresetFotografia.addEventListener('click', () => {
+        cargarItemsDePaquete('paquete_fotografia', state.zona);
+        renderAll();
+      });
+    }
+
+    // Botones de navegación y scroll en móvil
+    if (dom.btnScrollToSheet) {
+      dom.btnScrollToSheet.addEventListener('click', () => {
+        const sheet = document.getElementById('contractSheet');
+        if (sheet) sheet.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+    if (dom.btnScrollToForm) {
+      dom.btnScrollToForm.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
 

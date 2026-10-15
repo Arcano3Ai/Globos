@@ -228,7 +228,7 @@ body {
 /* SELECTOR DE PAQUETES (PRESETS) */
 .preset-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
   gap: 8px;
   margin-bottom: 10px;
 }
@@ -768,6 +768,7 @@ input:focus, select:focus, textarea:focus {
   .app-header,
   .controls-sidebar,
   .btn-remove-item,
+  .mobile-floating-bar,
   .no-print {
     display: none !important;
   }
@@ -1163,7 +1164,89 @@ body.authenticated .auth-overlay {
   }
 
   .workspace-container {
-    padding-bottom: max(30px, env(safe-area-inset-bottom));
+    padding-bottom: max(75px, env(safe-area-inset-bottom));
   }
+}
+
+/* ==========================================================================
+   BARRA FLOTANTE MÓVIL (FEEDBACK EN TIEMPO REAL & NAVEGACIÓN RÁPIDA)
+   ========================================================================== */
+.mobile-floating-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: rgba(14, 11, 24, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(200, 91, 163, 0.35);
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.65), 0 -1px 12px rgba(200, 91, 163, 0.2);
+  padding: 10px 14px;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.25s ease;
+}
+
+@media (max-width: 1080px) {
+  .mobile-floating-bar {
+    display: flex;
+  }
+}
+
+.mobile-live-total {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  line-height: 1.2;
+}
+
+.mobile-live-total .m-label {
+  font-size: 0.72rem;
+  color: var(--violet-light);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mobile-live-total strong {
+  font-size: 1.15rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  color: var(--turquoise-neon);
+  text-shadow: 0 0 10px rgba(0, 245, 212, 0.4);
+}
+
+.mobile-live-total .m-deposit {
+  font-size: 0.73rem;
+  color: #CBD5E1;
+  font-weight: 500;
+}
+
+.mobile-live-total .m-deposit span {
+  color: #FFF;
+  font-weight: 700;
+}
+
+.mobile-nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mobile-nav-buttons .btn {
+  padding: 6px 11px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-nav-buttons .btn-primary {
+  background: linear-gradient(135deg, var(--pink-main) 0%, #a43a85 100%);
+  border-color: rgba(255, 94, 184, 0.5);
+  box-shadow: 0 2px 10px rgba(200, 91, 163, 0.4);
 }
 

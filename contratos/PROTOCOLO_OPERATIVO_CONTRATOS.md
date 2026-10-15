@@ -14,6 +14,8 @@ Aplica de forma estricta para:
 * **Paquete 1:** "Aro Decorado + Caballetes de Arte (1 Hora)"
 * **Paquete 2:** "Elotes, Tostitos Preparados & Decoración Completa"
 * **Paquete 3:** "Taller Creativo (2 Horas), Caballete de Bienvenida & 30 Yesitos"
+* **Paquete Invitaciones Digitales:** Diseño interactivo con mapa GPS, confirmación RSVP y mesa de regalos ($399 MXN).
+* **Paquete Fotografía Profesional:** Cobertura de evento, sesión en escenografía y galería digital en alta resolución ($2,500 MXN).
 * **Contratos Personalizados / Servicios a la Carta:** Arcos de globos monumentales, guirnaldas express, bouquets deluxe, sets de cilindros y mamparas temáticas.
 
 ---
@@ -72,6 +74,30 @@ Aplica de forma estricta para:
 * **Tarifario Oficial:**
   * **Juárez y Guadalupe:** **$1,900.00 MXN** *(Anticipo 50%: $950.00 MXN)*
   * **Monterrey:** **$2,200.00 MXN** *(Anticipo 50%: $1,100.00 MXN)*
+
+---
+
+#### 📱 PAQUETE INVITACIONES DIGITALES INTERACTIVAS
+* **Para quién:** Familias y anfitriones que desean una invitación moderna, ecológica y multimedia con control de confirmaciones.
+* **Componentes Digitales:**
+  * Diseño gráfico temático personalizado con fotografía y detalles del festejo.
+  * Botón inteligente con enlace directo GPS a Google Maps y Waze.
+  * Botón de confirmación de asistencia RSVP directo al WhatsApp de los anfitriones.
+  * Itinerario del evento y bloque para mesa de regalos (Liverpool, Amazon o datos bancarios).
+  * Cronómetro de cuenta regresiva interactivo.
+* **Tarifario Oficial:** **$399.00 MXN** *(Tarifa plana para todo N.L. - Anticipo: $200.00 MXN / Saldo: $199.00 MXN)*
+
+---
+
+#### 📸 PAQUETE COBERTURA FOTOGRÁFICA PROFESIONAL
+* **Para quién:** Clientes que desean inmortalizar su evento y el montaje decorativo con calidad de estudio.
+* **Componentes de Cobertura:**
+  * Presencia de fotógrafo profesional durante todo el festejo.
+  * Sesión temática familiar y del festejado en el arco / set de globos.
+  * Fotografía de detalle de la escenografía, mesa principal, dinámicas, invitados y partida de pastel.
+  * Edición digital y revelado en alta resolución.
+  * Entrega en galería privada en la nube para descarga ilimitada.
+* **Tarifario Oficial:** **$2,500.00 MXN** *(Tarifa oficial - Anticipo 50%: $1,250.00 MXN / Saldo: $1,250.00 MXN al evento)*
 
 ---
 

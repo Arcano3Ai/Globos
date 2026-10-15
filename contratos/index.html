@@ -155,7 +155,15 @@
           </button>
           <button type="button" class="btn-preset" id="btnPreset3">
             <span class="preset-name">Paquete 3</span>
-            <span class="preset-price">Taller 2H + Yesitos</span>
+            <span class="preset-price">Taller 2H + 30 Yesitos</span>
+          </button>
+          <button type="button" class="btn-preset" id="btnPresetInvitaciones">
+            <span class="preset-name">Invitación Digital</span>
+            <span class="preset-price">GPS & RSVP · $399</span>
+          </button>
+          <button type="button" class="btn-preset" id="btnPresetFotografia">
+            <span class="preset-name">Fotografía</span>
+            <span class="preset-price">Pro Evento · $2,500</span>
           </button>
         </div>
 
@@ -300,6 +308,8 @@
         <div style="margin-top: 14px;">
           <label style="font-size: 0.72rem; color: var(--turquoise-neon);">+ Adicionales frecuentes (clic para sumar):</label>
           <div class="quick-addons-wrap">
+            <button type="button" class="btn-chip" data-cant="1" data-titulo="Invitación Digital Interactiva con GPS" data-desc="Diseño para WhatsApp con enlace en 1 clic a Google Maps/Waze, confirmación RSVP y cuenta regresiva." data-precio="399" data-horario="Digital">+Invitación Digital ($399)</button>
+            <button type="button" class="btn-chip" data-cant="1" data-titulo="Cobertura Fotográfica Profesional para Eventos" data-desc="Sesión familiar en set decorado, fotos del festejo, pastel y entrega de galería digital en alta resolución." data-precio="2500" data-horario="Evento Completo">+Fotografía Pro ($2,500)</button>
             <button type="button" class="btn-chip" data-cant="1" data-titulo="Metro Extra de Arco Orgánico de Globos" data-desc="Elaborado con látex de alta densidad y tratamiento de brillo High-Shine." data-precio="550" data-horario="Evento Completo">+1m Arco ($550)</button>
             <button type="button" class="btn-chip" data-cant="1" data-titulo="Bouquet Deluxe con Números Gigantes" data-desc="Base orgánica estructurada + 1 o 2 números gigantes de foil con helio." data-precio="950" data-horario="Consumible">+Bouquet Deluxe ($950)</button>
             <button type="button" class="btn-chip" data-cant="10" data-titulo="Lote 10 Yesitos Temáticos Extras" data-desc="Figuras de yeso cerámico con bolsita individual, listón, pincel y botecito de pintura." data-precio="250" data-horario="Consumible">+10 Yesitos ($250)</button>
@@ -500,6 +510,18 @@
 
     </main>
 
+  </div>
+
+  <!-- BARRA FLOTANTE MÓVIL (FEEDBACK REACTIVO EN VIVO) -->
+  <div class="mobile-floating-bar" id="mobileFloatingBar">
+    <div class="mobile-live-total">
+      <span class="m-label">Total:</span> <strong id="mBarTotal">$0.00</strong>
+      <span class="m-deposit">(50%: <span id="mBarAnticipo">$0.00</span>)</span>
+    </div>
+    <div class="mobile-nav-buttons">
+      <button type="button" class="btn btn-dark btn-sm" id="btnScrollToForm"><i class="bi bi-pencil-fill"></i> Datos</button>
+      <button type="button" class="btn btn-primary btn-sm" id="btnScrollToSheet"><i class="bi bi-file-earmark-text-fill"></i> Ver Hoja</button>
+    </div>
   </div>
 
   <!-- SCRIPT PRINCIPAL -->
