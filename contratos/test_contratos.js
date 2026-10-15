@@ -199,6 +199,29 @@ assert(appJsContent.includes('Paquete 3: Taller Creativo de Arte (2 Horas), Caba
 console.log('  ✓ Paquetes No Desglosados Verificados: 1 solo concepto integral y limpio por paquete contratado.');
 console.log('  ✓ Sistema de PIN completamente eliminado: Acceso exclusivo por Usuario y Contraseña.');
 
+// 13. Verificación de Inicio en Blanco Siempre (Empezar de cero sin datos demo)
+assert(!indexHtmlContent.includes('value="C. Alejandro Ramírez Salinas"'), 'index.html no debe tener valor demo prellenado para cliente');
+assert(!indexHtmlContent.includes('value="Mía Ramírez"'), 'index.html no debe tener valor demo prellenado para festejado');
+assert(!indexHtmlContent.includes('value="81-8399-2211"'), 'index.html no debe tener teléfono demo prellenado');
+assert(!indexHtmlContent.includes('btn-preset active'), 'Ningún botón de preset debe estar activo por defecto');
+assert(appJsContent.includes("clienteNombre: ''"), 'app.js debe inicializar clienteNombre vacío');
+assert(appJsContent.includes("festejado: ''"), 'app.js debe inicializar festejado vacío');
+assert(appJsContent.includes("items: []"), 'app.js debe inicializar items vacío');
+assert(appJsContent.includes("paquetesSeleccionados: []"), 'app.js debe inicializar paquetesSeleccionados vacío');
+assert(appJsContent.includes("resetStateToBlank"), 'app.js debe implementar resetStateToBlank');
+assert(appJsContent.includes("localStorage.removeItem('nancy_contrato_draft')"), 'loadFromStorage y reset deben limpiar borradores antiguos para garantizar inicio en blanco');
+
+// 14. Verificación de Botones Oficiales "Limpiar Contrato" (Solicitado por el usuario)
+assert(indexHtmlContent.includes('id="btnClearContract"'), 'index.html debe tener el botón superior btnClearContract');
+assert(indexHtmlContent.includes('id="btnSidebarClearContract"'), 'index.html debe tener el botón en sidebar btnSidebarClearContract');
+assert(indexHtmlContent.includes('id="btnClearItemsSection"'), 'index.html debe tener el botón btnClearItemsSection');
+assert(indexHtmlContent.includes('id="btnMobileClear"'), 'index.html debe tener el botón btnMobileClear');
+assert(appJsContent.includes('limpiarContratoCompleto'), 'app.js debe implementar limpiarContratoCompleto');
+assert(stylesContent.includes('.btn-danger'), 'styles.css debe incluir estilos para .btn-danger');
+assert(stylesContent.includes('.btn-clear-main'), 'styles.css debe incluir estilos para .btn-clear-main');
+
+console.log('  ✓ Botones "Limpiar Contrato" 100% Verificados: Barra superior, panel de paquetes, conceptos y barra móvil.');
+
 console.log('  ✓ Barra flotante móvil, barra de agregar paquetes, selección múltiple, anticipo dual y desglose de descuento 100% verificados.');
 
 console.log('  ✓ Soporte PWA (Manifest Standalone, Service Worker Offline e Iconos) 100% verificado.');

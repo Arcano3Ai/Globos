@@ -168,6 +168,42 @@ body {
   transform: translateY(-1px);
 }
 
+.btn-danger {
+  background: linear-gradient(135deg, #EF4444, #DC2626);
+  color: white;
+  border: 1px solid #B91C1C;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+}
+.btn-danger:hover {
+  background: linear-gradient(135deg, #DC2626, #B91C1C);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.5);
+}
+
+.btn-clear-main {
+  width: 100%;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1.5px solid #EF4444;
+  color: #FECACA;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-clear-main:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: #F87171;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
 /* ==========================================================================
    LAYOUT PRINCIPAL: PANEL DUAL
    ========================================================================== */

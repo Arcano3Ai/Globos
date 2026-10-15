@@ -198,28 +198,28 @@
   }
 
   // =========================================================================
-  // ESTADO DE LA APLICACIÓN
+  // ESTADO DE LA APLICACIÓN (INICIO 100% EN BLANCO POR DEFECTO)
   // =========================================================================
   const state = {
     folio: generateFolio(),
     fechaEmision: getFormattedCurrentDate(),
     zona: 'monterrey',
-    paquetesSeleccionados: ['paquete1'],
-    paqueteSeleccionado: 'paquete1',
-    clienteNombre: 'C. Alejandro Ramírez Salinas',
-    clienteTelefono: '81-8399-2211',
+    paquetesSeleccionados: [],
+    paqueteSeleccionado: 'custom',
+    clienteNombre: '',
+    clienteTelefono: '',
     clienteEmail: '',
-    festejado: 'Mía Ramírez',
-    edadFestejado: '5 años',
-    tipoFestejo: 'Cumpleaños Infantil',
-    tematica: 'Princesas & Fantasía Mágica',
-    coloresGlobos: 'Rosa pastel, lavanda y toques cromo oro',
-    tipoLetrero: 'Luz LED Neón ("Happy Birthday")',
-    fechaEvento: getSuggestedEventDate(),
-    lugarEvento: 'Salón Las Nubes, San Pedro Garza García, N.L.',
-    horaMontaje: '14:30 hrs (2 horas antes)',
-    horaEvento: '16:30 a 20:30 hrs',
-    horaDesmontaje: '20:45 hrs',
+    festejado: '',
+    edadFestejado: '',
+    tipoFestejo: '',
+    tematica: '',
+    coloresGlobos: '',
+    tipoLetrero: '',
+    fechaEvento: '',
+    lugarEvento: '',
+    horaMontaje: '',
+    horaEvento: '',
+    horaDesmontaje: '',
     items: [],
     flete: 0,
     descuento: 0,
@@ -229,8 +229,73 @@
     notasBancarias: 'Banco: BBVA / Banorte | Beneficiaria: Nancy García (Nancy Eventos) | Cuenta / CLABE: 012 580 00123456789 0'
   };
 
-  // Inicializar items con el Paquete 1 por defecto
-  cargarItemsDePaquete('paquete1', state.zona);
+  function resetStateToBlank(advanceFolio = false) {
+    state.folio = generateFolio(advanceFolio, state.folio);
+    state.fechaEmision = getFormattedCurrentDate();
+    state.zona = 'monterrey';
+    state.paquetesSeleccionados = [];
+    state.paqueteSeleccionado = 'custom';
+    state.clienteNombre = '';
+    state.clienteTelefono = '';
+    state.clienteEmail = '';
+    state.festejado = '';
+    state.edadFestejado = '';
+    state.tipoFestejo = '';
+    state.tematica = '';
+    state.coloresGlobos = '';
+    state.tipoLetrero = '';
+    state.fechaEvento = '';
+    state.lugarEvento = '';
+    state.horaMontaje = '';
+    state.horaEvento = '';
+    state.horaDesmontaje = '';
+    state.items = [];
+    state.flete = 0;
+    state.descuento = 0;
+    state.anticipoPorcentaje = 50;
+    state.anticipoMonto = 0;
+    state.anticipoModo = 'porcentaje';
+  }
+
+  function limpiarContratoCompleto(advanceFolio = false, showNotification = true) {
+    try {
+      localStorage.removeItem('nancy_contrato_draft');
+    } catch (e) {}
+
+    resetStateToBlank(advanceFolio);
+
+    // Limpiar explícitamente los campos del formulario en el DOM
+    if (dom.inpClienteNombre) dom.inpClienteNombre.value = '';
+    if (dom.inpClienteTelefono) dom.inpClienteTelefono.value = '';
+    if (dom.inpClienteEmail) dom.inpClienteEmail.value = '';
+    if (dom.inpFestejado) dom.inpFestejado.value = '';
+    if (dom.inpEdadFestejado) dom.inpEdadFestejado.value = '';
+    if (dom.inpTipoFestejo) dom.inpTipoFestejo.value = '';
+    if (dom.inpTematica) dom.inpTematica.value = '';
+    if (dom.inpColoresGlobos) dom.inpColoresGlobos.value = '';
+    if (dom.inpTipoLetrero) dom.inpTipoLetrero.value = '';
+    if (dom.inpFechaEvento) dom.inpFechaEvento.value = '';
+    if (dom.inpLugarEvento) dom.inpLugarEvento.value = '';
+    if (dom.inpHoraMontaje) dom.inpHoraMontaje.value = '';
+    if (dom.inpHoraEvento) dom.inpHoraEvento.value = '';
+    if (dom.inpHoraDesmontaje) dom.inpHoraDesmontaje.value = '';
+    if (dom.inpFlete) dom.inpFlete.value = 0;
+    if (dom.inpDescuento) dom.inpDescuento.value = 0;
+    if (dom.inpAnticipoPct) dom.inpAnticipoPct.value = 50;
+    if (dom.inpAnticipoMonto) dom.inpAnticipoMonto.value = '';
+
+    // Desmarcar todos los botones de paquetes
+    document.querySelectorAll('.btn-preset').forEach(btn => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-pressed', 'false');
+    });
+
+    renderAll();
+
+    if (showNotification) {
+      showToast('🗑️ Contrato limpiado: El documento está 100% en blanco para empezar de cero.', 'success');
+    }
+  }
 
   // =========================================================================
   // REFERENCIAS DOM
@@ -316,6 +381,10 @@
     dom.btnCopySummary = document.getElementById('btnCopySummary');
     dom.btnReset = document.getElementById('btnReset');
     dom.btnNewFolio = document.getElementById('btnNewFolio');
+    dom.btnClearContract = document.getElementById('btnClearContract');
+    dom.btnSidebarClearContract = document.getElementById('btnSidebarClearContract');
+    dom.btnClearItemsSection = document.getElementById('btnClearItemsSection');
+    dom.btnMobileClear = document.getElementById('btnMobileClear');
 
     // Elementos de la barra flotante móvil
     dom.mBarTotal = document.getElementById('mBarTotal');
@@ -559,6 +628,10 @@
     if (!dom.itemsContainer) return;
     dom.itemsContainer.innerHTML = '';
 
+    if (!Array.isArray(state.items) || state.items.length === 0) {
+      return; // Completamente limpio en blanco
+    }
+
     state.items.forEach((item, index) => {
       const row = document.createElement('div');
       row.className = 'item-edit-row';
@@ -589,44 +662,71 @@
     if (dom.sheetFechaEmision) dom.sheetFechaEmision.textContent = state.fechaEmision;
 
     // Comparecientes
-    if (dom.sheetClienteNombre) dom.sheetClienteNombre.textContent = state.clienteNombre || 'Nombre del Cliente';
-    if (dom.sheetClienteTelefono) dom.sheetClienteTelefono.textContent = state.clienteTelefono || '81-0000-0000';
-    if (dom.sheetLugarEvento) dom.sheetLugarEvento.textContent = state.lugarEvento || 'Salón o Domicilio por confirmar';
-    if (dom.sheetFechaEvento) dom.sheetFechaEvento.textContent = formatDateForDisplay(state.fechaEvento);
-    if (dom.sheetSignCliente) dom.sheetSignCliente.textContent = state.clienteNombre || 'Nombre del Cliente';
+    if (dom.sheetClienteNombre) {
+      dom.sheetClienteNombre.textContent = state.clienteNombre || '________________________________________';
+    }
+    if (dom.sheetClienteTelefono) {
+      dom.sheetClienteTelefono.textContent = state.clienteTelefono || '____________________';
+    }
+    if (dom.sheetLugarEvento) {
+      dom.sheetLugarEvento.textContent = state.lugarEvento || 'Salón o Domicilio por confirmar';
+    }
+    if (dom.sheetFechaEvento) {
+      dom.sheetFechaEvento.textContent = state.fechaEvento ? formatDateForDisplay(state.fechaEvento) : 'Fecha por confirmar';
+    }
+    if (dom.sheetSignCliente) {
+      dom.sheetSignCliente.textContent = state.clienteNombre || 'Nombre y Firma del Cliente';
+    }
 
     // Festejado y Temática
     if (dom.sheetFestejadoInfo) {
-      dom.sheetFestejadoInfo.textContent = `${state.festejado || 'Festejado'} (${state.edadFestejado || 'Cumpleaños'}) · ${state.tipoFestejo}`;
+      if (state.festejado || state.edadFestejado || state.tipoFestejo) {
+        const fest = state.festejado || 'Festejado/a';
+        const edad = state.edadFestejado ? ` (${state.edadFestejado})` : '';
+        const tipo = state.tipoFestejo ? ` · ${state.tipoFestejo}` : '';
+        dom.sheetFestejadoInfo.textContent = `${fest}${edad}${tipo}`;
+      } else {
+        dom.sheetFestejadoInfo.textContent = 'Festejado/a: ____________________ · Celebración por definir';
+      }
     }
     if (dom.sheetTematicaInfo) {
-      dom.sheetTematicaInfo.textContent = `Temática: ${state.tematica} | Paleta: ${state.coloresGlobos} | Letrero: ${state.tipoLetrero}`;
+      if (state.tematica || state.coloresGlobos || state.tipoLetrero) {
+        dom.sheetTematicaInfo.textContent = `Temática: ${state.tematica || 'Por definir'} | Paleta: ${state.coloresGlobos || 'Por definir'} | Letrero: ${state.tipoLetrero || 'Por definir'}`;
+      } else {
+        dom.sheetTematicaInfo.textContent = 'Temática: ____________________ | Paleta de Colores: ____________________ | Letrero: ____________________';
+      }
     }
     if (dom.sheetHorariosInfo) {
-      dom.sheetHorariosInfo.textContent = `Montaje: ${state.horaMontaje} | Evento: ${state.horaEvento} | Desmontaje: ${state.horaDesmontaje}`;
+      if (state.horaMontaje || state.horaEvento || state.horaDesmontaje) {
+        dom.sheetHorariosInfo.textContent = `Montaje: ${state.horaMontaje || 'Por confirmar'} | Evento: ${state.horaEvento || 'Por confirmar'} | Desmontaje: ${state.horaDesmontaje || 'Por confirmar'}`;
+      } else {
+        dom.sheetHorariosInfo.textContent = 'Montaje: ____________________ | Evento: ____________________ | Desmontaje: ____________________';
+      }
     }
 
     if (dom.sheetBankInfo) {
       dom.sheetBankInfo.textContent = state.notasBancarias;
     }
 
-    // Tabla de la Hoja
+    // Tabla de la Hoja (100% en blanco cuando no hay items)
     if (dom.sheetTableBody) {
       dom.sheetTableBody.innerHTML = '';
-      state.items.forEach(item => {
-        const totalLinea = (Number(item.cant) || 1) * (Number(item.precioUnitario) || 0);
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td class="col-center" style="font-weight: 700;">${item.cant}</td>
-          <td>
-            <span class="item-title-text">${escapeHtml(item.titulo)}</span>
-            <span class="item-desc-text">${escapeHtml(item.descripcion)}</span>
-          </td>
-          <td class="col-center" style="font-size: 0.75rem; color: #475569;">${escapeHtml(item.horario)}</td>
-          <td class="col-right" style="font-weight: 700; color: #0E0B18;">${formatMoney(totalLinea)}</td>
-        `;
-        dom.sheetTableBody.appendChild(tr);
-      });
+      if (Array.isArray(state.items) && state.items.length > 0) {
+        state.items.forEach(item => {
+          const totalLinea = (Number(item.cant) || 1) * (Number(item.precioUnitario) || 0);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="col-center" style="font-weight: 700;">${item.cant}</td>
+            <td>
+              <span class="item-title-text">${escapeHtml(item.titulo)}</span>
+              <span class="item-desc-text">${escapeHtml(item.descripcion)}</span>
+            </td>
+            <td class="col-center" style="font-size: 0.75rem; color: #475569;">${escapeHtml(item.horario)}</td>
+            <td class="col-right" style="font-weight: 700; color: #0E0B18;">${formatMoney(totalLinea)}</td>
+          `;
+          dom.sheetTableBody.appendChild(tr);
+        });
+      }
     }
   }
 
@@ -1017,18 +1117,21 @@
       });
     }
 
-    // Botón Reset / Nuevo Contrato
+    // Manejador central para Limpiar Contrato a documento en blanco de cero
+    const handleLimpiarContrato = (e) => {
+      if (e) e.preventDefault();
+      limpiarContratoCompleto(false, true);
+    };
+
+    if (dom.btnClearContract) dom.btnClearContract.addEventListener('click', handleLimpiarContrato);
+    if (dom.btnSidebarClearContract) dom.btnSidebarClearContract.addEventListener('click', handleLimpiarContrato);
+    if (dom.btnClearItemsSection) dom.btnClearItemsSection.addEventListener('click', handleLimpiarContrato);
+    if (dom.btnMobileClear) dom.btnMobileClear.addEventListener('click', handleLimpiarContrato);
+
+    // Botón Reset / Nuevo Folio
     if (dom.btnReset) {
       dom.btnReset.addEventListener('click', () => {
-        if (confirm('¿Deseas reiniciar el formulario a un contrato nuevo? Se generará un nuevo folio consecutivo.')) {
-          localStorage.removeItem('nancy_contrato_draft');
-          state.folio = generateFolio(true, state.folio);
-          state.fechaEmision = getFormattedCurrentDate();
-          state.descuento = 0;
-          cargarItemsDePaquete('paquete1', state.zona);
-          renderAll();
-          showToast(`Nuevo Contrato Iniciado: ${state.folio}`, 'success');
-        }
+        limpiarContratoCompleto(true, true);
       });
     }
   }
@@ -1207,65 +1310,19 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
   }
 
   function loadFromStorage() {
+    // Requerimiento explícito: La app debe iniciar SIEMPRE con documento en blanco de cero.
+    // Eliminamos cualquier borrador residual para garantizar que Nancy empiece siempre en blanco.
     try {
-      const saved = localStorage.getItem('nancy_contrato_draft');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        Object.assign(state, parsed);
+      localStorage.removeItem('nancy_contrato_draft');
+    } catch (e) {}
 
-        // Migración hacia selección múltiple de paquetes
-        if (!Array.isArray(state.paquetesSeleccionados)) {
-          state.paquetesSeleccionados = state.paqueteSeleccionado ? [state.paqueteSeleccionado] : ['paquete1'];
-        }
-
-        // Limpieza automática del descuento fantasma ($2,500) atascado de pruebas previas
-        if (state.descuento === 2500) {
-          state.descuento = 0;
-        }
-
-        // Migración hacia paquetes no desglosados (1 solo concepto limpio por paquete oficial)
-        const hasOldSplitItems = Array.isArray(state.items) && state.items.some(it => 
-          it.titulo && (
-            it.titulo.includes('Decoración Principal: Aro Decorado') ||
-            it.titulo.includes('Servicio de Caballetes Infantil de Arte (1 Hora Continua)') ||
-            it.titulo.includes('Barra de Antojitos: 25 Elotes') ||
-            it.titulo.includes('Decoración Escenográfica: Aro o Mampara') ||
-            it.titulo.includes('Taller Creativo Infantil de Arte en Caballetes (2 Horas') ||
-            it.titulo.includes('Lote de 30 Yesitos Temáticos Artesanales')
-          )
-        );
-
-        if (hasOldSplitItems) {
-          state.items = [];
-          (state.paquetesSeleccionados || ['paquete1']).forEach(pkgKey => {
-            if (PAQUETES[pkgKey]) {
-              PAQUETES[pkgKey].items.forEach(itemDef => {
-                const unitPrice = typeof itemDef.precio === 'function' ? itemDef.precio(state.zona) : itemDef.precio;
-                state.items.push({
-                  id: 'item_' + Date.now() + '_' + pkgKey + '_' + Math.floor(Math.random() * 1000),
-                  paqueteKey: pkgKey,
-                  cant: itemDef.cant,
-                  titulo: itemDef.titulo,
-                  descripcion: itemDef.descripcion,
-                  horario: itemDef.horario,
-                  precioUnitario: unitPrice
-                });
-              });
-            }
-          });
-        }
-
-        // Migración hacia serie consecutiva oficial (empieza en 00691 y sube)
-        const folioDigits = String(state.folio || '').match(/\d{3,6}/);
-        const currentFolioNum = folioDigits ? parseInt(folioDigits[0], 10) : 0;
-        if (currentFolioNum < FOLIO_START_NUM) {
-          state.folio = generateFolio(false, state.folio); // Asigna CTR-2026-00691
-        } else {
-          setFolioNumber(currentFolioNum);
-        }
-      }
-    } catch (e) {
-      // Usar estado inicial si falla
+    // Garantizar que la serie de folio inicie en la numeración oficial (00691 y suba)
+    const folioDigits = String(state.folio || '').match(/\d{3,6}/);
+    const currentFolioNum = folioDigits ? parseInt(folioDigits[0], 10) : 0;
+    if (currentFolioNum < FOLIO_START_NUM) {
+      state.folio = generateFolio(false, state.folio);
+    } else {
+      setFolioNumber(currentFolioNum);
     }
   }
 
@@ -1547,6 +1604,7 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
     try { initSecurity(); } catch (e) { console.error('Nancy Contratos: Error en initSecurity:', e); }
     try { initPwa(); } catch (e) { console.error('Nancy Contratos: Error en initPwa:', e); }
     try { loadFromStorage(); } catch (e) { console.error('Nancy Contratos: Error en loadFromStorage:', e); }
+    try { limpiarContratoCompleto(false, false); } catch (e) { console.error('Nancy Contratos: Error en limpiar inicial:', e); }
     try { renderAll(); } catch (e) { console.error('Nancy Contratos: Error en renderAll:', e); }
     try { setupEventListeners(); } catch (e) { console.error('Nancy Contratos: Error en setupEventListeners:', e); }
   }

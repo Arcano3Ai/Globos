@@ -118,8 +118,8 @@
       <button type="button" class="btn btn-dark" id="btnCopySummary" title="Copiar texto resumen">
         <i class="bi bi-clipboard-check"></i> Copiar Resumen
       </button>
-      <button type="button" class="btn btn-dark" id="btnReset" title="Reiniciar y crear nuevo contrato">
-        <i class="bi bi-arrow-counterclockwise"></i> Nuevo Contrato
+      <button type="button" class="btn btn-danger" id="btnClearContract" title="Limpiar contrato y empezar de cero en blanco">
+        <i class="bi bi-trash3-fill"></i> Limpiar Contrato
       </button>
       <button type="button" class="btn btn-accent" id="btnInstallPwa" style="display: none;" title="Instalar como App en celular o pantalla de inicio">
         <i class="bi bi-download"></i> Instalar App
@@ -142,6 +142,12 @@
           <span>1. Paquetes Comerciales Oficiales</span>
           <i class="bi bi-stars"></i>
         </div>
+
+        <!-- BOTÓN PRINCIPAL PARA LIMPIAR CONTRATO -->
+        <button type="button" class="btn-clear-main" id="btnSidebarClearContract" title="Vaciar todo y empezar contrato de cero">
+          <i class="bi bi-trash3-fill" style="color: #EF4444; font-size: 1rem;"></i> Limpiar Contrato (Empezar de Cero)
+        </button>
+
         <p style="font-size: 0.72rem; color: #CBD5E1; margin-bottom: 10px;">
           Selecciona y combina los paquetes que necesites; se irán sumando automáticamente a la cotización y al contrato oficial.
         </p>
@@ -166,7 +172,7 @@
         </div>
 
         <div class="preset-grid">
-          <button type="button" class="btn-preset active" id="btnPreset1">
+          <button type="button" class="btn-preset" id="btnPreset1">
             <span class="preset-name">Paquete 1</span>
             <span class="preset-price">Aro + Caballetes 1H</span>
           </button>
@@ -239,13 +245,13 @@
 
         <div class="form-group">
           <label for="inpClienteNombre">Nombre Completo del Cliente (Arrendatario):</label>
-          <input type="text" id="inpClienteNombre" placeholder="Ej. C. Alejandro Ramírez Salinas" value="C. Alejandro Ramírez Salinas">
+          <input type="text" id="inpClienteNombre" placeholder="Ej. C. Alejandro Ramírez Salinas">
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="inpClienteTelefono"><i class="bi bi-whatsapp"></i> WhatsApp / Teléfono:</label>
-            <input type="text" id="inpClienteTelefono" placeholder="Ej. 81-8399-2211" value="81-8399-2211">
+            <input type="text" id="inpClienteTelefono" placeholder="Ej. 81-8399-2211">
           </div>
           <div class="form-group">
             <label for="inpClienteEmail">Correo (Opcional):</label>
@@ -256,33 +262,33 @@
         <div class="form-row">
           <div class="form-group">
             <label for="inpFestejado">Nombre de Festejada/o:</label>
-            <input type="text" id="inpFestejado" placeholder="Ej. Mía Ramírez" value="Mía Ramírez">
+            <input type="text" id="inpFestejado" placeholder="Ej. Mía Ramírez">
           </div>
           <div class="form-group">
             <label for="inpEdadFestejado">Edad / Aniversario:</label>
-            <input type="text" id="inpEdadFestejado" placeholder="Ej. 5 Años" value="5 Años">
+            <input type="text" id="inpEdadFestejado" placeholder="Ej. 5 Años">
           </div>
         </div>
 
         <div class="form-group">
           <label for="inpTipoFestejo">Tipo de Celebración:</label>
-          <input type="text" id="inpTipoFestejo" placeholder="Ej. Cumpleaños Infantil, Bautizo, Primera Comunión..." value="Cumpleaños Infantil">
+          <input type="text" id="inpTipoFestejo" placeholder="Ej. Cumpleaños Infantil, Bautizo, Primera Comunión...">
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="inpTematica">Temática del Evento:</label>
-            <input type="text" id="inpTematica" placeholder="Ej. Safari, Princesas, Sonic..." value="Princesas & Fantasía Mágica">
+            <input type="text" id="inpTematica" placeholder="Ej. Safari, Princesas, Sonic...">
           </div>
           <div class="form-group">
             <label for="inpColoresGlobos">Paleta de Colores de Globos:</label>
-            <input type="text" id="inpColoresGlobos" placeholder="Ej. Rosa pastel, lila y cromo oro" value="Rosa pastel, lila y cromo oro">
+            <input type="text" id="inpColoresGlobos" placeholder="Ej. Rosa pastel, lila y cromo oro">
           </div>
         </div>
 
         <div class="form-group">
           <label for="inpTipoLetrero">Tipo de Letrero a Elegir:</label>
-          <input type="text" id="inpTipoLetrero" placeholder="Ej. Luz LED Neón 'Happy Birthday' o MDF calado" value="Luz LED Neón ('Happy Birthday')">
+          <input type="text" id="inpTipoLetrero" placeholder="Ej. Luz LED Neón 'Happy Birthday' o MDF calado">
         </div>
       </section>
 
@@ -300,23 +306,23 @@
 
         <div class="form-group">
           <label for="inpLugarEvento"><i class="bi bi-geo-alt"></i> Salón o Domicilio del Evento:</label>
-          <input type="text" id="inpLugarEvento" placeholder="Ej. Salón Las Nubes, San Pedro Garza García, N.L." value="Salón Las Nubes, San Pedro Garza García, N.L.">
+          <input type="text" id="inpLugarEvento" placeholder="Ej. Salón Las Nubes, San Pedro Garza García, N.L.">
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="inpHoraMontaje">Horario de Montaje:</label>
-            <input type="text" id="inpHoraMontaje" value="14:30 hrs (2 horas antes)">
+            <input type="text" id="inpHoraMontaje" placeholder="Ej. 14:30 hrs (2 horas antes)">
           </div>
           <div class="form-group">
             <label for="inpHoraEvento">Horario del Festejo:</label>
-            <input type="text" id="inpHoraEvento" value="16:30 a 20:30 hrs">
+            <input type="text" id="inpHoraEvento" placeholder="Ej. 16:30 a 20:30 hrs">
           </div>
         </div>
 
         <div class="form-group">
           <label for="inpHoraDesmontaje">Horario de Desmontaje / Recolección:</label>
-          <input type="text" id="inpHoraDesmontaje" value="20:45 hrs (Al concluir)">
+          <input type="text" id="inpHoraDesmontaje" placeholder="Ej. 20:45 hrs (Al concluir)">
         </div>
       </section>
 
@@ -339,6 +345,10 @@
             <i class="bi bi-box-seam-fill"></i> + Sumar Paquete
           </button>
         </div>
+
+        <button type="button" id="btnClearItemsSection" style="width: 100%; margin-top: 8px; background: rgba(239, 68, 68, 0.12); border: 1px dashed #EF4444; color: #FECACA; padding: 8px; border-radius: 6px; font-weight: 700; font-size: 0.76rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s;">
+          <i class="bi bi-trash3-fill" style="color: #EF4444;"></i> Limpiar Contrato / Vaciar Conceptos
+        </button>
 
         <div style="margin-top: 14px;">
           <label style="font-size: 0.72rem; color: var(--turquoise-neon);">+ Adicionales frecuentes (clic para sumar):</label>
@@ -454,11 +464,11 @@
         <section class="contract-parties-box">
           <div class="parties-header">Comparecientes y Términos Generales</div>
           <p>
-            Contrato celebrado entre <strong>NANCY EVENTOS · DECORACIÓN · GLOBOS · DETALLES</strong> (en lo sucesivo "EL PRESTADOR"), con atención y Concierge al WhatsApp <strong>81-1062-6302</strong>, y por la otra parte <strong id="sheetClienteNombre" contenteditable="true">C. Alejandro Ramírez Salinas</strong> (en lo sucesivo "EL CLIENTE / ARRENDATARIO"), con teléfono <strong id="sheetClienteTelefono" contenteditable="true">81-8399-2211</strong>. El presente instrumento formaliza la contratación de servicios y renta de mobiliario para el festejo de <strong id="sheetFestejadoInfo" contenteditable="true">Mía Ramírez (5 Años) · Cumpleaños Infantil</strong>, a realizarse en las instalaciones de <strong id="sheetLugarEvento" contenteditable="true">Salón Las Nubes, San Pedro Garza García, N.L.</strong> el día <strong id="sheetFechaEvento" contenteditable="true">19 de Septiembre de 2026</strong>.
+            Contrato celebrado entre <strong>NANCY EVENTOS · DECORACIÓN · GLOBOS · DETALLES</strong> (en lo sucesivo "EL PRESTADOR"), con atención y Concierge al WhatsApp <strong>81-1062-6302</strong>, y por la otra parte <strong id="sheetClienteNombre" contenteditable="true">________________________________________</strong> (en lo sucesivo "EL CLIENTE / ARRENDATARIO"), con teléfono <strong id="sheetClienteTelefono" contenteditable="true">____________________</strong>. El presente instrumento formaliza la contratación de servicios y renta de mobiliario para el festejo de <strong id="sheetFestejadoInfo" contenteditable="true">Festejado/a: ____________________ · Celebración por definir</strong>, a realizarse en las instalaciones de <strong id="sheetLugarEvento" contenteditable="true">Salón o Domicilio por confirmar</strong> el día <strong id="sheetFechaEvento" contenteditable="true">Fecha por confirmar</strong>.
           </p>
           <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #E2E8F0; font-size: 0.76rem; color: #475569;">
-            <div id="sheetTematicaInfo" contenteditable="true">Temática: Princesas & Fantasía Mágica | Paleta: Rosa pastel, lila y cromo oro | Letrero: Luz LED Neón ("Happy Birthday")</div>
-            <div id="sheetHorariosInfo" contenteditable="true" style="margin-top: 2px;">Montaje: 14:30 hrs (2 horas antes) | Evento: 16:30 a 20:30 hrs | Desmontaje: 20:45 hrs</div>
+            <div id="sheetTematicaInfo" contenteditable="true">Temática: ____________________ | Paleta de Colores: ____________________ | Letrero: ____________________</div>
+            <div id="sheetHorariosInfo" contenteditable="true" style="margin-top: 2px;">Montaje: ____________________ | Evento: ____________________ | Desmontaje: ____________________</div>
           </div>
         </section>
 
@@ -540,7 +550,7 @@
             <div class="sign-role-label">Por: Nancy Eventos · Decoración · Globos · Detalles</div>
           </div>
           <div class="sign-line-box">
-            <div class="sign-name-label" id="sheetSignCliente" contenteditable="true">C. Alejandro Ramírez Salinas</div>
+            <div class="sign-name-label" id="sheetSignCliente" contenteditable="true">Nombre y Firma del Cliente</div>
             <div class="sign-role-label">El Cliente / Arrendatario (Firma de Conformidad)</div>
           </div>
         </section>
@@ -567,12 +577,13 @@
       <span class="m-deposit">(50%: <span id="mBarAnticipo">$0.00</span>)</span>
     </div>
     <div class="mobile-nav-buttons">
+      <button type="button" class="btn btn-danger btn-sm" id="btnMobileClear" title="Limpiar Contrato"><i class="bi bi-trash3-fill"></i> Limpiar</button>
       <button type="button" class="btn btn-dark btn-sm" id="btnScrollToForm"><i class="bi bi-pencil-fill"></i> Datos</button>
       <button type="button" class="btn btn-primary btn-sm" id="btnScrollToSheet"><i class="bi bi-file-earmark-text-fill"></i> Ver Hoja</button>
     </div>
   </div>
 
   <!-- SCRIPT PRINCIPAL -->
-  <script src="app.js?v=2.6"></script>
+  <script src="app.js?v=2.8"></script>
 </body>
 </html>
