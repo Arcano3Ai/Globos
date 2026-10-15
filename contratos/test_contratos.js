@@ -86,16 +86,21 @@ testPricingMatrix.forEach(item => {
 // 3. Comprobar cláusulas legales y blindaje climático en index.html
 const indexHtmlContent = fs.readFileSync(path.join(CONTRATOS_DIR, 'index.html'), 'utf-8');
 
-assert(indexHtmlContent.includes('PRIMERA. OBJETO:'), 'Falta cláusula Primera (Objeto)');
-assert(indexHtmlContent.includes('SEGUNDA. PRECIO Y FORMA DE LIQUIDACIÓN:'), 'Falta cláusula Segunda (Pago y Saldo)');
-assert(indexHtmlContent.includes('TERCERA. CUIDADO Y RESPONSABILIDAD DEL MOBILIARIO EN RENTA:'), 'Falta cláusula Tercera (Mobiliario)');
-assert(indexHtmlContent.includes('CUARTA. CONDICIONES CLIMÁTICAS EN NUEVO LEÓN (GLOBOS):'), 'Falta cláusula Cuarta (Clima NL)');
-assert(indexHtmlContent.includes('QUINTA. CANCELACIONES O CAMBIOS DE FECHA:'), 'Falta cláusula Quinta (Cancelaciones)');
-assert(indexHtmlContent.includes('High-Shine'), 'Falta mención al tratamiento profesional High-Shine');
-assert(indexHtmlContent.includes('81-1062-6302'), 'Falta WhatsApp oficial de Nancy García');
-assert(indexHtmlContent.includes('NANCY EVENTOS'), 'Falta marca oficial NANCY EVENTOS en index.html');
+assert(indexHtmlContent.includes('Todo contrato requiere un anticipo'), 'Falta Cláusula 1: Anticipo obligatorio');
+assert(indexHtmlContent.includes('En caso de posponer el evento'), 'Falta Cláusula 2: Posponer evento');
+assert(indexHtmlContent.includes('NO HAY DEVOLUCIONES DE ANTICIPO'), 'Falta Cláusula 3: No devoluciones');
+assert(indexHtmlContent.includes('El Cliente deberá liquidar el costo total 1 semana antes'), 'Falta Cláusula 4: Liquidación');
+assert(indexHtmlContent.includes('No nos hacemos responsables por daños ocasionados por terceras personas y sucesos climatológico'), 'Falta Cláusula 5: Clima y terceros');
+assert(indexHtmlContent.includes('Todas las bases, cortinas y decoraciones que no sean globos son rentadas'), 'Falta Cláusula 6: Mobiliario en renta');
+assert(indexHtmlContent.includes('Todo daño o extravío a las herramientas rentadas'), 'Falta Cláusula 7: Responsabilidad daño/extravío');
+assert(indexHtmlContent.includes('Como mínimo se necesitan 2Hrs antes del evento para hacer el montaje'), 'Falta Cláusula 8: 2Hrs montaje');
+assert(indexHtmlContent.includes('Los diseños contratados son aprobados por el cliente'), 'Falta Cláusula 9: Aprobación de diseños');
+assert(indexHtmlContent.includes('812 900 3343'), 'Falta WhatsApp oficial 812 900 3343');
+assert(indexHtmlContent.includes('811 062 6302'), 'Falta WhatsApp oficial 811 062 6302');
+assert(indexHtmlContent.includes('@ DECORACIONES GARCIA'), 'Falta Facebook oficial @ DECORACIONES GARCIA');
+assert(indexHtmlContent.includes('NANCY GARCÍA'), 'Falta nombre oficial NANCY GARCÍA en index.html');
 
-console.log('  ✓ Cláusulas legales, garantía y marca NANCY EVENTOS verificadas en index.html.');
+console.log('  ✓ Las 9 Cláusulas oficiales de Nancy García y ambos teléfonos de contacto 100% verificadas.');
 
 // 4. Comprobar reglas de impresión en styles.css
 const stylesContent = fs.readFileSync(path.join(CONTRATOS_DIR, 'styles.css'), 'utf-8');

@@ -1,7 +1,8 @@
 # Protocolo Operativo y Administrativo para Emisión de Contratos de Servicio
-## Nancy Eventos · Decoración · Globos · Detalles
+## Nancy García · Decoración · Globos · Detalles
 ### San Pedro Garza García, Monterrey y Área Metropolitana de N.L.
-**WhatsApp Oficial Concierge:** 81-1062-6302  
+**WhatsApp Oficial:** 812 900 3343 · 811 062 6302  
+**Facebook Oficial:** @ DECORACIONES GARCIA  
 **Dirección General:** Nancy García
 
 ---
@@ -167,24 +168,17 @@ Aplica de forma estricta para:
 
 ---
 
-### 4. Cláusulas Contractuales Blindadas y Políticas de Garantía
+### 4. Las 9 Cláusulas Contractuales Oficiales de Nancy García
 
-#### Cláusula I. Clima en Monterrey y Comportamiento del Látex
-* El látex 100% natural es biodegradable y sensible a los cambios térmicos de Nuevo León.
-* Con temperaturas superiores a 35°C o exposición a sol directo al aire libre, los globos experimentan dilatación térmica y oxidación superficial natural (efecto mate/aterciopelado).
-* Nancy García aplica abrillantador industrial **High-Shine** para maximizar la durabilidad y brillo; sin embargo, no existe garantía por ponchaduras fortuitas provocadas por superficies rugosas o calor solar extremo cuando el montaje se solicita a la intemperie.
-
-#### Cláusula II. Responsabilidad y Costos de Taller por Daños al Mobiliario
-* El cliente funge como depositario responsable del mobiliario durante el lapso de su festejo.
-* Si por descuido o vandalismo de terceros se rompe o extravía equipo, el cliente cubrirá el costo de reposición de taller estipulado:
-  * **Banquito de madera:** **$250.00 MXN**.
-  * **Caballete doble de madera:** **$600.00 MXN**.
-  * **Letrero Luz LED Neón:** **$900.00 MXN**.
-  * **Estructura de aro o mampara:** **$1,500.00 MXN**.
-
-#### Cláusula III. Política de Cancelaciones y Reprogramaciones
-* El anticipo del 50% **no es reembolsable** bajo ninguna circunstancia, ya que cubre el bloqueo exclusivo de agenda y la compra anticipada de materiales temáticos.
-* **Reprogramaciones:** Se permite cambiar de fecha con un mínimo de **5 días naturales de anticipación**, sujeto a fechas disponibles en el calendario de Nancy García dentro de los 60 días naturales posteriores.
+1. **Todo contrato requiere un anticipo:** Para apartar formalmente la fecha en agenda se requiere el pago de anticipo (50% convenido).
+2. **En caso de posponer el evento:** El cliente podrá elegir otra fecha siempre y cuando esté disponible en calendario y con un mínimo de **15 días de anticipación**.
+3. **Suspensión de evento:** Si el cliente suspende o cancela el evento, **NO HAY DEVOLUCIONES DE ANTICIPO** bajo ninguna circunstancia.
+4. **Liquidación:** El Cliente deberá liquidar el costo total **1 semana antes del evento** (o al finalizar el montaje en campo según acuerdo previo).
+5. **Clima y terceros:** No nos hacemos responsables por daños ocasionados por terceras personas y sucesos climatológicos.
+6. **Mobiliario en renta:** Todas las bases, cortinas y decoraciones que no sean globos son en calidad de renta temporal y se recogerán a la hora del término del evento.
+7. **Responsabilidad por herramientas y mobiliario:** Todo daño o extravío a las herramientas y mobiliario rentado (punto #6) son bajo responsabilidad del cliente y deberán ser cubiertas conforme al daño causado (Banquito: $250 MXN / Caballete doble: $600 MXN / Letrero LED Neón: $900 MXN / Estructura aro: $1,500 MXN).
+8. **Tiempo de montaje:** Como mínimo se necesitan **2 horas antes del evento** para hacer el montaje del trabajo completo.
+9. **Aprobación:** Los diseños contratados son aprobados por el cliente previo al evento.
 
 ---
 
