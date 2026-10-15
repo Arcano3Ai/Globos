@@ -220,6 +220,27 @@ assert(appJsContent.includes('limpiarContratoCompleto'), 'app.js debe implementa
 assert(stylesContent.includes('.btn-danger'), 'styles.css debe incluir estilos para .btn-danger');
 assert(stylesContent.includes('.btn-clear-main'), 'styles.css debe incluir estilos para .btn-clear-main');
 
+// 15. Verificación de Optimizaciones Móviles (Segmented Tabs, Keyboards, Barra Flotante & PDF)
+assert(indexHtmlContent.includes('id="mobileViewTabs"'), 'index.html debe contener el contenedor mobileViewTabs');
+assert(indexHtmlContent.includes('id="tabBtnForm"'), 'index.html debe contener el botón tabBtnForm');
+assert(indexHtmlContent.includes('id="tabBtnSheet"'), 'index.html debe contener el botón tabBtnSheet');
+assert(indexHtmlContent.includes('inputmode="tel"'), 'index.html debe tener inputmode="tel" en teléfono');
+assert(indexHtmlContent.includes('inputmode="decimal"'), 'index.html debe tener inputmode="decimal" en montos');
+assert(indexHtmlContent.includes('inputmode="numeric"'), 'index.html debe tener inputmode="numeric" en edad y % anticipo');
+assert(indexHtmlContent.includes('id="btnMobilePdf"'), 'index.html debe contener el botón btnMobilePdf');
+assert(indexHtmlContent.includes('id="btnMobileWhatsApp"'), 'index.html debe contener el botón btnMobileWhatsApp');
+assert(appJsContent.includes('switchMobileView'), 'app.js debe implementar switchMobileView');
+assert(appJsContent.includes("switchMobileView('form')"), 'app.js debe permitir cambiar a vista de datos');
+assert(appJsContent.includes("switchMobileView('sheet')"), 'app.js debe permitir cambiar a vista de hoja');
+assert(appJsContent.includes('pdf-exporting'), 'app.js debe activar la clase pdf-exporting durante la exportación');
+assert(stylesContent.includes('.mobile-view-tabs'), 'styles.css debe incluir estilos para .mobile-view-tabs');
+assert(stylesContent.includes('.mobile-tab-btn'), 'styles.css debe incluir estilos para .mobile-tab-btn');
+assert(stylesContent.includes('.tab-form-active'), 'styles.css debe incluir reglas para .tab-form-active');
+assert(stylesContent.includes('.tab-sheet-active'), 'styles.css debe incluir reglas para .tab-sheet-active');
+assert(stylesContent.includes('body.pdf-exporting .sheet'), 'styles.css debe incluir reglas de protección para exportación en móvil');
+
+console.log('  ✓ Optimizaciones Móviles 100% Verificadas: Segmented Tabs, Inputmodes numéricos/tel, Barra Flotante Contextual y Protección de Render PDF.');
+
 console.log('  ✓ Botones "Limpiar Contrato" 100% Verificados: Barra superior, panel de paquetes, conceptos y barra móvil.');
 
 console.log('  ✓ Barra flotante móvil, barra de agregar paquetes, selección múltiple, anticipo dual y desglose de descuento 100% verificados.');

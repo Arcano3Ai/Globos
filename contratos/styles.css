@@ -946,6 +946,7 @@ input:focus, select:focus, textarea:focus {
    ========================================================================== */
 @media (max-width: 1080px) {
   .workspace-container {
+    display: block;
     grid-template-columns: 1fr;
   }
 
@@ -954,14 +955,36 @@ input:focus, select:focus, textarea:focus {
     max-height: none;
     border-right: none;
     border-bottom: 2px solid var(--dark-border);
+    padding: 16px 14px 90px 14px;
+  }
+
+  /* Control de visibilidad por pestañas móviles */
+  .workspace-container.tab-form-active .controls-sidebar {
+    display: block !important;
+  }
+  .workspace-container.tab-form-active .preview-viewport {
+    display: none !important;
+  }
+
+  .workspace-container.tab-sheet-active .controls-sidebar {
+    display: none !important;
+  }
+  .workspace-container.tab-sheet-active .preview-viewport {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 14px 8px 95px 8px;
+    background: #334155;
   }
 
   .preview-viewport {
-    padding: 16px 8px;
+    padding: 14px 8px 90px 8px;
   }
 
   .sheet {
-    padding: 24px 20px;
+    padding: 20px 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
   }
 }
 
@@ -1263,45 +1286,343 @@ body.authenticated .auth-overlay {
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-@media (max-width: 768px) {
-  /* Evitar zoom automático brusco al tocar inputs en iPhone */
-  input, select, textarea {
-    font-size: 16px !important;
+/* ==========================================================================
+   BARRA DE PESTAÑAS MÓVIL (SEGMENTED CONTROL FLUIDO)
+   ========================================================================== */
+.mobile-view-tabs {
+  display: none;
+}
+
+@media (max-width: 1080px) {
+  .mobile-view-tabs {
+    display: flex;
+    position: sticky;
+    top: 56px;
+    z-index: 95;
+    background: rgba(23, 18, 38, 0.98);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 7px 12px;
+    gap: 8px;
   }
 
+  .mobile-tab-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: #94A3B8;
+    font-weight: 700;
+    font-size: 0.84rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 44px;
+    user-select: none;
+  }
+
+  .mobile-tab-btn:active {
+    transform: scale(0.98);
+  }
+
+  .mobile-tab-btn.active {
+    background: linear-gradient(135deg, rgba(200, 91, 163, 0.28) 0%, rgba(155, 93, 229, 0.28) 100%);
+    border-color: var(--pink-main);
+    color: #FFFFFF;
+    box-shadow: 0 0 14px rgba(200, 91, 163, 0.35);
+  }
+
+  .mobile-tab-btn i {
+    font-size: 1.05rem;
+  }
+
+  .mobile-tab-btn.active i {
+    color: var(--turquoise-neon);
+  }
+
+  .mobile-tab-btn .tab-badge {
+    font-size: 0.6rem;
+    background: var(--turquoise-neon);
+    color: #0E0B18;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+/* ==========================================================================
+   OPTIMIZACIONES MÓVILES ESPECÍFICAS (<= 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Evitar zoom automático brusco en iOS Safari (mínimo 16px) */
+  input, select, textarea {
+    font-size: 16px !important;
+    border-radius: 8px;
+  }
+
+  /* Cabecera ultra-compacta para dar protagonismo al trabajo de Nancy */
   .app-header {
-    padding: 10px 12px;
-    padding-top: max(10px, env(safe-area-inset-top));
+    padding: 8px 12px;
+    padding-top: max(8px, env(safe-area-inset-top));
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  .header-left {
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .header-brand-logo {
+    height: 38px;
+    width: 38px;
+  }
+
+  .header-title-box h1 {
+    font-size: 0.95rem;
+  }
+
+  .header-title-box p {
+    display: none; /* Ocultar subtítulo largo en móviles para ahorrar espacio */
   }
 
   .header-actions {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    margin-top: 6px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 0;
   }
 
-  .btn {
-    width: 100%;
-    justify-content: center;
-    padding: 9px 8px;
+  /* Ocultar botones secundarios de la barra superior en pantallas pequeñas */
+  .header-actions .btn-desktop-only {
+    display: none !important;
+  }
+
+  .header-actions .btn {
+    width: auto;
+    padding: 7px 11px;
     font-size: 0.76rem;
+    border-radius: 8px;
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
   }
 
-  .btn-primary, .btn-accent {
-    grid-column: span 1;
+  .header-actions .btn-whatsapp {
+    background: #25D366;
+    border-color: #1EBE5D;
+    color: #FFFFFF;
+    font-weight: 700;
   }
 
-  .btn-whatsapp {
-    grid-column: span 2;
-    padding: 11px;
-    font-size: 0.85rem;
+  .header-actions .btn-accent {
+    background: linear-gradient(135deg, var(--pink-main) 0%, #a43a85 100%);
+    color: #FFFFFF;
+  }
+
+  .header-actions .btn-text-lock {
+    display: none; /* En móvil solo mostramos el candado */
+  }
+
+  /* Formularios móviles adaptables */
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .preset-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .btn-preset {
+    min-height: 52px;
+    padding: 9px 8px;
+  }
+
+  .quick-addons-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .btn-chip {
+    min-height: 38px;
+    padding: 7px 11px;
+    font-size: 0.77rem;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Hoja de contrato optimizada para lectura en móvil */
+  .sheet {
+    width: 100%;
+    max-width: 100%;
+    min-height: auto;
+    padding: 16px 12px;
+    border-radius: 8px;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .sheet-header {
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+  }
+
+  .header-grid {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .sheet-brand-combo {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+  }
+
+  .sheet-emblem-img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .sheet-brand-name {
+    font-size: 1.25rem;
+  }
+
+  .sheet-meta-card {
+    width: 100%;
+    text-align: center;
+    padding: 8px 12px;
+  }
+
+  .sheet-info-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    font-size: 0.75rem;
+  }
+
+  .contract-parties-box {
+    padding: 9px 12px;
+    font-size: 0.74rem;
+    margin-bottom: 10px;
+  }
+
+  .sheet-table {
+    font-size: 0.72rem;
+    margin-bottom: 10px;
+  }
+
+  .sheet-table th,
+  .sheet-table td {
+    padding: 6px 5px;
+  }
+
+  .sheet-financials-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .sheet-bank-box {
+    padding: 9px 12px;
+    font-size: 0.72rem;
+  }
+
+  .sheet-totals-card {
+    padding: 9px 12px;
+    font-size: 0.78rem;
+  }
+
+  .sheet-clauses {
+    font-size: 0.69rem;
+    margin-bottom: 12px;
+  }
+
+  .sheet-signatures-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    padding: 0;
+    margin-top: 14px;
+    margin-bottom: 10px;
+  }
+
+  .sign-name-label {
+    font-size: 0.73rem;
+  }
+
+  .sign-role-label {
+    font-size: 0.64rem;
+  }
+
+  .sheet-footer {
+    padding-top: 6px;
+    font-size: 0.65rem;
   }
 
   .workspace-container {
-    padding-bottom: max(75px, env(safe-area-inset-bottom));
+    padding-bottom: max(78px, env(safe-area-inset-bottom));
   }
+}
+
+/* ==========================================================================
+   PROTECCIÓN DE EXPORTACIÓN PDF (GARANTIZA FORMATO CARTA PERFECTO EN MÓVIL)
+   ========================================================================== */
+body.pdf-exporting .sheet,
+.pdf-render-mode {
+  width: 800px !important;
+  max-width: 800px !important;
+  min-height: 1050px !important;
+  padding: 36px 44px !important;
+}
+
+body.pdf-exporting .sheet-header .header-grid {
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+
+body.pdf-exporting .sheet-brand-combo {
+  flex-direction: row !important;
+  align-items: center !important;
+  text-align: left !important;
+}
+
+body.pdf-exporting .sheet-emblem-img {
+  width: 88px !important;
+  height: 88px !important;
+}
+
+body.pdf-exporting .sheet-meta-card {
+  width: auto !important;
+  text-align: right !important;
+}
+
+body.pdf-exporting .sheet-info-grid {
+  grid-template-columns: 1fr 1fr !important;
+}
+
+body.pdf-exporting .sheet-financials-grid {
+  grid-template-columns: 1.15fr 0.85fr !important;
+}
+
+body.pdf-exporting .sheet-signatures-grid {
+  grid-template-columns: 1fr 1fr !important;
+  gap: 40px !important;
+  padding: 0 20px !important;
 }
 
 /* ==========================================================================
@@ -1314,11 +1635,11 @@ body.authenticated .auth-overlay {
   left: 0;
   right: 0;
   z-index: 9999;
-  background: rgba(14, 11, 24, 0.95);
+  background: rgba(14, 11, 24, 0.96);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-top: 1px solid rgba(200, 91, 163, 0.35);
-  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.65), 0 -1px 12px rgba(200, 91, 163, 0.2);
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.7), 0 -1px 12px rgba(200, 91, 163, 0.25);
   padding: 10px 14px;
   padding-bottom: max(10px, env(safe-area-inset-bottom));
   justify-content: space-between;
@@ -1369,15 +1690,19 @@ body.authenticated .auth-overlay {
 .mobile-nav-buttons {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
 }
 
 .mobile-nav-buttons .btn {
-  padding: 6px 11px;
-  font-size: 0.74rem;
+  padding: 7px 11px;
+  font-size: 0.76rem;
   font-weight: 700;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .mobile-nav-buttons .btn-primary {
@@ -1386,7 +1711,21 @@ body.authenticated .auth-overlay {
   box-shadow: 0 2px 10px rgba(200, 91, 163, 0.4);
 }
 
-body:not(.authenticated) .mobile-floating-bar {
+.mobile-nav-buttons .btn-whatsapp {
+  background: #25D366;
+  border: 1px solid #1EBE5D;
+  color: #FFFFFF;
+  box-shadow: 0 2px 10px rgba(37, 211, 102, 0.4);
+}
+
+.mobile-nav-buttons .btn-accent {
+  background: linear-gradient(135deg, var(--pink-main) 0%, #9B5DE5 100%);
+  border-color: rgba(255, 94, 184, 0.5);
+  color: #FFFFFF;
+}
+
+body:not(.authenticated) .mobile-floating-bar,
+body:not(.authenticated) .mobile-view-tabs {
   display: none !important;
 }
 

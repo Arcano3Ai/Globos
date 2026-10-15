@@ -291,6 +291,7 @@
     });
 
     renderAll();
+    try { switchMobileView('form'); } catch (e) {}
 
     if (showNotification) {
       showToast('🗑️ Contrato limpiado: El documento está 100% en blanco para empezar de cero.', 'success');
@@ -386,11 +387,48 @@
     dom.btnClearItemsSection = document.getElementById('btnClearItemsSection');
     dom.btnMobileClear = document.getElementById('btnMobileClear');
 
-    // Elementos de la barra flotante móvil
+    // Elementos de la barra flotante y navegación móvil
     dom.mBarTotal = document.getElementById('mBarTotal');
     dom.mBarAnticipo = document.getElementById('mBarAnticipo');
     dom.btnScrollToForm = document.getElementById('btnScrollToForm');
     dom.btnScrollToSheet = document.getElementById('btnScrollToSheet');
+    dom.btnMobilePdf = document.getElementById('btnMobilePdf');
+    dom.btnMobileWhatsApp = document.getElementById('btnMobileWhatsApp');
+    dom.tabBtnForm = document.getElementById('tabBtnForm');
+    dom.tabBtnSheet = document.getElementById('tabBtnSheet');
+    dom.workspaceContainer = document.getElementById('workspaceContainer');
+  }
+
+  // =========================================================================
+  // CONTROLADOR DE NAVEGACIÓN MÓVIL POR PESTAÑAS (SEGMENTED VIEW)
+  // =========================================================================
+  function switchMobileView(view) {
+    const isSheet = view === 'sheet';
+    const container = dom.workspaceContainer || document.getElementById('workspaceContainer');
+
+    if (container) {
+      if (isSheet) {
+        container.classList.remove('tab-form-active');
+        container.classList.add('tab-sheet-active');
+      } else {
+        container.classList.remove('tab-sheet-active');
+        container.classList.add('tab-form-active');
+      }
+    }
+
+    if (dom.tabBtnForm) dom.tabBtnForm.classList.toggle('active', !isSheet);
+    if (dom.tabBtnSheet) dom.tabBtnSheet.classList.toggle('active', isSheet);
+
+    if (dom.btnScrollToForm) dom.btnScrollToForm.style.display = isSheet ? 'inline-flex' : 'none';
+    if (dom.btnScrollToSheet) dom.btnScrollToSheet.style.display = isSheet ? 'none' : 'inline-flex';
+    if (dom.btnMobileClear) dom.btnMobileClear.style.display = isSheet ? 'none' : 'inline-flex';
+    if (dom.btnMobilePdf) dom.btnMobilePdf.style.display = isSheet ? 'inline-flex' : 'none';
+    if (dom.btnMobileWhatsApp) dom.btnMobileWhatsApp.style.display = isSheet ? 'inline-flex' : 'none';
+
+    // Desplazamiento suave al inicio de la pantalla al cambiar de pestaña
+    try {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (e) {}
   }
 
   // =========================================================================
@@ -1128,6 +1166,14 @@
     if (dom.btnClearItemsSection) dom.btnClearItemsSection.addEventListener('click', handleLimpiarContrato);
     if (dom.btnMobileClear) dom.btnMobileClear.addEventListener('click', handleLimpiarContrato);
 
+    // Navegación móvil por pestañas y barra flotante contextual
+    if (dom.tabBtnForm) dom.tabBtnForm.addEventListener('click', () => switchMobileView('form'));
+    if (dom.tabBtnSheet) dom.tabBtnSheet.addEventListener('click', () => switchMobileView('sheet'));
+    if (dom.btnScrollToForm) dom.btnScrollToForm.addEventListener('click', () => switchMobileView('form'));
+    if (dom.btnScrollToSheet) dom.btnScrollToSheet.addEventListener('click', () => switchMobileView('sheet'));
+    if (dom.btnMobilePdf) dom.btnMobilePdf.addEventListener('click', () => triggerPdfExport());
+    if (dom.btnMobileWhatsApp) dom.btnMobileWhatsApp.addEventListener('click', () => enviarPorWhatsApp());
+
     // Botón Reset / Nuevo Folio
     if (dom.btnReset) {
       dom.btnReset.addEventListener('click', () => {
@@ -1140,6 +1186,9 @@
   // EXPORTACIÓN A PDF Y WHATSAPP
   // =========================================================================
   function triggerPdfExport() {
+    // Activar clase para forzar dimensiones Letter imprenta aunque se genere desde móvil
+    document.body.classList.add('pdf-exporting');
+
     const btn = dom.btnDownloadPdf;
     const originalHtml = btn ? btn.innerHTML : '';
     if (btn) {
@@ -1157,8 +1206,9 @@
       if (emblem) emblem.src = window.NANCY_LOGO_DATA_URI;
     }
 
-    // Función para restaurar botón
+    // Función para restaurar botón y quitar modo exportación
     const restoreBtn = () => {
+      document.body.classList.remove('pdf-exporting');
       if (btn) {
         btn.innerHTML = originalHtml;
         btn.disabled = false;

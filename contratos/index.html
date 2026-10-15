@@ -106,32 +106,45 @@
     </div>
 
     <div class="header-actions">
-      <button type="button" class="btn btn-primary" id="btnPrint" title="Imprimir o exportar en PDF">
-        <i class="bi bi-printer-fill"></i> Imprimir / Guardar en PDF
+      <button type="button" class="btn btn-whatsapp" id="btnWhatsApp" title="Abrir chat de WhatsApp con el contrato y montos">
+        <i class="bi bi-whatsapp"></i> <span class="btn-text">WhatsApp</span>
       </button>
       <button type="button" class="btn btn-accent" id="btnDownloadPdf" title="Descarga directa en archivo PDF">
-        <i class="bi bi-file-earmark-pdf-fill"></i> Descargar PDF
+        <i class="bi bi-file-earmark-pdf-fill"></i> <span class="btn-text">Descargar PDF</span>
       </button>
-      <button type="button" class="btn btn-whatsapp" id="btnWhatsApp" title="Abrir chat de WhatsApp con el contrato y montos">
-        <i class="bi bi-whatsapp"></i> Enviar por WhatsApp
+      <button type="button" class="btn btn-primary btn-desktop-only" id="btnPrint" title="Imprimir o exportar en PDF">
+        <i class="bi bi-printer-fill"></i> <span class="btn-text">Imprimir</span>
       </button>
-      <button type="button" class="btn btn-dark" id="btnCopySummary" title="Copiar texto resumen">
-        <i class="bi bi-clipboard-check"></i> Copiar Resumen
+      <button type="button" class="btn btn-dark btn-desktop-only" id="btnCopySummary" title="Copiar texto resumen">
+        <i class="bi bi-clipboard-check"></i> <span class="btn-text">Copiar</span>
       </button>
-      <button type="button" class="btn btn-danger" id="btnClearContract" title="Limpiar contrato y empezar de cero en blanco">
-        <i class="bi bi-trash3-fill"></i> Limpiar Contrato
+      <button type="button" class="btn btn-danger btn-desktop-only" id="btnClearContract" title="Limpiar contrato y empezar de cero en blanco">
+        <i class="bi bi-trash3-fill"></i> <span class="btn-text">Limpiar Contrato</span>
       </button>
       <button type="button" class="btn btn-accent" id="btnInstallPwa" style="display: none;" title="Instalar como App en celular o pantalla de inicio">
-        <i class="bi bi-download"></i> Instalar App
+        <i class="bi bi-download"></i> <span class="btn-text">Instalar</span>
       </button>
       <button type="button" class="btn btn-dark" id="btnLockApp" title="Bloquear / Cerrar Sesión Segura">
-        <i class="bi bi-shield-lock-fill"></i> Bloquear
+        <i class="bi bi-shield-lock-fill"></i> <span class="btn-text-lock">Bloquear</span>
       </button>
     </div>
   </header>
 
+  <!-- NAVEGACIÓN MÓVIL POR PESTAÑAS (SEGMENTED CONTROL FLUIDO) -->
+  <nav class="mobile-view-tabs" id="mobileViewTabs" aria-label="Navegación Móvil de Contratos">
+    <button type="button" class="mobile-tab-btn active" id="tabBtnForm" data-tab="form">
+      <i class="bi bi-pencil-square"></i>
+      <span>1. Llenar Datos</span>
+    </button>
+    <button type="button" class="mobile-tab-btn" id="tabBtnSheet" data-tab="sheet">
+      <i class="bi bi-file-earmark-text-fill"></i>
+      <span>2. Ver Contrato</span>
+      <span class="tab-badge" id="tabSheetBadge">En vivo</span>
+    </button>
+  </nav>
+
   <!-- CONTENEDOR DUAL: PANEL DE CONTROL + HOJA EN VIVO -->
-  <div class="workspace-container">
+  <div class="workspace-container tab-form-active" id="workspaceContainer">
 
     <!-- PANEL LATERAL DE EDICIÓN Y PRESETS -->
     <aside class="controls-sidebar">
@@ -251,11 +264,11 @@
         <div class="form-row">
           <div class="form-group">
             <label for="inpClienteTelefono"><i class="bi bi-whatsapp"></i> WhatsApp / Teléfono:</label>
-            <input type="text" id="inpClienteTelefono" placeholder="Ej. 81-8399-2211">
+            <input type="tel" id="inpClienteTelefono" inputmode="tel" placeholder="Ej. 81-8399-2211" autocomplete="tel">
           </div>
           <div class="form-group">
             <label for="inpClienteEmail">Correo (Opcional):</label>
-            <input type="email" id="inpClienteEmail" placeholder="cliente@correo.com">
+            <input type="email" id="inpClienteEmail" inputmode="email" placeholder="cliente@correo.com" autocomplete="email">
           </div>
         </div>
 
@@ -266,7 +279,7 @@
           </div>
           <div class="form-group">
             <label for="inpEdadFestejado">Edad / Aniversario:</label>
-            <input type="text" id="inpEdadFestejado" placeholder="Ej. 5 Años">
+            <input type="text" id="inpEdadFestejado" inputmode="numeric" placeholder="Ej. 5 Años">
           </div>
         </div>
 
@@ -375,25 +388,25 @@
         <div class="form-row">
           <div class="form-group">
             <label for="inpFlete">Flete / Logística (MXN):</label>
-            <input type="number" id="inpFlete" min="0" step="50" value="0">
+            <input type="number" id="inpFlete" inputmode="decimal" min="0" step="50" value="0">
           </div>
           <div class="form-group">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <label for="inpDescuento">Descuento Especial (MXN):</label>
               <button type="button" id="btnClearDescuento" style="background: none; border: none; color: #F43F5E; font-size: 0.72rem; cursor: pointer; padding: 0 4px; font-weight: 700;" title="Quitar descuento y fijar en $0">Quitar ($0)</button>
             </div>
-            <input type="number" id="inpDescuento" min="0" step="50" value="0">
+            <input type="number" id="inpDescuento" inputmode="decimal" min="0" step="50" value="0">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="inpAnticipoPct">% Anticipo:</label>
-            <input type="number" id="inpAnticipoPct" min="5" max="100" step="5" value="50">
+            <input type="number" id="inpAnticipoPct" inputmode="numeric" min="5" max="100" step="5" value="50">
           </div>
           <div class="form-group">
             <label for="inpAnticipoMonto">Monto de Anticipo ($ MXN):</label>
-            <input type="number" id="inpAnticipoMonto" min="0" step="50" placeholder="Ej. 1000">
+            <input type="number" id="inpAnticipoMonto" inputmode="decimal" min="0" step="50" placeholder="Ej. 1000">
           </div>
         </div>
 
@@ -570,7 +583,7 @@
 
   </div>
 
-  <!-- BARRA FLOTANTE MÓVIL (FEEDBACK REACTIVO EN VIVO) -->
+  <!-- BARRA FLOTANTE MÓVIL (FEEDBACK REACTIVO EN VIVO & ACCIONES CONTEXTUALES) -->
   <div class="mobile-floating-bar" id="mobileFloatingBar">
     <div class="mobile-live-total">
       <span class="m-label">Total:</span> <strong id="mBarTotal">$0.00</strong>
@@ -578,12 +591,14 @@
     </div>
     <div class="mobile-nav-buttons">
       <button type="button" class="btn btn-danger btn-sm" id="btnMobileClear" title="Limpiar Contrato"><i class="bi bi-trash3-fill"></i> Limpiar</button>
-      <button type="button" class="btn btn-dark btn-sm" id="btnScrollToForm"><i class="bi bi-pencil-fill"></i> Datos</button>
-      <button type="button" class="btn btn-primary btn-sm" id="btnScrollToSheet"><i class="bi bi-file-earmark-text-fill"></i> Ver Hoja</button>
+      <button type="button" class="btn btn-dark btn-sm" id="btnScrollToForm" style="display: none;" title="Volver a los datos"><i class="bi bi-pencil-fill"></i> Datos</button>
+      <button type="button" class="btn btn-primary btn-sm" id="btnScrollToSheet" title="Ver la hoja del contrato"><i class="bi bi-file-earmark-text-fill"></i> Ver Hoja</button>
+      <button type="button" class="btn btn-accent btn-sm" id="btnMobilePdf" style="display: none;" title="Descargar archivo PDF"><i class="bi bi-file-earmark-pdf-fill"></i> PDF</button>
+      <button type="button" class="btn btn-whatsapp btn-sm" id="btnMobileWhatsApp" style="display: none;" title="Enviar por WhatsApp"><i class="bi bi-whatsapp"></i> WhatsApp</button>
     </div>
   </div>
 
   <!-- SCRIPT PRINCIPAL -->
-  <script src="app.js?v=2.8"></script>
+  <script src="app.js?v=2.9"></script>
 </body>
 </html>
