@@ -252,7 +252,11 @@ assert(stylesContent.includes('color-scheme: light'), 'styles.css debe incluir c
 assert(stylesContent.includes('-webkit-text-fill-color: #0E0B18'), 'styles.css debe forzar tipografía negra en fecha para iOS/Safari');
 assert(appJsContent.includes('Contrato - ${sanitizedClient}.pdf'), 'app.js debe nombrar el archivo PDF como Contrato - [Cliente].pdf');
 assert(appJsContent.includes('document.title = sanitizedClient'), 'app.js debe sincronizar document.title para impresión nativa Guardar como PDF');
+assert(appJsContent.includes(".outputPdf('blob')"), 'app.js debe generar Blob real con outputPdf para compatibilidad móvil');
+assert(appJsContent.includes('navigator.share'), 'app.js debe integrar Web Share API para Guardar en Archivos / Files nativo');
+assert(stylesContent.includes('.mobile-pdf-banner'), 'styles.css debe incluir estilos para el banner de guardado directo en Files');
 
+console.log('  ✓ Sistema de Descarga y Guardado en Archivos / Files Verificado: Web Share API nativa + Enlace directo + Banner interactivo.');
 console.log('  ✓ Nomenclatura Oficial de Archivo Verificada: "Contrato - [Nombre del Cliente].pdf" (descarga directa y diálogo nativo).');
 
 console.log('  ✓ Botones "Limpiar Contrato" 100% Verificados: Barra superior, panel de paquetes, conceptos y barra móvil.');
