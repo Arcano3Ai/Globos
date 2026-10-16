@@ -428,6 +428,46 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 2px rgba(200, 91, 163, 0.25);
 }
 
+/* ==========================================================================
+   CAMPO DE FECHA Y CALENDARIO (ALTO CONTRASTE Y TIPOGRAFÍA NEGRA)
+   ========================================================================== */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  background: #FFFFFF !important;
+  color: #0E0B18 !important;
+  -webkit-text-fill-color: #0E0B18 !important;
+  font-weight: 700 !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color-scheme: light !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0) !important;
+  opacity: 0.85 !important;
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-datetime-edit,
+input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  color: #0E0B18 !important;
+  -webkit-text-fill-color: #0E0B18 !important;
+  font-weight: 700 !important;
+}
+
+input[type="date"]:focus {
+  background: #FFFFFF !important;
+  color: #0E0B18 !important;
+  -webkit-text-fill-color: #0E0B18 !important;
+  border-color: var(--pink-main) !important;
+  box-shadow: 0 0 0 3px rgba(200, 91, 163, 0.3) !important;
+}
+
 /* LISTA DE CONCEPTOS EDITABLES EN PANEL */
 .item-edit-row {
   background: rgba(14, 11, 24, 0.5);
@@ -1460,6 +1500,18 @@ body.authenticated .auth-overlay {
   input, select, textarea {
     font-size: 16px !important;
     border-radius: 8px;
+  }
+
+  /* Fechas en móvil: fondo blanco, números negros nítidos y picker claro */
+  input[type="date"],
+  input[type="time"] {
+    background: #FFFFFF !important;
+    color: #0E0B18 !important;
+    -webkit-text-fill-color: #0E0B18 !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color-scheme: light !important;
+    border: 1.5px solid #CBD5E1 !important;
   }
 
   /* Cabecera ultra-compacta para dar protagonismo al trabajo de Nancy */

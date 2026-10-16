@@ -3,7 +3,7 @@
  * Soporte Offline 100% y carga instantánea en móviles
  */
 
-const CACHE_NAME = 'nancy-contratos-pwa-v3.0';
+const CACHE_NAME = 'nancy-contratos-pwa-v3.1';
 
 const STATIC_ASSETS = [
   './',

@@ -247,8 +247,11 @@ assert(stylesContent.includes('.tab-form-active'), 'styles.css debe incluir regl
 assert(stylesContent.includes('.tab-sheet-active'), 'styles.css debe incluir reglas para .tab-sheet-active');
 assert(stylesContent.includes('body.pdf-exporting .sheet'), 'styles.css debe incluir reglas de protección para exportación en móvil');
 assert(stylesContent.includes('body.pdf-exporting .preview-viewport'), 'styles.css debe garantizar que preview-viewport sea visible al exportar PDF');
+assert(stylesContent.includes('input[type="date"]'), 'styles.css debe incluir estilos específicos para input[type="date"]');
+assert(stylesContent.includes('color-scheme: light'), 'styles.css debe incluir color-scheme: light para calendario legible');
+assert(stylesContent.includes('-webkit-text-fill-color: #0E0B18'), 'styles.css debe forzar tipografía negra en fecha para iOS/Safari');
 
-console.log('  ✓ Optimizaciones Móviles 100% Verificadas: Segmented Tabs, Inputmodes numéricos/tel, Barra Flotante Contextual y Protección de Render PDF.');
+console.log('  ✓ Optimizaciones Móviles y Calendario de Fecha 100% Verificados: Fondo blanco, tipografía negra nítida y color-scheme light.');
 
 console.log('  ✓ Botones "Limpiar Contrato" 100% Verificados: Barra superior, panel de paquetes, conceptos y barra móvil.');
 
