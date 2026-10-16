@@ -250,8 +250,10 @@ assert(stylesContent.includes('body.pdf-exporting .preview-viewport'), 'styles.c
 assert(stylesContent.includes('input[type="date"]'), 'styles.css debe incluir estilos específicos para input[type="date"]');
 assert(stylesContent.includes('color-scheme: light'), 'styles.css debe incluir color-scheme: light para calendario legible');
 assert(stylesContent.includes('-webkit-text-fill-color: #0E0B18'), 'styles.css debe forzar tipografía negra en fecha para iOS/Safari');
+assert(appJsContent.includes('Contrato - ${sanitizedClient}.pdf'), 'app.js debe nombrar el archivo PDF como Contrato - [Cliente].pdf');
+assert(appJsContent.includes('document.title = sanitizedClient'), 'app.js debe sincronizar document.title para impresión nativa Guardar como PDF');
 
-console.log('  ✓ Optimizaciones Móviles y Calendario de Fecha 100% Verificados: Fondo blanco, tipografía negra nítida y color-scheme light.');
+console.log('  ✓ Nomenclatura Oficial de Archivo Verificada: "Contrato - [Nombre del Cliente].pdf" (descarga directa y diálogo nativo).');
 
 console.log('  ✓ Botones "Limpiar Contrato" 100% Verificados: Barra superior, panel de paquetes, conceptos y barra móvil.');
 

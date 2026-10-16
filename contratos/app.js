@@ -1231,8 +1231,12 @@
       mBtn.style.opacity = '0.75';
     }
 
-    const cleanClientName = (state.clienteNombre || 'Cliente').replace(/[^a-zA-Z0-9]/g, '_');
-    const filename = `Contrato_NancyEventos_${state.folio}_${cleanClientName}.pdf`;
+    const rawClient = (state.clienteNombre || '').trim();
+    const sanitizedClient = rawClient.replace(/[\\/:*?"<>|]/g, '').trim();
+    const filename = sanitizedClient ? `Contrato - ${sanitizedClient}.pdf` : 'Contrato.pdf';
+
+    const originalDocTitle = document.title;
+    document.title = sanitizedClient ? `Contrato - ${sanitizedClient}` : 'Contrato';
 
     // Si tenemos el Data URI del logo, lo inyectamos directamente para evitar que el canvas se considere "tainted" por file:///
     if (window.NANCY_LOGO_DATA_URI) {
@@ -1243,6 +1247,7 @@
     // Función para restaurar botón y quitar modo exportación
     const restoreBtn = () => {
       document.body.classList.remove('pdf-exporting');
+      document.title = originalDocTitle;
       if (btn) {
         btn.innerHTML = originalHtml;
         btn.disabled = false;

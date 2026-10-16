@@ -145,7 +145,7 @@ Aplica de forma estricta para:
    - Tamaño de papel: **Carta / Letter**.
    - Márgenes: **Predeterminados** o **Ninguno**.
    - Casilla de verificación: **Gráficos de fondo activada**.
-2. Guardar el archivo con el nombre sugerido: `Contrato_NancyGarcia_[Folio]_[Cliente].pdf`.
+2. Guardar el archivo con el nombre oficial automatizado: `Contrato - [Nombre del Cliente].pdf` (o `Contrato.pdf` si aún no tiene nombre).
 3. Presionar el botón **"Enviar por WhatsApp"** para abrir el chat del cliente con el mensaje pre-redactado que contiene los datos del contrato, montos, cuenta bancaria para transferencia del 50% y adjuntar el archivo PDF.
 4. **Regla de Oro:** La fecha de agenda únicamente queda formalmente reservada una vez que el cliente envía el comprobante de depósito/transferencia del **50% de anticipo**.
 
