@@ -394,6 +394,8 @@
     dom.btnScrollToSheet = document.getElementById('btnScrollToSheet');
     dom.btnMobilePdf = document.getElementById('btnMobilePdf');
     dom.btnMobileWhatsApp = document.getElementById('btnMobileWhatsApp');
+    dom.btnToggleMobileView = document.getElementById('btnToggleMobileView');
+    dom.toggleViewText = document.getElementById('toggleViewText');
     dom.tabBtnForm = document.getElementById('tabBtnForm');
     dom.tabBtnSheet = document.getElementById('tabBtnSheet');
     dom.workspaceContainer = document.getElementById('workspaceContainer');
@@ -419,11 +421,21 @@
     if (dom.tabBtnForm) dom.tabBtnForm.classList.toggle('active', !isSheet);
     if (dom.tabBtnSheet) dom.tabBtnSheet.classList.toggle('active', isSheet);
 
-    if (dom.btnScrollToForm) dom.btnScrollToForm.style.display = isSheet ? 'inline-flex' : 'none';
-    if (dom.btnScrollToSheet) dom.btnScrollToSheet.style.display = isSheet ? 'none' : 'inline-flex';
-    if (dom.btnMobileClear) dom.btnMobileClear.style.display = isSheet ? 'none' : 'inline-flex';
-    if (dom.btnMobilePdf) dom.btnMobilePdf.style.display = isSheet ? 'inline-flex' : 'none';
-    if (dom.btnMobileWhatsApp) dom.btnMobileWhatsApp.style.display = isSheet ? 'inline-flex' : 'none';
+    if (dom.toggleViewText) {
+      dom.toggleViewText.textContent = isSheet ? 'Editar Datos' : 'Ver Hoja';
+    }
+    if (dom.btnToggleMobileView) {
+      const icon = dom.btnToggleMobileView.querySelector('i');
+      if (icon) {
+        icon.className = isSheet ? 'bi bi-pencil-fill' : 'bi bi-eye-fill';
+      }
+      dom.btnToggleMobileView.classList.toggle('btn-primary', !isSheet);
+      dom.btnToggleMobileView.classList.toggle('btn-dark', isSheet);
+    }
+
+    // Asegurar que WhatsApp y PDF siempre permanezcan activos y visibles en móvil
+    if (dom.btnMobilePdf) dom.btnMobilePdf.style.display = 'inline-flex';
+    if (dom.btnMobileWhatsApp) dom.btnMobileWhatsApp.style.display = 'inline-flex';
 
     // Desplazamiento suave al inicio de la pantalla al cambiar de pestaña
     try {
@@ -1173,6 +1185,14 @@
     if (dom.btnScrollToSheet) dom.btnScrollToSheet.addEventListener('click', () => switchMobileView('sheet'));
     if (dom.btnMobilePdf) dom.btnMobilePdf.addEventListener('click', () => triggerPdfExport());
     if (dom.btnMobileWhatsApp) dom.btnMobileWhatsApp.addEventListener('click', () => enviarPorWhatsApp());
+    if (dom.btnToggleMobileView) {
+      dom.btnToggleMobileView.addEventListener('click', (e) => {
+        if (e) e.preventDefault();
+        const container = dom.workspaceContainer || document.getElementById('workspaceContainer');
+        const isForm = container && container.classList.contains('tab-form-active');
+        switchMobileView(isForm ? 'sheet' : 'form');
+      });
+    }
 
     // Botón Reset / Nuevo Folio
     if (dom.btnReset) {
@@ -1186,15 +1206,29 @@
   // EXPORTACIÓN A PDF Y WHATSAPP
   // =========================================================================
   function triggerPdfExport() {
+    const sheetTarget = dom.contractSheet || document.getElementById('contractSheet');
+    if (!sheetTarget) {
+      alert('No se encontró la hoja de contrato.');
+      return;
+    }
+
     // Activar clase para forzar dimensiones Letter imprenta aunque se genere desde móvil
     document.body.classList.add('pdf-exporting');
 
     const btn = dom.btnDownloadPdf;
+    const mBtn = dom.btnMobilePdf;
     const originalHtml = btn ? btn.innerHTML : '';
+    const originalMHtml = mBtn ? mBtn.innerHTML : '';
+
     if (btn) {
       btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Generando PDF...';
       btn.disabled = true;
       btn.style.opacity = '0.75';
+    }
+    if (mBtn) {
+      mBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> <span class="m-btn-text">Generando...</span>';
+      mBtn.disabled = true;
+      mBtn.style.opacity = '0.75';
     }
 
     const cleanClientName = (state.clienteNombre || 'Cliente').replace(/[^a-zA-Z0-9]/g, '_');
@@ -1213,6 +1247,11 @@
         btn.innerHTML = originalHtml;
         btn.disabled = false;
         btn.style.opacity = '1';
+      }
+      if (mBtn) {
+        mBtn.innerHTML = originalMHtml;
+        mBtn.disabled = false;
+        mBtn.style.opacity = '1';
       }
     };
 
@@ -1234,7 +1273,7 @@
       };
 
       try {
-        const worker = window.html2pdf().set(opt).from(sheetEl);
+        const worker = window.html2pdf().set(opt).from(sheetTarget);
 
         // Intentar guardar con temporizador de seguridad (fallback a impresión tras 4.5 segundos si el navegador bloquea blobs en file:///)
         let finished = false;
@@ -1242,17 +1281,18 @@
         const downloadTimer = setTimeout(() => {
           if (!finished) {
             finished = true;
-            console.warn('html2pdf tardó demasiado o fue bloqueado por file:///. Activando diálogo nativo...');
+            console.warn('html2pdf tardó demasiado o fue bloqueado por el navegador. Activando diálogo nativo...');
             restoreBtn();
             window.print();
           }
-        }, 4500);
+        }, 4800);
 
         worker.save().then(() => {
           if (!finished) {
             finished = true;
             clearTimeout(downloadTimer);
             restoreBtn();
+            showToast('¡Contrato descargado exitosamente en PDF!', 'success');
           }
         }).catch(err => {
           if (!finished) {
@@ -1336,7 +1376,17 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
       ? `https://wa.me/${cleanPhone}?text=${encoded}`
       : `https://wa.me/528110626302?text=${encoded}`;
 
-    window.open(targetUrl, '_blank');
+    showToast('Abriendo WhatsApp con el contrato...', 'info');
+
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    if (isMobile) {
+      window.location.href = targetUrl;
+    } else {
+      const win = window.open(targetUrl, '_blank');
+      if (!win || win.closed || typeof win.closed === 'undefined') {
+        window.location.href = targetUrl;
+      }
+    }
   }
 
   function copiarResumenAlPortapapeles() {

@@ -234,15 +234,19 @@ assert(indexHtmlContent.includes('inputmode="decimal"'), 'index.html debe tener 
 assert(indexHtmlContent.includes('inputmode="numeric"'), 'index.html debe tener inputmode="numeric" en edad y % anticipo');
 assert(indexHtmlContent.includes('id="btnMobilePdf"'), 'index.html debe contener el botón btnMobilePdf');
 assert(indexHtmlContent.includes('id="btnMobileWhatsApp"'), 'index.html debe contener el botón btnMobileWhatsApp');
+assert(indexHtmlContent.includes('id="btnToggleMobileView"'), 'index.html debe contener el botón btnToggleMobileView');
 assert(appJsContent.includes('switchMobileView'), 'app.js debe implementar switchMobileView');
 assert(appJsContent.includes("switchMobileView('form')"), 'app.js debe permitir cambiar a vista de datos');
 assert(appJsContent.includes("switchMobileView('sheet')"), 'app.js debe permitir cambiar a vista de hoja');
 assert(appJsContent.includes('pdf-exporting'), 'app.js debe activar la clase pdf-exporting durante la exportación');
+assert(!appJsContent.includes('.from(sheetEl)'), 'app.js no debe contener la referencia indefinida sheetEl');
+assert(appJsContent.includes('.from(sheetTarget)'), 'app.js debe exportar desde sheetTarget verificado');
 assert(stylesContent.includes('.mobile-view-tabs'), 'styles.css debe incluir estilos para .mobile-view-tabs');
 assert(stylesContent.includes('.mobile-tab-btn'), 'styles.css debe incluir estilos para .mobile-tab-btn');
 assert(stylesContent.includes('.tab-form-active'), 'styles.css debe incluir reglas para .tab-form-active');
 assert(stylesContent.includes('.tab-sheet-active'), 'styles.css debe incluir reglas para .tab-sheet-active');
 assert(stylesContent.includes('body.pdf-exporting .sheet'), 'styles.css debe incluir reglas de protección para exportación en móvil');
+assert(stylesContent.includes('body.pdf-exporting .preview-viewport'), 'styles.css debe garantizar que preview-viewport sea visible al exportar PDF');
 
 console.log('  ✓ Optimizaciones Móviles 100% Verificadas: Segmented Tabs, Inputmodes numéricos/tel, Barra Flotante Contextual y Protección de Render PDF.');
 
