@@ -254,9 +254,12 @@ assert(appJsContent.includes('Contrato - ${sanitizedClient}.pdf'), 'app.js debe 
 assert(appJsContent.includes('document.title = sanitizedClient'), 'app.js debe sincronizar document.title para impresión nativa Guardar como PDF');
 assert(appJsContent.includes(".outputPdf('blob')"), 'app.js debe generar Blob real con outputPdf para compatibilidad móvil');
 assert(appJsContent.includes('navigator.share'), 'app.js debe integrar Web Share API para Guardar en Archivos / Files nativo');
-assert(stylesContent.includes('.mobile-pdf-banner'), 'styles.css debe incluir estilos para el banner de guardado directo en Files');
+assert(appJsContent.includes('openPdfDeliveryModal'), 'app.js debe implementar openPdfDeliveryModal para entrega síncrona infalible');
+assert(indexHtmlContent.includes('id="pdfDeliveryModal"'), 'index.html debe contener el modal interactivo pdfDeliveryModal');
+assert(indexHtmlContent.includes('id="btnDeliverySaveFiles"'), 'index.html debe contener el botón btnDeliverySaveFiles');
+assert(stylesContent.includes('.pdf-modal-overlay'), 'styles.css debe incluir estilos para el modal de entrega .pdf-modal-overlay');
 
-console.log('  ✓ Sistema de Descarga y Guardado en Archivos / Files Verificado: Web Share API nativa + Enlace directo + Banner interactivo.');
+console.log('  ✓ Sistema de Descarga y Guardado en Archivos / Files Verificado: Modal interactivo síncrono + Web Share API + Enlace de respaldo.');
 console.log('  ✓ Nomenclatura Oficial de Archivo Verificada: "Contrato - [Nombre del Cliente].pdf" (descarga directa y diálogo nativo).');
 
 console.log('  ✓ Botones "Limpiar Contrato" 100% Verificados: Barra superior, panel de paquetes, conceptos y barra móvil.');

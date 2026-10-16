@@ -1298,49 +1298,29 @@
             clearTimeout(downloadTimer);
             restoreBtn();
 
+            currentPdfBlob = blob;
+            currentPdfFilename = filename;
+            currentPdfFile = new File([blob], filename, { type: 'application/pdf' });
+            if (currentPdfUrl) URL.revokeObjectURL(currentPdfUrl);
+            currentPdfUrl = URL.createObjectURL(blob);
+
+            // 1. Desplegar siempre el modal interactivo de entrega y guardado directo en móviles y escritorio
+            openPdfDeliveryModal(currentPdfUrl, currentPdfFilename, currentPdfFile);
+
+            // 2. En computadoras de escritorio (PC/Mac), disparar también la descarga automática directa a Descargas
             const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
-
-            // 1. En móviles (iOS Safari / Android Chrome): usar Web Share API para guardar directamente en Archivos / Files
-            if (isMobile && typeof navigator.share === 'function') {
-              try {
-                const pdfFile = new File([blob], filename, { type: 'application/pdf' });
-                if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
-                  await navigator.share({
-                    files: [pdfFile],
-                    title: filename,
-                    text: `Contrato Oficial Nancy Eventos: ${sanitizedClient || 'Cliente'}`
-                  });
-                  showToast('¡Contrato listo! Guardado en Archivos / Files exitosamente.', 'success');
-                  return;
-                }
-              } catch (shareErr) {
-                if (shareErr && shareErr.name === 'AbortError') {
-                  showToast('Guardado en Archivos cancelado.', 'info');
-                  return;
-                }
-                console.warn('Web Share no disponible o cancelado, procediendo con descarga estándar:', shareErr);
-              }
-            }
-
-            // 2. Descarga por elemento <a> con URL de Blob (100% estándar en PC / Mac / Chrome)
-            const blobUrl = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = blobUrl;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-
-            // 3. En móviles, desplegar banner interactivo de 1 toque para que el usuario siempre pueda abrirlo y guardarlo en Files si el navegador bloquea la descarga automática
-            if (isMobile) {
-              showMobilePdfActionBanner(blobUrl, filename);
+            if (!isMobile) {
+              const a = document.createElement('a');
+              a.style.display = 'none';
+              a.href = currentPdfUrl;
+              a.download = currentPdfFilename;
+              document.body.appendChild(a);
+              a.click();
+              setTimeout(() => { try { a.remove(); } catch(e){} }, 3000);
+              showToast('¡Contrato descargado exitosamente en tu carpeta de Descargas!', 'success');
             } else {
-              showToast('¡Contrato descargado exitosamente en PDF!', 'success');
+              showToast('¡Contrato listo! Toca "Guardar en Archivos / Files".', 'success');
             }
-
-            setTimeout(() => {
-              try { document.body.removeChild(a); } catch (e) {}
-            }, 3000);
           }
         }).catch(err => {
           if (!finished) {
@@ -1363,39 +1343,87 @@
   }
 
   // =========================================================================
-  // BANNER INTERACTIVO MÓVIL PARA ABRIR / GUARDAR EN FILES
+  // CONTROLADOR DEL MODAL DE ENTREGA Y GUARDADO DE PDF (SOLUCIÓN MÓVIL)
   // =========================================================================
-  function showMobilePdfActionBanner(blobUrl, filename) {
-    const existing = document.getElementById('mobilePdfBanner');
-    if (existing) existing.remove();
+  let currentPdfBlob = null;
+  let currentPdfFile = null;
+  let currentPdfFilename = 'Contrato.pdf';
+  let currentPdfUrl = null;
 
-    const banner = document.createElement('div');
-    banner.id = 'mobilePdfBanner';
-    banner.className = 'mobile-pdf-banner';
-    banner.innerHTML = `
-      <div class="mpb-content">
-        <div class="mpb-icon"><i class="bi bi-file-earmark-pdf-fill"></i></div>
-        <div class="mpb-text">
-          <strong>${filename}</strong>
-          <span>Listo para guardar en Archivos / Files</span>
-        </div>
-        <a href="${blobUrl}" download="${filename}" target="_blank" class="mpb-btn" id="btnOpenMobilePdf">
-          <i class="bi bi-download"></i> Guardar en Files
-        </a>
-        <button type="button" class="mpb-close" onclick="this.closest('.mobile-pdf-banner').remove()" aria-label="Cerrar">
-          <i class="bi bi-x-lg"></i>
-        </button>
-      </div>
-    `;
-    document.body.appendChild(banner);
+  function openPdfDeliveryModal(blobUrl, filename, pdfFile) {
+    const modal = document.getElementById('pdfDeliveryModal');
+    const filenameEl = document.getElementById('pdfModalFilename');
+    const btnOpen = document.getElementById('btnDeliveryOpenPdf');
+    const btnSave = document.getElementById('btnDeliverySaveFiles');
+    const btnWhatsApp = document.getElementById('btnDeliveryWhatsApp');
+    const btnClose = document.getElementById('btnDeliveryClose');
 
-    showToast('¡PDF generado! Si tu celular no lo guardó automáticamente, toca "Guardar en Files".', 'success');
+    if (!modal) return;
 
-    setTimeout(() => {
-      try {
-        if (banner && banner.parentNode) banner.remove();
-      } catch (e) {}
-    }, 20000);
+    if (filenameEl) {
+      filenameEl.innerHTML = `<i class="bi bi-file-earmark-pdf-fill"></i> ${filename}`;
+    }
+
+    if (btnOpen) {
+      btnOpen.href = blobUrl;
+      btnOpen.download = filename;
+    }
+
+    if (btnSave) {
+      btnSave.onclick = async (e) => {
+        e.preventDefault();
+        // Al ejecutarse dentro del evento click del usuario, el navegador móvil respeta el user activation
+        if (pdfFile && navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+          try {
+            await navigator.share({
+              files: [pdfFile],
+              title: filename,
+              text: `Contrato Oficial Nancy Eventos: ${state.clienteNombre || 'Cliente'}`
+            });
+            showToast('¡Guardado en Archivos / Files exitosamente!', 'success');
+            return;
+          } catch (err) {
+            if (err && err.name === 'AbortError') return;
+            console.warn('Share error, procediendo a descarga directa:', err);
+          }
+        }
+
+        // Descarga directa por enlace de respaldo
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => { try { a.remove(); } catch(e){} }, 2000);
+        showToast('Descarga iniciada. Revisa tu carpeta de Descargas.', 'info');
+      };
+    }
+
+    if (btnWhatsApp) {
+      btnWhatsApp.onclick = (e) => {
+        e.preventDefault();
+        enviarPorWhatsApp();
+      };
+    }
+
+    if (btnClose) {
+      btnClose.onclick = (e) => {
+        e.preventDefault();
+        closePdfDeliveryModal();
+      };
+    }
+
+    modal.onclick = (e) => {
+      if (e.target === modal) closePdfDeliveryModal();
+    };
+
+    modal.style.display = 'flex';
+  }
+
+  function closePdfDeliveryModal() {
+    const modal = document.getElementById('pdfDeliveryModal');
+    if (modal) modal.style.display = 'none';
   }
 
   function buildWhatsAppMessage() {

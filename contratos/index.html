@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
   <!-- Estilos del Generador y Hoja Membretada -->
-  <link rel="stylesheet" href="styles.css?v=3.3">
+  <link rel="stylesheet" href="styles.css?v=3.4">
 
   <!-- Librería local para exportación directa a PDF (100% offline) con fallback a CDN -->
   <script src="assets/html2pdf.bundle.min.js"></script>
@@ -636,7 +636,57 @@
     </div>
   </div>
 
+  <!-- MODAL DE ENTREGA Y GUARDADO DE PDF (SOLUCIÓN MÓVIL DIRECTA) -->
+  <div class="pdf-modal-overlay" id="pdfDeliveryModal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="pdfModalTitle">
+    <div class="pdf-modal-card">
+      <div class="pdf-modal-badge"><i class="bi bi-check2-circle"></i> Documento Listo</div>
+      <h2 id="pdfModalTitle" class="pdf-modal-title">¡Contrato Generado con Éxito!</h2>
+      <p class="pdf-modal-filename" id="pdfModalFilename"><i class="bi bi-file-earmark-pdf-fill"></i> Contrato - Cliente.pdf</p>
+      
+      <div class="pdf-modal-actions">
+        <!-- Botón 1: Guardar en Archivos / Files (Disparador síncrono para Web Share API de iOS/Android) -->
+        <button type="button" class="btn-delivery btn-delivery-files" id="btnDeliverySaveFiles">
+          <i class="bi bi-folder2-open"></i>
+          <div class="btn-delivery-text">
+            <strong>Guardar en Archivos / Files</strong>
+            <small>Guarda en tu iPhone o Android en 1 toque</small>
+          </div>
+        </button>
+
+        <!-- Botón 2: Ver / Descargar Directo -->
+        <a href="#" target="_blank" class="btn-delivery btn-delivery-open" id="btnDeliveryOpenPdf">
+          <i class="bi bi-eye-fill"></i>
+          <div class="btn-delivery-text">
+            <strong>Ver PDF en Pantalla Completa</strong>
+            <small>Abrir en visor para ver o imprimir</small>
+          </div>
+        </a>
+
+        <!-- Botón 3: Enviar por WhatsApp con los datos -->
+        <button type="button" class="btn-delivery btn-delivery-whatsapp" id="btnDeliveryWhatsApp">
+          <i class="bi bi-whatsapp"></i>
+          <div class="btn-delivery-text">
+            <strong>Enviar por WhatsApp</strong>
+            <small>Abrir chat con datos y montos listos</small>
+          </div>
+        </button>
+      </div>
+
+      <div class="pdf-modal-guide">
+        <div class="guide-title"><i class="bi bi-info-circle-fill"></i> ¿Dónde encontrar tu contrato en tu celular?</div>
+        <ul>
+          <li><strong>En iPhone:</strong> Al presionar "Guardar en Archivos", abre la app 📁 <em>Archivos (Files)</em> > carpeta <em>Descargas</em> o <em>En mi iPhone</em>. Puedes crear una carpeta llamada <strong>Nancy Eventos</strong> para tenerlos todos identificados.</li>
+          <li><strong>En Android:</strong> Abre la app 📁 <em>Archivos</em> (o <em>Files de Google</em>) > carpeta <strong>Descargas</strong>.</li>
+        </ul>
+      </div>
+
+      <button type="button" class="btn-delivery-close" id="btnDeliveryClose">
+        <i class="bi bi-x-lg"></i> Cerrar
+      </button>
+    </div>
+  </div>
+
   <!-- SCRIPT PRINCIPAL -->
-  <script src="app.js?v=3.3"></script>
+  <script src="app.js?v=3.4"></script>
 </body>
 </html>
