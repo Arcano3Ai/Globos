@@ -268,7 +268,7 @@ assert(indexHtmlContent.includes('722969016978001939'), 'index.html debe contene
 assert(indexHtmlContent.includes('Mercado Pago'), 'index.html debe contener Mercado Pago en datos bancarios');
 assert(appJsContent.includes('722969016978001939'), 'app.js debe configurar por defecto la CLABE 722969016978001939');
 assert(appJsContent.includes('Mercado Pago'), 'app.js debe configurar Mercado Pago por defecto');
-assert(swContent.includes('nancy-contratos-pwa-v3.5'), 'sw.js debe estar actualizado a nancy-contratos-pwa-v3.5');
+assert(swContent.includes('nancy-contratos-pwa-v3.6'), 'sw.js debe estar actualizado a nancy-contratos-pwa-v3.6');
 
 console.log('  ✓ Datos Bancarios Oficiales Verificados: Mercado Pago | Nancy García | CLABE 722969016978001939 (en formulario, hoja membretada y mensaje WhatsApp).');
 console.log('  ✓ Sistema de Descarga y Guardado en Archivos / Files Verificado: Descarga directa + Modal interactivo + Web Share API + Alerta In-App.');

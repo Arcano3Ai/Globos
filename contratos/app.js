@@ -1382,16 +1382,23 @@
     if (btnDirect) {
       btnDirect.href = blobUrl;
       btnDirect.download = filename;
+      btnDirect.setAttribute('download', filename);
       btnDirect.onclick = (e) => {
-        showToast('Iniciando descarga directa a tu teléfono...', 'info');
+        showToast('Iniciando descarga a tu teléfono...', 'info');
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIOS) {
+          setTimeout(() => {
+            window.open(blobUrl, '_blank');
+          }, 350);
+        }
       };
     }
 
-    // Botón 2: Guardar en Archivos / Compartir (Web Share API)
+    // Botón 2: Guardar en Archivos / Compartir (Web Share API con fallback directo)
     if (btnSave) {
       btnSave.onclick = async (e) => {
         e.preventDefault();
-        // Al ejecutarse dentro del evento click del usuario, el navegador móvil respeta el user activation
+        // 1. Intentar compartir con la hoja oficial del sistema del teléfono
         if (pdfFile && navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
           try {
             await navigator.share({
@@ -1403,19 +1410,17 @@
             return;
           } catch (err) {
             if (err && err.name === 'AbortError') return;
-            console.warn('Share error, procediendo a descarga directa:', err);
+            console.warn('Share error, procediendo a visor directo:', err);
           }
         }
 
-        // Descarga directa por enlace de respaldo
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = blobUrl;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(() => { try { a.remove(); } catch(e){} }, 2000);
-        showToast('Descarga iniciada. Revisa tu carpeta de Descargas.', 'info');
+        // 2. Si Web Share no está disponible o falló:
+        // Abrir directamente el PDF en el visor del celular para guardar en Archivos / Descargas
+        showToast('Abriendo PDF en tu celular para guardar...', 'info');
+        const win = window.open(blobUrl, '_blank');
+        if (!win) {
+          window.location.href = blobUrl;
+        }
       };
     }
 
@@ -1423,6 +1428,13 @@
     if (btnOpen) {
       btnOpen.href = blobUrl;
       btnOpen.target = '_blank';
+      btnOpen.onclick = (e) => {
+        e.preventDefault();
+        const win = window.open(blobUrl, '_blank');
+        if (!win) {
+          window.location.href = blobUrl;
+        }
+      };
     }
 
     // Botón 4: Enviar por WhatsApp
