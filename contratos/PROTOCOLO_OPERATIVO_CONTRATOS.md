@@ -1,7 +1,7 @@
 # Protocolo Operativo y Administrativo para Emisión de Contratos de Servicio
 ## Nancy García · Decoración · Globos · Detalles
 ### San Pedro Garza García, Monterrey y Área Metropolitana de N.L.
-**WhatsApp Oficial:** 812 900 3343 · 811 062 6302  
+**WhatsApp Oficial:** 811 062 6302  
 **Facebook Oficial:** @ DECORACIONES GARCIA  
 **Dirección General:** Nancy García
 

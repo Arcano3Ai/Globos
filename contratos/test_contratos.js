@@ -95,12 +95,13 @@ assert(indexHtmlContent.includes('Todas las bases, cortinas y decoraciones que n
 assert(indexHtmlContent.includes('Todo daño o extravío a las herramientas rentadas'), 'Falta Cláusula 7: Responsabilidad daño/extravío');
 assert(indexHtmlContent.includes('Como mínimo se necesitan 2Hrs antes del evento para hacer el montaje'), 'Falta Cláusula 8: 2Hrs montaje');
 assert(indexHtmlContent.includes('Los diseños contratados son aprobados por el cliente'), 'Falta Cláusula 9: Aprobación de diseños');
-assert(indexHtmlContent.includes('812 900 3343'), 'Falta WhatsApp oficial 812 900 3343');
 assert(indexHtmlContent.includes('811 062 6302'), 'Falta WhatsApp oficial 811 062 6302');
+assert(!indexHtmlContent.includes('812 900 3343'), 'El teléfono anterior 812 900 3343 no debe aparecer');
+assert(indexHtmlContent.includes('agenteweb.com.mx'), 'Falta enlace a Agente Web');
 assert(indexHtmlContent.includes('@ DECORACIONES GARCIA'), 'Falta Facebook oficial @ DECORACIONES GARCIA');
 assert(indexHtmlContent.includes('NANCY GARCÍA'), 'Falta nombre oficial NANCY GARCÍA en index.html');
 
-console.log('  ✓ Las 9 Cláusulas oficiales de Nancy García y ambos teléfonos de contacto 100% verificadas.');
+console.log('  ✓ Las 9 Cláusulas oficiales de Nancy García y WhatsApp oficial único 811 062 6302 100% verificadas.');
 
 // 4. Comprobar reglas de impresión en styles.css
 const stylesContent = fs.readFileSync(path.join(CONTRATOS_DIR, 'styles.css'), 'utf-8');
