@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
   <!-- Estilos del Generador y Hoja Membretada -->
-  <link rel="stylesheet" href="styles.css?v=3.4">
+  <link rel="stylesheet" href="styles.css?v=3.5">
 
   <!-- Librería local para exportación directa a PDF (100% offline) con fallback a CDN -->
   <script src="assets/html2pdf.bundle.min.js"></script>
@@ -412,7 +412,7 @@
 
         <div class="form-group">
           <label for="inpNotasBancarias">Datos Bancarios para Transferencia:</label>
-          <textarea id="inpNotasBancarias" rows="2" style="resize: vertical;">Banco: BBVA / Banorte | Beneficiaria: Nancy García | Cuenta / CLABE: 012 580 00123456789 0</textarea>
+          <textarea id="inpNotasBancarias" rows="2" style="resize: vertical;">Banco: Mercado Pago | Beneficiaria: Nancy García | CLABE: 722969016978001939</textarea>
         </div>
 
         <!-- TARJETA RESUMEN EN EL PANEL -->
@@ -511,7 +511,7 @@
           <div class="sheet-bank-box">
             <div class="bank-title">Forma de Pago y Transferencia Oficial:</div>
             <p id="sheetBankInfo" contenteditable="true">
-              Banco: BBVA / Banorte | Beneficiaria: Nancy García | Cuenta / CLABE: 012 580 00123456789 0
+              Banco: Mercado Pago | Beneficiaria: Nancy García | CLABE: 722969016978001939
             </p>
             <p style="margin-top: 5px; font-size: 0.7rem; color: #64748B;">
               * Para garantizar el apartado exclusivo de fecha en calendario se requiere el comprobante de anticipo vía WhatsApp al 812 900 3343 o 811 062 6302.
@@ -643,17 +643,32 @@
       <h2 id="pdfModalTitle" class="pdf-modal-title">¡Contrato Generado con Éxito!</h2>
       <p class="pdf-modal-filename" id="pdfModalFilename"><i class="bi bi-file-earmark-pdf-fill"></i> Contrato - Cliente.pdf</p>
       
+      <!-- Alerta si se abre desde el visor interno de WhatsApp / Redes Sociales -->
+      <div class="pdf-modal-inapp-alert" id="inAppBrowserAlert" style="display: none;">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span><strong>Aviso:</strong> El visor interno de WhatsApp puede bloquear descargas. Si no inicia, pulsa los <strong>3 puntos (⋮)</strong> o Compartir arriba a la derecha y elige <strong>"Abrir en el navegador"</strong> (Safari o Chrome).</span>
+      </div>
+
       <div class="pdf-modal-actions">
-        <!-- Botón 1: Guardar en Archivos / Files (Disparador síncrono para Web Share API de iOS/Android) -->
+        <!-- Botón 1: Descarga Directa al Teléfono -->
+        <a href="#" download="Contrato.pdf" class="btn-delivery btn-delivery-download" id="btnDeliveryDirectDownload">
+          <i class="bi bi-arrow-down-circle-fill"></i>
+          <div class="btn-delivery-text">
+            <strong>Descargar PDF a mi Teléfono</strong>
+            <small>Guarda directo en tu carpeta de Descargas</small>
+          </div>
+        </a>
+
+        <!-- Botón 2: Guardar en Archivos / Compartir (Disparador síncrono para Web Share API de iOS/Android) -->
         <button type="button" class="btn-delivery btn-delivery-files" id="btnDeliverySaveFiles">
           <i class="bi bi-folder2-open"></i>
           <div class="btn-delivery-text">
-            <strong>Guardar en Archivos / Files</strong>
-            <small>Guarda en tu iPhone o Android en 1 toque</small>
+            <strong>Guardar en Archivos / Compartir</strong>
+            <small>Guarda en la app Archivos o comparte con 1 toque</small>
           </div>
         </button>
 
-        <!-- Botón 2: Ver / Descargar Directo -->
+        <!-- Botón 3: Ver en Pantalla Completa -->
         <a href="#" target="_blank" class="btn-delivery btn-delivery-open" id="btnDeliveryOpenPdf">
           <i class="bi bi-eye-fill"></i>
           <div class="btn-delivery-text">
@@ -662,12 +677,12 @@
           </div>
         </a>
 
-        <!-- Botón 3: Enviar por WhatsApp con los datos -->
+        <!-- Botón 4: Enviar por WhatsApp con los datos -->
         <button type="button" class="btn-delivery btn-delivery-whatsapp" id="btnDeliveryWhatsApp">
           <i class="bi bi-whatsapp"></i>
           <div class="btn-delivery-text">
             <strong>Enviar por WhatsApp</strong>
-            <small>Abrir chat con datos y montos listos</small>
+            <small>Abrir chat con datos, montos y cuenta de depósito</small>
           </div>
         </button>
       </div>
@@ -687,6 +702,6 @@
   </div>
 
   <!-- SCRIPT PRINCIPAL -->
-  <script src="app.js?v=3.4"></script>
+  <script src="app.js?v=3.5"></script>
 </body>
 </html>

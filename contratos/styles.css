@@ -2206,6 +2206,38 @@ body:not(.authenticated) .mobile-view-tabs {
   opacity: 0.85;
 }
 
+.btn-delivery-download {
+  background: linear-gradient(135deg, #FF9EE2 0%, #E855B5 45%, #C85BA3 100%);
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 18px rgba(232, 85, 181, 0.45);
+}
+
+.btn-delivery-download:active {
+  transform: scale(0.98);
+}
+
+.pdf-modal-inapp-alert {
+  background: rgba(234, 179, 8, 0.15);
+  border: 1px solid rgba(234, 179, 8, 0.4);
+  color: #FEF08A;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.pdf-modal-inapp-alert i {
+  font-size: 1rem;
+  color: #FACC15;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
 .btn-delivery-files {
   background: linear-gradient(135deg, var(--turquoise-neon) 0%, #00B4D8 100%);
   color: #0E0B18 !important;

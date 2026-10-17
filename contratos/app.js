@@ -226,7 +226,7 @@
     anticipoPorcentaje: 50,
     anticipoMonto: 0,
     anticipoModo: 'porcentaje',
-    notasBancarias: 'Banco: BBVA / Banorte | Beneficiaria: Nancy García (Nancy Eventos) | Cuenta / CLABE: 012 580 00123456789 0'
+    notasBancarias: 'Banco: Mercado Pago | Beneficiaria: Nancy García | CLABE: 722969016978001939'
   };
 
   function resetStateToBlank(advanceFolio = false) {
@@ -1271,6 +1271,7 @@
           useCORS: true,
           allowTaint: true,
           logging: false,
+          windowWidth: 1024,
           scrollY: 0,
           scrollX: 0
         },
@@ -1280,17 +1281,17 @@
       try {
         const worker = window.html2pdf().set(opt).from(sheetTarget);
 
-        // Intentar guardar con temporizador de seguridad (fallback a impresión tras 4.5 segundos si el navegador bloquea blobs en file:///)
+        // Temporizador de seguridad largo (30 segundos) de respaldo
         let finished = false;
 
         const downloadTimer = setTimeout(() => {
           if (!finished) {
             finished = true;
-            console.warn('html2pdf tardó demasiado o fue bloqueado por el navegador. Activando diálogo nativo...');
+            console.warn('html2pdf tardó más de 30s. Activando diálogo nativo de impresión...');
             restoreBtn();
             window.print();
           }
-        }, 4800);
+        }, 30000);
 
         worker.outputPdf('blob').then(async (blob) => {
           if (!finished) {
@@ -1307,19 +1308,24 @@
             // 1. Desplegar siempre el modal interactivo de entrega y guardado directo en móviles y escritorio
             openPdfDeliveryModal(currentPdfUrl, currentPdfFilename, currentPdfFile);
 
-            // 2. En computadoras de escritorio (PC/Mac), disparar también la descarga automática directa a Descargas
-            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
-            if (!isMobile) {
+            // 2. Disparar también la descarga automática directa hacia la carpeta de Descargas
+            try {
               const a = document.createElement('a');
               a.style.display = 'none';
               a.href = currentPdfUrl;
               a.download = currentPdfFilename;
               document.body.appendChild(a);
               a.click();
-              setTimeout(() => { try { a.remove(); } catch(e){} }, 3000);
-              showToast('¡Contrato descargado exitosamente en tu carpeta de Descargas!', 'success');
+              setTimeout(() => { try { a.remove(); } catch(e){} }, 2500);
+            } catch (err) {
+              console.warn('Auto download error:', err);
+            }
+
+            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
+            if (isMobile) {
+              showToast('¡Contrato listo! Toca "Descargar PDF a mi Teléfono" o "Guardar en Archivos".', 'success');
             } else {
-              showToast('¡Contrato listo! Toca "Guardar en Archivos / Files".', 'success');
+              showToast('¡Contrato descargado exitosamente en tu carpeta de Descargas!', 'success');
             }
           }
         }).catch(err => {
@@ -1353,22 +1359,35 @@
   function openPdfDeliveryModal(blobUrl, filename, pdfFile) {
     const modal = document.getElementById('pdfDeliveryModal');
     const filenameEl = document.getElementById('pdfModalFilename');
-    const btnOpen = document.getElementById('btnDeliveryOpenPdf');
+    const btnDirect = document.getElementById('btnDeliveryDirectDownload');
     const btnSave = document.getElementById('btnDeliverySaveFiles');
+    const btnOpen = document.getElementById('btnDeliveryOpenPdf');
     const btnWhatsApp = document.getElementById('btnDeliveryWhatsApp');
     const btnClose = document.getElementById('btnDeliveryClose');
+    const alertInApp = document.getElementById('inAppBrowserAlert');
 
     if (!modal) return;
+
+    // Detectar si navega dentro del webview de WhatsApp / redes sociales
+    const isInApp = /FBAN|FBAV|Instagram|WhatsApp|Line|Twitter|Messenger/i.test(navigator.userAgent);
+    if (alertInApp) {
+      alertInApp.style.display = isInApp ? 'flex' : 'none';
+    }
 
     if (filenameEl) {
       filenameEl.innerHTML = `<i class="bi bi-file-earmark-pdf-fill"></i> ${filename}`;
     }
 
-    if (btnOpen) {
-      btnOpen.href = blobUrl;
-      btnOpen.download = filename;
+    // Botón 1: Descarga Directa al Teléfono
+    if (btnDirect) {
+      btnDirect.href = blobUrl;
+      btnDirect.download = filename;
+      btnDirect.onclick = (e) => {
+        showToast('Iniciando descarga directa a tu teléfono...', 'info');
+      };
     }
 
+    // Botón 2: Guardar en Archivos / Compartir (Web Share API)
     if (btnSave) {
       btnSave.onclick = async (e) => {
         e.preventDefault();
@@ -1380,7 +1399,7 @@
               title: filename,
               text: `Contrato Oficial Nancy Eventos: ${state.clienteNombre || 'Cliente'}`
             });
-            showToast('¡Guardado en Archivos / Files exitosamente!', 'success');
+            showToast('¡Guardado / Compartido exitosamente!', 'success');
             return;
           } catch (err) {
             if (err && err.name === 'AbortError') return;
@@ -1400,6 +1419,13 @@
       };
     }
 
+    // Botón 3: Ver en Pantalla Completa
+    if (btnOpen) {
+      btnOpen.href = blobUrl;
+      btnOpen.target = '_blank';
+    }
+
+    // Botón 4: Enviar por WhatsApp
     if (btnWhatsApp) {
       btnWhatsApp.onclick = (e) => {
         e.preventDefault();
@@ -1470,7 +1496,7 @@ ${extraStr}
 💵 *Saldo restante al montaje:* ${formatMoney(saldo)} MXN
 
 💳 *Datos para Transferencia / Depósito:*
-${state.notasBancarias}
+${state.notasBancarias.includes('722969016978001939') ? '• *Banco:* Mercado Pago\n• *Beneficiaria:* Nancy García\n• *CLABE Interbancaria:* 722969016978001939' : state.notasBancarias}
 
 En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en nuestra agenda. ¡Muchas gracias por tu confianza! ✨`;
   }
@@ -1732,6 +1758,7 @@ En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en n
         navigator.serviceWorker.register('./sw.js')
           .then(reg => {
             console.log('Nancy Contratos PWA: ServiceWorker registrado en', reg.scope);
+            try { reg.update(); } catch (e) {}
           })
           .catch(err => {
             console.warn('ServiceWorker no disponible en este entorno:', err.message);

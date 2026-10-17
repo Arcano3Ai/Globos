@@ -256,10 +256,22 @@ assert(appJsContent.includes(".outputPdf('blob')"), 'app.js debe generar Blob re
 assert(appJsContent.includes('navigator.share'), 'app.js debe integrar Web Share API para Guardar en Archivos / Files nativo');
 assert(appJsContent.includes('openPdfDeliveryModal'), 'app.js debe implementar openPdfDeliveryModal para entrega síncrona infalible');
 assert(indexHtmlContent.includes('id="pdfDeliveryModal"'), 'index.html debe contener el modal interactivo pdfDeliveryModal');
+assert(indexHtmlContent.includes('id="btnDeliveryDirectDownload"'), 'index.html debe contener el botón de descarga directa btnDeliveryDirectDownload');
 assert(indexHtmlContent.includes('id="btnDeliverySaveFiles"'), 'index.html debe contener el botón btnDeliverySaveFiles');
+assert(indexHtmlContent.includes('id="inAppBrowserAlert"'), 'index.html debe contener la alerta para navegador in-app inAppBrowserAlert');
 assert(stylesContent.includes('.pdf-modal-overlay'), 'styles.css debe incluir estilos para el modal de entrega .pdf-modal-overlay');
+assert(stylesContent.includes('.btn-delivery-download'), 'styles.css debe incluir estilos para .btn-delivery-download');
+assert(stylesContent.includes('.pdf-modal-inapp-alert'), 'styles.css debe incluir estilos para .pdf-modal-inapp-alert');
 
-console.log('  ✓ Sistema de Descarga y Guardado en Archivos / Files Verificado: Modal interactivo síncrono + Web Share API + Enlace de respaldo.');
+// 16. Verificación de Datos Bancarios Oficiales (Mercado Pago & CLABE 722969016978001939)
+assert(indexHtmlContent.includes('722969016978001939'), 'index.html debe contener la CLABE 722969016978001939');
+assert(indexHtmlContent.includes('Mercado Pago'), 'index.html debe contener Mercado Pago en datos bancarios');
+assert(appJsContent.includes('722969016978001939'), 'app.js debe configurar por defecto la CLABE 722969016978001939');
+assert(appJsContent.includes('Mercado Pago'), 'app.js debe configurar Mercado Pago por defecto');
+assert(swContent.includes('nancy-contratos-pwa-v3.5'), 'sw.js debe estar actualizado a nancy-contratos-pwa-v3.5');
+
+console.log('  ✓ Datos Bancarios Oficiales Verificados: Mercado Pago | Nancy García | CLABE 722969016978001939 (en formulario, hoja membretada y mensaje WhatsApp).');
+console.log('  ✓ Sistema de Descarga y Guardado en Archivos / Files Verificado: Descarga directa + Modal interactivo + Web Share API + Alerta In-App.');
 console.log('  ✓ Nomenclatura Oficial de Archivo Verificada: "Contrato - [Nombre del Cliente].pdf" (descarga directa y diálogo nativo).');
 
 console.log('  ✓ Botones "Limpiar Contrato" 100% Verificados: Barra superior, panel de paquetes, conceptos y barra móvil.');

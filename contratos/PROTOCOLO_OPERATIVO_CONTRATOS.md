@@ -190,9 +190,9 @@ Aplica de forma estricta para:
 > *💰 Total Convenido: $[Total] MXN*  
 > *🔒 Anticipo para Reservar Fecha (50%): $[Anticipo] MXN*  
 > *💳 Datos para depósito/transferencia:*  
-> *Banco: BBVA / Banorte*  
+> *Banco: Mercado Pago*  
 > *Beneficiaria: Nancy García*  
-> *CLABE: 012 580 00123456789 0*  
+> *CLABE Interbancaria: 722969016978001939*  
 > *¡En cuanto nos compartas tu comprobante, tu fecha queda formalmente blindada en nuestra agenda! Muchas gracias por tu confianza."*
 
 #### Mensaje 2: Confirmación de Apartado Exitoso
